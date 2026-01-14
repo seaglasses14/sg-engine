@@ -87,11 +87,14 @@ int main()
 	//**************************** DATA CREATION *****************************************
 
 	glm::vec3 lightPos(1.2f, 1.0f, -10.0f);
-	glm::vec3 cubePos(4.f, 0.0f, 0.0f);
+	glm::vec3 cubePos(4.f, 2.0f, 0.0f);
 	glm::mat4 model(1.0f), model2(2.0f);
 	model = glm::translate(model, lightPos);
 	model = glm::scale(model, glm::vec3(0.5f));
 	model2 = glm::translate(model2, cubePos);
+	glm::mat4 normalCube = glm::transpose(glm::inverse(model2));
+	glm::mat4 model3(1.f);
+	glm::mat4 normalSphere = glm::transpose(glm::inverse(model3));
 
 	//Creating Shaders
 	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
@@ -107,9 +110,13 @@ int main()
 	orangeMaterial.AddUniform("texture1", 0);
 	orangeMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
 	orangeMaterial.AddUniform("lightPos", lightPos);
+	orangeMaterial.AddUniform("normalMat", normalCube);
+	orangeMaterial.AddUniform("viewPos", camera.Position);
 	planetMaterial.AddUniform("texture1", 0);
 	planetMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
 	planetMaterial.AddUniform("lightPos", lightPos);
+	planetMaterial.AddUniform("normalMat", normalSphere);
+	planetMaterial.AddUniform("viewPos", camera.Position);
 
 	//Object
 	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial);
@@ -119,6 +126,7 @@ int main()
 
 	lightSource.SetModel(model);
 	diffuseCube.SetModel(model2);
+	sphere.SetModel(model3);
 
 	//wireframe mode
 	if (WIREFRAME_MODE)
