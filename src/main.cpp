@@ -86,23 +86,39 @@ int main()
 
 	//**************************** DATA CREATION *****************************************
 
+	glm::vec3 lightPos(1.2f, 1.0f, -10.0f);
+	glm::vec3 cubePos(4.f, 0.0f, 0.0f);
+	glm::mat4 model(1.0f), model2(2.0f);
+	model = glm::translate(model, lightPos);
+	model = glm::scale(model, glm::vec3(0.5f));
+	model2 = glm::translate(model2, cubePos);
+
 	//Creating Shaders
 	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
 	Shader planetSP("shaders/textured.vs", "shaders/textured.fs", ShaderType::TextureST);
 
 	//Creating Textures
 	Texture earth("textures/earth_2k.jpg");
+	Texture orange("textures/orange.jpg");
 
 	//Creating Materials
-	Material gridMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth);
-	gridMaterial.AddUniform("Color", glm::vec3(1.0f, 1.0f, 1.0f));
+	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth), orangeMaterial(&planetSP, &orange);
+	whiteMaterial.AddUniform("Color", glm::vec3(1.0f, 1.0f, 1.0f));
+	orangeMaterial.AddUniform("texture1", 0);
+	orangeMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
+	orangeMaterial.AddUniform("lightPos", lightPos);
 	planetMaterial.AddUniform("texture1", 0);
-
+	planetMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
+	planetMaterial.AddUniform("lightPos", lightPos);
 
 	//Object
-	Object worldGrid = Shapes::genWorldGrid(&gridMaterial);
+	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial);
+	Object lightSource = Shapes::genSimpleCube(&whiteMaterial);
+	Object diffuseCube = Shapes::genCube(&orangeMaterial);
 	Object sphere = Shapes::genUVSphere(&planetMaterial, 20, 20, 1.0f);
 
+	lightSource.SetModel(model);
+	diffuseCube.SetModel(model2);
 
 	//wireframe mode
 	if (WIREFRAME_MODE)
@@ -146,6 +162,12 @@ int main()
 
 		worldGrid.Activate(view, projection);
 		worldGrid.Draw();
+
+		lightSource.Activate(view, projection);
+		lightSource.Draw();
+
+		diffuseCube.Activate(view, projection);
+		diffuseCube.Draw();
 
 		sphere.Activate(view, projection);
 		sphere.Draw();

@@ -7,12 +7,14 @@
 class Object
 {
 public:
-    Object(unsigned int pVAO, unsigned int pVBO, unsigned int pEBO, Material* pMaterial, bool pUseEBO, int pIndicesSize);
+    Object(unsigned int pVAO, unsigned int pVBO, unsigned int pEBO, Material* pMaterial, bool pTraingleMode, bool pUseEBO, int pIndicesSize);
 	void Activate(glm::mat4& pView, glm::mat4& pProjection, bool useShader = true);
+    void SetModel(glm::mat4& pModel);
     void Draw();
     void Clean();
     ShaderType GetShaderType();
 private:
+    bool triangleMode;
     glm::mat4 model;
     bool useEBO;
     Material* material;

@@ -168,6 +168,7 @@
     <Image Include="textures\earth_2k.jpg" />
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
+    <Image Include="textures\orange.jpg" />
     <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
