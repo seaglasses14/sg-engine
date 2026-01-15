@@ -86,15 +86,18 @@ int main()
 
 	//**************************** DATA CREATION *****************************************
 
-	glm::vec3 lightPos(1.2f, 1.0f, -10.0f);
-	glm::vec3 cubePos(4.f, 2.0f, 0.0f);
-	glm::mat4 model(1.0f), model2(2.0f);
-	model = glm::translate(model, lightPos);
-	model = glm::scale(model, glm::vec3(0.5f));
-	model2 = glm::translate(model2, cubePos);
-	glm::mat4 normalCube = glm::transpose(glm::inverse(model2));
-	glm::mat4 model3(1.f);
-	glm::mat4 normalSphere = glm::transpose(glm::inverse(model3));
+	glm::vec3 lightPos(1.f);
+	glm::vec3 cubePos(4.f, 5.0f, 0.0f);
+
+	glm::mat4 lightModel(1.0f), cubeModel(1.0f), sphereModel(1.f);
+
+	lightModel = glm::scale(lightModel, glm::vec3(0.5f));
+
+	cubeModel = glm::scale(cubeModel, glm::vec3(0.5f));
+	cubeModel = glm::translate(cubeModel, cubePos);
+	glm::mat4 normalCube = glm::transpose(glm::inverse(cubeModel));
+
+	glm::mat4 normalSphere = glm::transpose(glm::inverse(sphereModel));
 
 	//Creating Shaders
 	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
@@ -107,16 +110,14 @@ int main()
 	//Creating Materials
 	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth), orangeMaterial(&planetSP, &orange);
 	whiteMaterial.AddUniform("Color", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	orangeMaterial.AddUniform("normalMat", normalCube);
 	orangeMaterial.AddUniform("texture1", 0);
 	orangeMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
-	orangeMaterial.AddUniform("lightPos", lightPos);
-	orangeMaterial.AddUniform("normalMat", normalCube);
-	orangeMaterial.AddUniform("viewPos", camera.Position);
+
+	planetMaterial.AddUniform("normalMat", normalSphere);
 	planetMaterial.AddUniform("texture1", 0);
 	planetMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
-	planetMaterial.AddUniform("lightPos", lightPos);
-	planetMaterial.AddUniform("normalMat", normalSphere);
-	planetMaterial.AddUniform("viewPos", camera.Position);
 
 	//Object
 	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial);
@@ -124,9 +125,8 @@ int main()
 	Object diffuseCube = Shapes::genCube(&orangeMaterial);
 	Object sphere = Shapes::genUVSphere(&planetMaterial, 20, 20, 1.0f);
 
-	lightSource.SetModel(model);
-	diffuseCube.SetModel(model2);
-	sphere.SetModel(model3);
+	diffuseCube.SetModel(cubeModel);
+	sphere.SetModel(sphereModel);
 
 	//wireframe mode
 	if (WIREFRAME_MODE)
@@ -167,6 +167,15 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//**************************** DRAWING *****************************************
+
+		lightPos = glm::vec3(sin(glfwGetTime() * 2) * 8, 0, cos(glfwGetTime() * 2) * 8);
+		glm::mat4 lightModel2 = glm::translate(lightModel, lightPos);
+		lightSource.SetModel(lightModel2);
+
+		orangeMaterial.AddUniform("lightPos", lightPos);
+		planetMaterial.AddUniform("lightPos", lightPos);
+		orangeMaterial.AddUniform("viewPos", camera.Position);
+		planetMaterial.AddUniform("viewPos", camera.Position);
 
 		worldGrid.Activate(view, projection);
 		worldGrid.Draw();
