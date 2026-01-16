@@ -179,10 +179,11 @@
     <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\base.fs" />
-    <None Include="shaders\base.vs" />
-    <None Include="shaders\textured.fs" />
-    <None Include="shaders\textured.vs" />
+    <None Include="shaders\base.frag" />
+    <None Include="shaders\base.vert" />
+    <None Include="shaders\gouraud.vert" />
+    <None Include="shaders\textured.frag" />
+    <None Include="shaders\textured.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

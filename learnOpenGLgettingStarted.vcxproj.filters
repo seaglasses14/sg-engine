@@ -129,9 +129,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\textured.vs" />
-    <None Include="shaders\base.vs" />
-    <None Include="shaders\base.fs" />
-    <None Include="shaders\textured.fs" />
+    <None Include="shaders\textured.vert" />
+    <None Include="shaders\base.vert" />
+    <None Include="shaders\base.frag" />
+    <None Include="shaders\textured.frag" />
+    <None Include="shaders\gouraud.vert" />
   </ItemGroup>
 </Project>
