@@ -72,7 +72,7 @@ int main()
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	//**************************** GLFW INIT & CONTEXT************************************
+	//**************************** GLFW INIT & CONTEXT ************************************
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -87,6 +87,7 @@ int main()
 	//**************************** DATA CREATION *****************************************
 
 	glm::vec3 lightPos(1.f);
+	glm::vec3 lightColor(1.f);
 	glm::vec3 cubePos(4.f, 5.0f, 0.0f);
 
 	glm::mat4 lightModel(1.0f), cubeModel(1.0f), sphereModel(1.f);
@@ -103,7 +104,7 @@ int main()
 	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
 	Shader planetSP("shaders/textured.vs", "shaders/textured.fs", ShaderType::TextureST);
 
-	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/8k_earth_specular_map.png" };
+	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/8k_earth_nightmap.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
 	//Creating Textures
 	Texture earth(path);
 	Texture orange("textures/orange.jpg");
@@ -114,27 +115,27 @@ int main()
 
 	orangeMaterial.AddUniform("normalMat", normalCube);
 	//orangeMaterial.AddUniform("texture1", 0);
-	orangeMaterial.AddUniform("light.ambient", glm::vec3(1.f, 1.f, 1.f));
-	orangeMaterial.AddUniform("light.diffuse", glm::vec3(1.f, 1.f, 1.f));
-	orangeMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5, 0.5f));
+	//orangeMaterial.AddUniform("light.ambient", glm::vec3(1.f, 1.f, 1.f));
+	orangeMaterial.AddUniform("light.color", glm::vec3(1.f, 1.f, 1.f));
+	//orangeMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5, 0.5f));
 	//orangeMaterial.AddUniform("material.diffuse", glm::vec3(0.07568f, 0.61424f, 0.07568f));
 	orangeMaterial.AddUniform("material.specular", glm::vec3(0.633f, 0.727811f, 0.633f));
 	orangeMaterial.AddUniform("material.shininess", 0.6f * 128.f);
 	
 	planetMaterial.AddUniform("normalMat", normalSphere);
-	planetMaterial.AddUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2));
-	planetMaterial.AddUniform("light.diffuse", glm::vec3(1.f, 1.f, 1.f));
-	planetMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-	planetMaterial.AddUniform("material.diffuse", 0);
+	planetMaterial.AddUniform("light.color", glm::vec3(1.f, 1.f, 1.f));
+	planetMaterial.AddUniform("material.diffuse1", 0);
+	planetMaterial.AddUniform("material.diffuse2", 1);
+	planetMaterial.AddUniform("material.diffuse3", 2);
 	planetMaterial.AddUniform("material.ambient", glm::vec3(0.f, 0.2f, 0.2f));
-	planetMaterial.AddUniform("material.specular", 1);
+	planetMaterial.AddUniform("material.specular", 3);
 	planetMaterial.AddUniform("material.shininess", 0.25f * 128.f);
 
 	//Object
 	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial, 50, 20.f);
 	Object lightSource = Shapes::genSimpleCube(&whiteMaterial);
 	Object diffuseCube = Shapes::genCube(&orangeMaterial);
-	Object sphere = Shapes::genUVSphere(&planetMaterial, 20, 20, 1.0f);
+	Object sphere = Shapes::genUVSphere(&planetMaterial, 40, 40, 1.0f);
 
 	diffuseCube.SetModel(cubeModel);
 	sphere.SetModel(sphereModel);
@@ -158,12 +159,12 @@ int main()
 		glfwPollEvents();
 
 		// ImGui
-		/*
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::ShowDemoWindow();
-		*/
+		
 
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
@@ -179,11 +180,10 @@ int main()
 
 		//**************************** DRAWING *****************************************
 
-		lightPos = glm::vec3(sin(glfwGetTime() * 2) * 8, 0, cos(glfwGetTime() * 2) * 8);
+		lightPos = glm::vec3(sin(glfwGetTime()) * 8, 0, cos(glfwGetTime()) * 8);
 		glm::mat4 lightModel2 = glm::translate(lightModel, lightPos);
 		lightSource.SetModel(lightModel2);
 
-		
 		orangeMaterial.AddUniform("light.position", lightPos);
 		planetMaterial.AddUniform("light.position", lightPos);
 		orangeMaterial.AddUniform("viewPos", camera.Position);
@@ -202,10 +202,10 @@ int main()
 		sphere.Draw();
 		
 		// ImGui Rendering
-		/*
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		*/
+		
 
 		glfwSwapBuffers(window);
 	}
