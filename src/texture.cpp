@@ -4,11 +4,11 @@
 #include <stb_image/stb_image.h>
 #include <glad/glad.h>
 
-Texture::Texture(const char* texturePath[], const int nrTextures)
+Texture::Texture(const std::vector<const char*>& texturePath)
 {
 	//This constructor accepts only pngs (or RGBA Formats), and has fixed texture parameters (wrapping e filtering)
 
-	IDsSize = nrTextures;
+	IDsSize = texturePath.size();
 	glGenTextures(IDsSize, IDs);
 
 	stbi_set_flip_vertically_on_load(true);
@@ -26,10 +26,12 @@ Texture::Texture(const char* texturePath[], const int nrTextures)
 		unsigned char* data = stbi_load(texturePath[i], &width, &height, &nrChannels, 0);
 		if (data)
 		{
-			if (nrChannels == 3)
+			if (nrChannels == 1)
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			else if (nrChannels == 3)
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			else if (nrChannels == 4)
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			else
 				LOG_ERROR("Texture Error: Unsupported number of channels");
 			glGenerateMipmap(GL_TEXTURE_2D);

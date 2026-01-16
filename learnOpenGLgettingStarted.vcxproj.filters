@@ -106,6 +106,27 @@
     <Image Include="textures\orange.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\8k_earth_specular_map.tif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_clouds.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_daymap.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_nightmap.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_normal_map.tif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_normal_map.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\8k_earth_specular_map.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\textured.vs" />

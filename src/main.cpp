@@ -103,8 +103,9 @@ int main()
 	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
 	Shader planetSP("shaders/textured.vs", "shaders/textured.fs", ShaderType::TextureST);
 
+	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/8k_earth_specular_map.png" };
 	//Creating Textures
-	Texture earth("textures/earth_2k.jpg");
+	Texture earth(path);
 	Texture orange("textures/orange.jpg");
 
 	//Creating Materials
@@ -112,15 +113,25 @@ int main()
 	whiteMaterial.AddUniform("Color", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	orangeMaterial.AddUniform("normalMat", normalCube);
-	orangeMaterial.AddUniform("texture1", 0);
-	orangeMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
-
+	//orangeMaterial.AddUniform("texture1", 0);
+	orangeMaterial.AddUniform("light.ambient", glm::vec3(1.f, 1.f, 1.f));
+	orangeMaterial.AddUniform("light.diffuse", glm::vec3(1.f, 1.f, 1.f));
+	orangeMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5, 0.5f));
+	//orangeMaterial.AddUniform("material.diffuse", glm::vec3(0.07568f, 0.61424f, 0.07568f));
+	orangeMaterial.AddUniform("material.specular", glm::vec3(0.633f, 0.727811f, 0.633f));
+	orangeMaterial.AddUniform("material.shininess", 0.6f * 128.f);
+	
 	planetMaterial.AddUniform("normalMat", normalSphere);
-	planetMaterial.AddUniform("texture1", 0);
-	planetMaterial.AddUniform("lightColor", glm::vec3(1.f, 1.f, 1.f));
+	planetMaterial.AddUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2));
+	planetMaterial.AddUniform("light.diffuse", glm::vec3(1.f, 1.f, 1.f));
+	planetMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+	planetMaterial.AddUniform("material.diffuse", 0);
+	planetMaterial.AddUniform("material.ambient", glm::vec3(0.f, 0.2f, 0.2f));
+	planetMaterial.AddUniform("material.specular", 1);
+	planetMaterial.AddUniform("material.shininess", 0.25f * 128.f);
 
 	//Object
-	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial);
+	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial, 50, 20.f);
 	Object lightSource = Shapes::genSimpleCube(&whiteMaterial);
 	Object diffuseCube = Shapes::genCube(&orangeMaterial);
 	Object sphere = Shapes::genUVSphere(&planetMaterial, 20, 20, 1.0f);
@@ -172,8 +183,9 @@ int main()
 		glm::mat4 lightModel2 = glm::translate(lightModel, lightPos);
 		lightSource.SetModel(lightModel2);
 
-		orangeMaterial.AddUniform("lightPos", lightPos);
-		planetMaterial.AddUniform("lightPos", lightPos);
+		
+		orangeMaterial.AddUniform("light.position", lightPos);
+		planetMaterial.AddUniform("light.position", lightPos);
 		orangeMaterial.AddUniform("viewPos", camera.Position);
 		planetMaterial.AddUniform("viewPos", camera.Position);
 

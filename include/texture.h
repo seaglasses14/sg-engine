@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 class Texture
 {
 public:
@@ -7,7 +9,7 @@ public:
 	//Could change
 	unsigned int IDs[32];
 
-	Texture(const char* texturePath[], const int nrTextures);
+	Texture(const std::vector<const char*>& texturePath);
 	Texture(const char* texturePath);
 	void ActivateAll();
 

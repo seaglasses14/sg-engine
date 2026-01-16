@@ -165,6 +165,13 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="textures\8k_earth_clouds.jpg" />
+    <Image Include="textures\8k_earth_daymap.jpg" />
+    <Image Include="textures\8k_earth_nightmap.jpg" />
+    <Image Include="textures\8k_earth_normal_map.png" />
+    <Image Include="textures\8k_earth_normal_map.tif" />
+    <Image Include="textures\8k_earth_specular_map.png" />
+    <Image Include="textures\8k_earth_specular_map.tif" />
     <Image Include="textures\earth_2k.jpg" />
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
