@@ -6,6 +6,7 @@ layout (location = 2) in vec2 aTexCoord;
 struct Material
 {
 	sampler2D diffuse;
+	sampler2D emissive;
 	vec3 specular;
 	float shininess;
 };
@@ -46,7 +47,10 @@ void main()
 
 	// diffuse
 	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = (diff * vec3(texture(material.diffuse, TexCoord))) * light.color;
+	vec3 baseDiffuse = vec3(texture(material.diffuse, TexCoord));
+	vec3 emissive = vec3(texture(material.emissive, TexCoord));
+	vec3 diffuse = (diff * baseDiffuse) * light.color * emissive;
+	//vec3 diffuse = (diff * vec3(texture(material.diffuse, TexCoord))) * light.color;
 
 	// ambient
 	float ambientStrength = 0.2;

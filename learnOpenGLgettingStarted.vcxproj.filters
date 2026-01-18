@@ -127,6 +127,9 @@
     <Image Include="textures\8k_earth_specular_map.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\matrix.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\textured.vert" />

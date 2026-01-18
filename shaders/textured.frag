@@ -39,9 +39,11 @@ void main()
 
 	// diffuse
 	float diff = max(dot(norm, lightDir), 0.0);
-	//vec4 daynight = mix(texture(material.diffuse1, TexCoord), texture(material.diffuse2, TexCoord), diff);
-	vec4 daynight = texture(material.diffuse1, TexCoord);
-	vec3 diffuse = (diff * ( vec3( mix(daynight , texture(material.diffuse3, TexCoord), texture(material.diffuse3, TexCoord)) ))  ) * light.color;
+	
+	vec3 daynight = vec3(texture(material.diffuse1, TexCoord));
+	vec3 emissive = vec3(texture(material.diffuse2, TexCoord));
+
+	vec3 diffuse = (diff * daynight ) * light.color;
 
 	// ambient
 	float ambientLightStrength = 0.2;
@@ -51,7 +53,7 @@ void main()
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	vec3 specular = (spec * vec3(texture(material.specular, TexCoord))) * light.color;
 
-	vec3 result = ambient + diffuse + specular;
+	vec3 result = ambient + diffuse + specular + emissive;
 	
 	FragColor = vec4(result, 1.0);
 }

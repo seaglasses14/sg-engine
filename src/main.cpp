@@ -103,10 +103,12 @@ int main()
 	Shader planetSP("shaders/textured.vert", "shaders/textured.frag", ShaderType::TextureST);
 	Shader gouraudSP("shaders/gouraud.vert", "shaders/gouraud.frag", ShaderType::TextureST);
 
-	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/8k_earth_nightmap.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
+	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/matrix.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
+	std::vector<const char*> path2 = { "textures/orange.jpg", "textures/matrix.jpg" };
+	
 	//Creating Textures
 	Texture earth(path);
-	Texture orange("textures/orange.jpg");
+	Texture orange(path2);
 
 	//Creating Materials
 	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth), orangeMaterial(&gouraudSP, &orange);
@@ -115,6 +117,7 @@ int main()
 	orangeMaterial.AddUniform("normalMat", normalCube);
 	orangeMaterial.AddUniform("light.color", glm::vec3(1.f, 1.f, 1.f));
 	orangeMaterial.AddUniform("material.diffuse", 0);
+	orangeMaterial.AddUniform("material.emissive", 1);
 	orangeMaterial.AddUniform("material.specular", glm::vec3(0.633f, 0.727811f, 0.633f));
 	orangeMaterial.AddUniform("material.shininess", 0.6f * 128.f);
 	
