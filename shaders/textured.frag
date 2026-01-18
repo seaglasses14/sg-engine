@@ -2,6 +2,7 @@
 in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoord;
+in vec3 LightPos;
 
 out vec4 FragColor;
 
@@ -24,13 +25,16 @@ struct Light
 uniform Material material;
 uniform Light light;
 
+uniform mat4 view;
 uniform vec3 viewPos;
 
 void main()
 {
 	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(light.position - FragPos);
-	vec3 viewDir = normalize(viewPos - FragPos);
+	//vec3 lightDir = normalize(light.Position - FragPos);
+	vec3 lightDir = normalize(LightPos - FragPos);
+	//vec3 viewDir = normalize(viewPos - FragPos);
+	vec3 viewDir = normalize(-FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
 
 	// diffuse

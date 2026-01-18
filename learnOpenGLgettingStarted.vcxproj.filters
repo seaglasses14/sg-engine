@@ -134,5 +134,6 @@
     <None Include="shaders\base.frag" />
     <None Include="shaders\textured.frag" />
     <None Include="shaders\gouraud.vert" />
+    <None Include="shaders\gouraud.frag" />
   </ItemGroup>
 </Project>

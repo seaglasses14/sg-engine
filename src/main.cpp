@@ -98,11 +98,10 @@ int main()
 	cubeModel = glm::translate(cubeModel, cubePos);
 	glm::mat4 normalCube = glm::transpose(glm::inverse(cubeModel));
 
-	glm::mat4 normalSphere = glm::transpose(glm::inverse(sphereModel));
-
 	//Creating Shaders
-	Shader baseVertex("shaders/base.vs", "shaders/base.fs", ShaderType::BaseST);
-	Shader planetSP("shaders/textured.vs", "shaders/textured.fs", ShaderType::TextureST);
+	Shader baseVertex("shaders/base.vert", "shaders/base.frag", ShaderType::BaseST);
+	Shader planetSP("shaders/textured.vert", "shaders/textured.frag", ShaderType::TextureST);
+	Shader gouraudSP("shaders/gouraud.vert", "shaders/gouraud.frag", ShaderType::TextureST);
 
 	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/8k_earth_nightmap.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
 	//Creating Textures
@@ -110,19 +109,15 @@ int main()
 	Texture orange("textures/orange.jpg");
 
 	//Creating Materials
-	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth), orangeMaterial(&planetSP, &orange);
+	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth), orangeMaterial(&gouraudSP, &orange);
 	whiteMaterial.AddUniform("Color", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	orangeMaterial.AddUniform("normalMat", normalCube);
-	//orangeMaterial.AddUniform("texture1", 0);
-	//orangeMaterial.AddUniform("light.ambient", glm::vec3(1.f, 1.f, 1.f));
 	orangeMaterial.AddUniform("light.color", glm::vec3(1.f, 1.f, 1.f));
-	//orangeMaterial.AddUniform("light.specular", glm::vec3(0.5f, 0.5, 0.5f));
-	//orangeMaterial.AddUniform("material.diffuse", glm::vec3(0.07568f, 0.61424f, 0.07568f));
+	orangeMaterial.AddUniform("material.diffuse", 0);
 	orangeMaterial.AddUniform("material.specular", glm::vec3(0.633f, 0.727811f, 0.633f));
 	orangeMaterial.AddUniform("material.shininess", 0.6f * 128.f);
 	
-	planetMaterial.AddUniform("normalMat", normalSphere);
 	planetMaterial.AddUniform("light.color", glm::vec3(1.f, 1.f, 1.f));
 	planetMaterial.AddUniform("material.diffuse1", 0);
 	planetMaterial.AddUniform("material.diffuse2", 1);
@@ -159,12 +154,12 @@ int main()
 		glfwPollEvents();
 
 		// ImGui
-		
+		/*
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::ShowDemoWindow();
-		
+		*/
 
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
@@ -184,6 +179,9 @@ int main()
 		glm::mat4 lightModel2 = glm::translate(lightModel, lightPos);
 		lightSource.SetModel(lightModel2);
 
+		glm::mat4 normalSphere = glm::transpose(glm::inverse(view * sphereModel));
+		planetMaterial.AddUniform("normalMat", normalSphere);
+		planetMaterial.AddUniform("lightPos", lightPos);
 		orangeMaterial.AddUniform("light.position", lightPos);
 		planetMaterial.AddUniform("light.position", lightPos);
 		orangeMaterial.AddUniform("viewPos", camera.Position);
@@ -202,10 +200,10 @@ int main()
 		sphere.Draw();
 		
 		// ImGui Rendering
-		
+		/*
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
+		*/
 
 		glfwSwapBuffers(window);
 	}

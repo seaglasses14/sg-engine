@@ -181,6 +181,7 @@
   <ItemGroup>
     <None Include="shaders\base.frag" />
     <None Include="shaders\base.vert" />
+    <None Include="shaders\gouraud.frag" />
     <None Include="shaders\gouraud.vert" />
     <None Include="shaders\textured.frag" />
     <None Include="shaders\textured.vert" />
