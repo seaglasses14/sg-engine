@@ -16,12 +16,23 @@ struct Material
 	float shininess;
 };
 
+struct DirectLight
+{
+	vec3 direction;
+	vec3 color;
+};
+
 struct Light
 {
 	vec3 position;
 	vec3 color;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
+uniform DirectLight directLight;
 uniform Material material;
 uniform Light light;
 
@@ -31,9 +42,8 @@ uniform vec3 viewPos;
 void main()
 {
 	vec3 norm = normalize(Normal);
-	//vec3 lightDir = normalize(light.Position - FragPos);
 	vec3 lightDir = normalize(LightPos - FragPos);
-	//vec3 viewDir = normalize(viewPos - FragPos);
+	//vec3 lightDir = normalize(-directLight.direction);
 	vec3 viewDir = normalize(-FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
 
