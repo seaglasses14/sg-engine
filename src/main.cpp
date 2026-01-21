@@ -10,16 +10,14 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "Scene/Scene.h"
 #include "object.h"
 #include "shader.h"
 #include "camera.h"
 #include "Shapes.h"
 #include <Core/GLFW_Context.h>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 //Globals
 
@@ -33,60 +31,27 @@ float lastFrame = 0.0f;
 
 //Camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
-float lastMouseX = SCR_WIDTH / 2.0f;
-float lastMouseY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
 
 int main()
 {
-	//**************************** GLFW INIT & CONTEXT ************************************
-	/*
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+	Scene* scene = new Scene();
+	scene->mainCamera = &camera;
 	
-	//glfw window
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	*/
 	GLFW_Context* GLFWcontext = new GLFW_Context();
-
-	glfwMakeContextCurrent(GLFWcontext->GetWindow());
-	glfwSetFramebufferSizeCallback(GLFWcontext->GetWindow(), framebuffer_size_callback);
-	glfwSetCursorPosCallback(GLFWcontext->GetWindow(), mouse_callback);
-	glfwSetScrollCallback(GLFWcontext->GetWindow(), scroll_callback);
-
-	/*
-	//glad loading
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	*/
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-
-	glfwSetInputMode(GLFWcontext->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	GLFWcontext->scene = scene;
+	
+	
 
 	//**************************** GLFW INIT & CONTEXT ************************************
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO(); // (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOpenGL(GLFWcontext->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init();
@@ -129,15 +94,6 @@ int main()
 
 	sphere.SetModel(sphereModel);
 
-	//wireframe mode
-	if (WIREFRAME_MODE)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	if (DEPTH_TESTING)
-		glEnable(GL_DEPTH_TEST);
-	//This enables Vsync
-	glfwSwapInterval(1);
-
-
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(camera.Fov), static_cast<float>(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 1000.0f);
 
@@ -146,12 +102,12 @@ int main()
 	while (GLFWcontext->IsRunning())
 	{
 		// ImGui
-		/*
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGui::ShowDemoWindow();
-		*/
+		
 
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
@@ -190,19 +146,15 @@ int main()
 		lightSource.Activate(view, projection);
 		lightSource.Draw();
 
-		for (int i = 0; i < 5; i++)
-		{
-
-		}
 
 		sphere.Activate(view, projection);
 		sphere.Draw();
 		
 		// ImGui Rendering
-		/*
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		*/
+		
 
 		GLFWcontext->AtEndOfLoop();
 	}
@@ -216,11 +168,6 @@ int main()
 	glfwTerminate();
 
 	return 0;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
 }
 
 void processInput(GLFWwindow* window)
@@ -239,25 +186,4 @@ void processInput(GLFWwindow* window)
 		camera.ProcessDirectionInput(DOWNWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		camera.ProcessDirectionInput(UPWARD, deltaTime);
-}
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouse)
-	{
-		lastMouseX = xpos;
-		lastMouseY = ypos;
-		firstMouse = false;
-	}
-	float xoffset = xpos - lastMouseX;
-	float yoffset = lastMouseY - ypos; // reversed since y range from bottom to top
-	lastMouseX = xpos;
-	lastMouseY = ypos;
-
-	camera.ProcessRotationInput(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera.ProcessScrollInput(yoffset);
 }
