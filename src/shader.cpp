@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "log.h"
+#include "Core/Log.h"
 
 #include <string>
 #include <fstream>

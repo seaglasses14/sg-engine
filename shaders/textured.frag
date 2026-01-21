@@ -47,6 +47,9 @@ void main()
 	vec3 viewDir = normalize(-FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
 
+	float distance = length(LightPos - FragPos);
+	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
 	// diffuse
 	float diff = max(dot(norm, lightDir), 0.0);
 	
@@ -62,6 +65,9 @@ void main()
 	// specular
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	vec3 specular = (spec * vec3(texture(material.specular, TexCoord))) * light.color;
+
+	diffuse *= attenuation;
+	specular *= attenuation;
 
 	vec3 result = ambient + diffuse + specular + emissive;
 	

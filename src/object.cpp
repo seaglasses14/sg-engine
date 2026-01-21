@@ -1,5 +1,5 @@
 #include "object.h"
-#include "log.h"
+#include "Core/Log.h"
 #include <iostream>
 #include <glad/glad.h>
 

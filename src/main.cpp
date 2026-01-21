@@ -14,6 +14,7 @@
 #include "shader.h"
 #include "camera.h"
 #include "Shapes.h"
+#include <Core/GLFW_Context.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -39,6 +40,7 @@ bool firstMouse = true;
 int main()
 {
 	//**************************** GLFW INIT & CONTEXT ************************************
+	/*
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -47,7 +49,7 @@ int main()
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
+	
 	//glfw window
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
@@ -56,11 +58,15 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+	*/
+	GLFW_Context* GLFWcontext = new GLFW_Context();
 
+	glfwMakeContextCurrent(GLFWcontext->GetWindow());
+	glfwSetFramebufferSizeCallback(GLFWcontext->GetWindow(), framebuffer_size_callback);
+	glfwSetCursorPosCallback(GLFWcontext->GetWindow(), mouse_callback);
+	glfwSetScrollCallback(GLFWcontext->GetWindow(), scroll_callback);
+
+	/*
 	//glad loading
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -68,9 +74,10 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+	*/
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(GLFWcontext->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	//**************************** GLFW INIT & CONTEXT ************************************
 
@@ -81,7 +88,7 @@ int main()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(GLFWcontext->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init();
 
 	//**************************** DATA CREATION *****************************************
@@ -136,10 +143,8 @@ int main()
 
 	//**************************** RENDER *****************************************
 
-	while (!glfwWindowShouldClose(window))
+	while (GLFWcontext->IsRunning())
 	{
-		glfwPollEvents();
-
 		// ImGui
 		/*
 		ImGui_ImplOpenGL3_NewFrame();
@@ -152,7 +157,7 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		processInput(window);
+		processInput(GLFWcontext->GetWindow());
 
 		glm::mat4 view = camera.GetViewMatrix();
 
@@ -162,7 +167,9 @@ int main()
 
 		//**************************** DRAWING *****************************************
 
-		lightPos = glm::vec3(sin(glfwGetTime()) * 8, 0, cos(glfwGetTime()) * 8);
+		//lightPos = glm::vec3(sin(glfwGetTime()) * 8, 0, cos(glfwGetTime()) * 8);
+		lightPos = glm::vec3(0, 0, -10 + 5 * sin(glfwGetTime()));
+		
 		glm::mat4 lightModel2 = glm::translate(lightModel, lightPos);
 		lightSource.SetModel(lightModel2);
 
@@ -171,8 +178,8 @@ int main()
 		planetMaterial.AddUniform("normalMat", normalSphere);
 		planetMaterial.AddUniform("lightPos", lightPos);
 		planetMaterial.AddUniform("light.constant", 1.0f);
-		planetMaterial.AddUniform("light.linear", 0.09f);
-		planetMaterial.AddUniform("light.quadratic", 0.032f);
+		planetMaterial.AddUniform("light.linear", 0.02f);
+		planetMaterial.AddUniform("light.quadratic", 0.007f);
 		planetMaterial.AddUniform("directLight.direction", glm::vec3(view * glm::normalize(glm::vec4(-0.2f, -1.0f, -0.3f, 0))));
 		planetMaterial.AddUniform("light.position", lightPos);
 		planetMaterial.AddUniform("viewPos", camera.Position);
@@ -183,6 +190,10 @@ int main()
 		lightSource.Activate(view, projection);
 		lightSource.Draw();
 
+		for (int i = 0; i < 5; i++)
+		{
+
+		}
 
 		sphere.Activate(view, projection);
 		sphere.Draw();
@@ -193,7 +204,7 @@ int main()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		*/
 
-		glfwSwapBuffers(window);
+		GLFWcontext->AtEndOfLoop();
 	}
 
 	//object.Clean();

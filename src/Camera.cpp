@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "log.h"
+#include "Core/Log.h"
 #include <iostream>
 
 Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch)

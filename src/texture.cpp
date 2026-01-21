@@ -1,5 +1,5 @@
 #include "texture.h"
-#include "log.h"
+#include "Core/Log.h"
 
 #include <stb_image/stb_image.h>
 #include <glad/glad.h>

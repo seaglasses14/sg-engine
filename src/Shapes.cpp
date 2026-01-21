@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Shapes.h"
-#include "log.h"
+#include "Core/Log.h"
 #include <iostream>
 
 Object Shapes::genPlane(Material* pMaterial, float size)
