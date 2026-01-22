@@ -16,6 +16,7 @@
 #include "camera.h"
 #include "Shapes.h"
 #include <Core/GLFW_Context.h>
+#include "Core/GUI.h"
 
 void processInput(GLFWwindow* window);
 
@@ -39,22 +40,9 @@ int main()
 	
 	GLFW_Context* GLFWcontext = new GLFW_Context();
 	GLFWcontext->scene = scene;
+	GLFWcontext->GetWindow();
 	
-	
-
-	//**************************** GLFW INIT & CONTEXT ************************************
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); // (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	ImGui::StyleColorsDark();
-
-	ImGui_ImplGlfw_InitForOpenGL(GLFWcontext->GetWindow(), true);
-	ImGui_ImplOpenGL3_Init();
+	GUI* gui = new GUI(GLFWcontext->GetWindow());
 
 	//**************************** DATA CREATION *****************************************
 
@@ -97,28 +85,72 @@ int main()
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(camera.Fov), static_cast<float>(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 1000.0f);
 
+
+	bool showDemoWindow = true;
+	bool showWindow = false;
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.f);
 	//**************************** RENDER *****************************************
 
 	while (GLFWcontext->IsRunning())
 	{
 		// ImGui
-		
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		ImGui::ShowDemoWindow();
-		
+		glfwPollEvents();
 
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
+
+		if (glfwGetWindowAttrib(GLFWcontext->GetWindow(), GLFW_ICONIFIED))
+		{
+			ImGui_ImplGlfw_Sleep(10);
+			continue;
+		}
+
+		gui->StartDrawing();
+
+		//Demo Window
+		if(showDemoWindow)
+			ImGui::ShowDemoWindow(&showDemoWindow);
+		static float f = 0.0f;
+		static int counter = 0;
+
+		
+		ImGui::Begin("First Window");
+		ImGui::Text("Mammt");
+		ImGui::Checkbox("Show Demo", &showDemoWindow);
+		ImGui::Checkbox("Show Other Window", &showWindow);
+		ImGui::SliderFloat("float", &f, 0.f, 1.f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
+		ImGui::ColorEdit3("ClearColor", (float*)&clear_color);
+
+		if(ImGui::Button("Button"))
+			counter++;
+		ImGui::SameLine();
+		ImGui::Text("counter = %d", counter);
+
+		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.f / io.Framerate, io.Framerate);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000 * deltaTime, 1 / deltaTime);
+		ImGui::End();
+
+		if (showWindow)
+		{
+			ImGui::Begin("Window", &showWindow);
+			ImGui::Text("New Window");
+			if (ImGui::Button("Close"))
+				showWindow = false;
+			ImGui::End();
+		}
+
+
+
+		
 
 		processInput(GLFWcontext->GetWindow());
 
 		glm::mat4 view = camera.GetViewMatrix();
 
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//**************************** DRAWING *****************************************
@@ -152,19 +184,16 @@ int main()
 		
 		// ImGui Rendering
 		
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		
+		gui->Render();
 
 		GLFWcontext->AtEndOfLoop();
 	}
 
 	//object.Clean();
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	gui->Shutdown();
 
+	glfwDestroyWindow(GLFWcontext->GetWindow());
 	glfwTerminate();
 
 	return 0;
