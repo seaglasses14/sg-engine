@@ -48,3 +48,7 @@ void GUI::Shutdown()
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
+
+void GUI::GUIW_SceneContent(bool b_open)
+{
+}

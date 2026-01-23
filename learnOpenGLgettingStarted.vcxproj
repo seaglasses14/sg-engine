@@ -149,6 +149,7 @@
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\Scene\Scene.h" />
     <ClInclude Include="include\Core\Objects\Light.h" />
+    <ClInclude Include="include\Core\Objects\Components\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external_src\imgui.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\Shapes.cpp" />
     <ClCompile Include="external_src\stb_image.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="include\Core\Objects\Components\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\8k_earth_clouds.jpg" />

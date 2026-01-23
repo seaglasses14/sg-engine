@@ -13,7 +13,9 @@ public:
 	void Render();
 	void Shutdown();
 
-private:
+	bool b_open_SceneContent = true;
 
+private:
+	void GUIW_SceneContent(bool b_open);
 };
 
