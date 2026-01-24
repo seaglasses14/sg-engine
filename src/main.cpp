@@ -16,7 +16,7 @@
 #include "camera.h"
 #include "Shapes.h"
 #include <Core/GLFW_Context.h>
-#include "Core/GUI.h"
+#include "Core/GUI/GUI.h"
 
 void processInput(GLFWwindow* window);
 
@@ -115,7 +115,7 @@ int main()
 		static float f = 0.0f;
 		static int counter = 0;
 
-		
+		/*
 		ImGui::Begin("First Window");
 		ImGui::Text("Mammt");
 		ImGui::Checkbox("Show Demo", &showDemoWindow);
@@ -127,7 +127,7 @@ int main()
 			counter++;
 		ImGui::SameLine();
 		ImGui::Text("counter = %d", counter);
-
+		
 		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.f / io.Framerate, io.Framerate);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000 * deltaTime, 1 / deltaTime);
 		ImGui::End();
@@ -141,9 +141,9 @@ int main()
 			ImGui::End();
 		}
 
+		*/
 
-
-		
+		gui->Draw();
 
 		processInput(GLFWcontext->GetWindow());
 

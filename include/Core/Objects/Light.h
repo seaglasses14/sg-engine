@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Objects/GObject.h";
+#include "Core/Objects/GObject.h"
 
 enum LightType
 {

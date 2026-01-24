@@ -36,6 +36,11 @@ void GUI::SetIOConfigFlag(ImGuiConfigFlags_ flag)
 	io.ConfigFlags |= flag;
 }
 
+void GUI::Draw()
+{
+	sceneEditor->Draw();
+}
+
 void GUI::Render()
 {
 	ImGui::Render();
@@ -49,6 +54,3 @@ void GUI::Shutdown()
 	ImGui::DestroyContext();
 }
 
-void GUI::GUIW_SceneContent(bool b_open)
-{
-}

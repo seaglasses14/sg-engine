@@ -1,8 +1,9 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include "Core/Objects/Components/Component.h"
 
-class Transform
+class Transform : public Component
 {
 public:
 	glm::vec3 location;
@@ -14,6 +15,8 @@ public:
 	void SetLocation(glm::vec3& pLocation);
 	void SetRotation(glm::vec3& pRotation);
 	void SetScale(glm::vec3& pScale);
+
+	std::vector<Property> GetProperties() override;
 
 private:
 	glm::mat4 model;
