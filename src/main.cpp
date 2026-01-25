@@ -42,7 +42,7 @@ int main()
 	GLFWcontext->scene = scene;
 	GLFWcontext->GetWindow();
 	
-	GUI* gui = new GUI(GLFWcontext->GetWindow());
+	GUI* gui = new GUI(GLFWcontext->GetWindow(), scene);
 
 	//**************************** DATA CREATION *****************************************
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Scene/Scene.h"
 #include "Core/Objects/GObject.h"
 
 class GUI_SceneEditor
@@ -9,9 +10,13 @@ public:
 	bool b_open_ObjectDetail = true;
 
 	void Draw();
-	GObject* selectedObject = new GObject();
+	GUI_SceneEditor(Scene* pScene);
 
 private:
+	Scene* scene;
+	GObject* selectedObject = nullptr;
+	GObject* highlightedObject = nullptr;
+	bool object_highlight = false;
 	void GUIW_SceneViewer(bool* b_open);
 	void GUIW_ObjectDetail(bool* b_open, GObject* selectedObject);
 };

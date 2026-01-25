@@ -8,46 +8,87 @@
 
 void GUI_SceneEditor::Draw()
 {
+    GUIW_SceneViewer(&b_open_SceneViewer);
     GUIW_ObjectDetail(&b_open_ObjectDetail, selectedObject);
+}
+
+GUI_SceneEditor::GUI_SceneEditor(Scene* pScene)
+{
+    scene = pScene;
 }
 
 void GUI_SceneEditor::GUIW_SceneViewer(bool* b_open)
 {
+    if (*b_open)
+    {
+        ImGui::Begin("Scene", b_open);
+        
+        if (ImGui::BeginListBox("##Scene", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
+        {
+            for (GObject* obj : scene->objects)
+            {
+                const bool is_selected = (selectedObject == obj);
+                if (ImGui::Selectable(obj->label.c_str(), is_selected))
+                    selectedObject = obj;
+
+                if (object_highlight && ImGui::IsItemHovered())
+                    highlightedObject = obj;
+
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndListBox();
+        }
+        /*
+        // Custom size: use all width, 5 items tall
+        ImGui::Text("Full-width:");
+        if (ImGui::BeginListBox("##Scene", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+        {
+            for (int n = 0; n < IM_COUNTOF(items); n++)
+            {
+                bool is_selected = (item_selected_idx == n);
+                ImGuiSelectableFlags flags = (item_highlighted_idx == n) ? ImGuiSelectableFlags_Highlight : 0;
+                if (ImGui::Selectable(items[n], is_selected, flags))
+                    item_selected_idx = n;
+
+                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndListBox();
+        }
+        */
+
+
+
+        ImGui::End();
+    }
 }
 
 void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
 {
 	if (*b_open)
 	{
-		ImGui::Begin("Details", b_open);
+        ImGui::Begin("Details", b_open);
 
-        for (Component* comp : selectedObject->components)
+        if (selectedObject)
         {
-            std::vector<Property> propertyData = comp->GetProperties();
-            
-            if (ImGui::CollapsingHeader(comp->label.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+            for (Component* comp : selectedObject->components)
             {
-                for (Property pr : propertyData)
+                std::vector<Property> propertyData = comp->GetProperties();
+
+                if (ImGui::CollapsingHeader(comp->label.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
                 {
-                    GUI_PropertyHelper::DrawWidget(pr);
+                    for (Property pr : propertyData)
+                    {
+                        GUI_PropertyHelper::DrawWidget(pr);
+                    }
+
                 }
 
             }
-
-
         }
-        if (ImGui::CollapsingHeader("Header", ImGuiTreeNodeFlags_None))
-        {
-            ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-            for (int i = 0; i < 5; i++)
-                ImGui::Text("Some content %d", i);
-        }
-        /*
-        if (ImGui::CollapsingHeader("Header with a bullet", ImGuiTreeNodeFlags_Bullet))
-            ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-        */
 
-
-		ImGui::End();
+        ImGui::End();
 	}
 }

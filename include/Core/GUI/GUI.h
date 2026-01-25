@@ -4,11 +4,12 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "Core/GUI/GUI_SceneEditor.h"
+#include "Scene/Scene.h"
 
 class GUI
 {
 public:
-	GUI(GLFWwindow* window);
+	GUI(GLFWwindow* window, Scene* pScene);
 	void StartDrawing();
 	void SetIOConfigFlag(ImGuiConfigFlags_ flag);
 	void Draw();
@@ -16,6 +17,7 @@ public:
 	void Shutdown();
 
 private:
-	GUI_SceneEditor* sceneEditor = new GUI_SceneEditor();
+	Scene* scene;
+	GUI_SceneEditor* sceneEditor;
 };
 

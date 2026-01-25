@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI::GUI(GLFWwindow* window)
+GUI::GUI(GLFWwindow* window, Scene* pScene)
 {
 	// Init
 	IMGUI_CHECKVERSION();
@@ -19,6 +19,9 @@ GUI::GUI(GLFWwindow* window)
 	// Backend
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
+
+	scene = pScene;
+	sceneEditor = new GUI_SceneEditor(scene);
 }
 
 void GUI::StartDrawing()
