@@ -4,6 +4,7 @@
 #include "glm/glm.hpp"
 #include "Core/Log.h"
 #include <string>
+#include "Core/GUI/GUI_PropertyHelper.h"
 
 void GUI_SceneEditor::Draw()
 {
@@ -28,16 +29,7 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
             {
                 for (Property pr : propertyData)
                 {
-                    if (pr.type == PropertyType::Vec3f)
-                    {
-                        ImGui::DragFloat3(pr.label.c_str(), static_cast<float*>(pr.data), 1.f, 0.f, 0.f, "%.3f", ImGuiSliderFlags_ColorMarkers);
-                        /*
-                        std::string a = "X: " + std::to_string(static_cast<glm::vec3*>(pr.data)->x)
-                                       +" Y: " + std::to_string(static_cast<glm::vec3*>(pr.data)->y)
-                                       +" Z: " + std::to_string(static_cast<glm::vec3*>(pr.data)->z);
-                        LOG_INFO(a);
-                        */
-                    }
+                    GUI_PropertyHelper::DrawWidget(pr);
                 }
 
             }
