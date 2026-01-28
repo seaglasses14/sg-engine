@@ -2,6 +2,7 @@
 #include "Core/Log.h"
 #include <iostream>
 #include <glad/glad.h>
+#include <string>
 
 Object::Object(unsigned int pVAO, unsigned int pVBO, unsigned int pEBO, Material* pMaterial, bool pTriangleMode, bool pUseEBO, int pIndicesSize)
 	: material(pMaterial), model(glm::mat4(1.0f))

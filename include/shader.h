@@ -19,6 +19,7 @@ class Shader
 {
 public:
 	Shader(const char* vertexPath, const char* fragmentPath, ShaderType pShderType);
+	
 	void use();
 	void set(const std::string& name, bool value) const;
 	void set(const std::string& name, int value) const;

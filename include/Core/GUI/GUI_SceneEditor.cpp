@@ -22,7 +22,12 @@ void GUI_SceneEditor::GUIW_SceneViewer(bool* b_open)
     if (*b_open)
     {
         ImGui::Begin("Scene", b_open);
-        
+
+        if (ImGui::Button("Add Object"))
+        {
+            scene->AddObject("Object");
+        }
+
         if (ImGui::BeginListBox("##Scene", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
         {
             for (GObject* obj : scene->objects)
@@ -92,3 +97,9 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
         ImGui::End();
 	}
 }
+
+void GUI_SceneEditor::GUIW_Scene(bool* b_open)
+{
+
+}
+

@@ -19,4 +19,5 @@ private:
 	bool object_highlight = false;
 	void GUIW_SceneViewer(bool* b_open);
 	void GUIW_ObjectDetail(bool* b_open, GObject* selectedObject);
+	void GUIW_Scene(bool* b_open);
 };

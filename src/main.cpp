@@ -35,10 +35,11 @@ Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
 
 int main()
 {
-	Scene* scene = new Scene();
-	scene->mainCamera = &camera;
+	
 	
 	GLFW_Context* GLFWcontext = new GLFW_Context();
+	Scene* scene = new Scene();
+	scene->mainCamera = &camera;
 	GLFWcontext->scene = scene;
 	GLFWcontext->GetWindow();
 	
@@ -88,12 +89,10 @@ int main()
 
 	bool showDemoWindow = true;
 	bool showWindow = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.f);
 	//**************************** RENDER *****************************************
 
 	while (GLFWcontext->IsRunning())
 	{
-		// ImGui
 		glfwPollEvents();
 
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -147,14 +146,14 @@ int main()
 
 		processInput(GLFWcontext->GetWindow());
 
-		glm::mat4 view = camera.GetViewMatrix();
+		
 
-
-		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		scene->PreRender();
+		scene->FirstPass();
+		
 
 		//**************************** DRAWING *****************************************
-
+		/*
 		//lightPos = glm::vec3(sin(glfwGetTime()) * 8, 0, cos(glfwGetTime()) * 8);
 		lightPos = glm::vec3(0, 0, -10 + 5 * sin(glfwGetTime()));
 		
@@ -181,7 +180,11 @@ int main()
 
 		sphere.Activate(view, projection);
 		sphere.Draw();
-		
+		*/
+		//Second pass
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		// ImGui Rendering
 		
 		gui->Render();
