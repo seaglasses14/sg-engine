@@ -141,6 +141,7 @@
     <ClInclude Include="include\Core\GUI\GUI_SceneEditor.h" />
     <ClInclude Include="include\Core\Objects\Components\Component.h" />
     <ClInclude Include="include\Core\GUI\GUI.h" />
+    <ClInclude Include="include\Core\Objects\Components\Mesh.h" />
     <ClInclude Include="include\Core\Objects\Components\Property.h" />
     <ClInclude Include="include\Core\Objects\GObject.h" />
     <ClInclude Include="include\Core\GLFW_Context.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="external_src\imgui_tables.cpp" />
     <ClCompile Include="external_src\imgui_widgets.cpp" />
     <ClCompile Include="include\Core\GUI\GUI.cpp" />
+    <ClCompile Include="include\Core\Objects\Components\Mesh.cpp" />
     <ClCompile Include="include\Core\Objects\GObject.cpp" />
     <ClCompile Include="include\Core\GLFW_Context.cpp" />
     <ClCompile Include="include\Scene\Scene.cpp" />

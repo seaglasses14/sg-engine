@@ -9,6 +9,7 @@ GUI::GUI(GLFWwindow* window, Scene* pScene)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 	// Style
 	ImGui::StyleColorsDark();
@@ -42,6 +43,10 @@ void GUI::SetIOConfigFlag(ImGuiConfigFlags_ flag)
 void GUI::Draw()
 {
 	sceneEditor->Draw();
+}
+void GUI::DrawViewport(GLint texId)
+{
+	sceneEditor->DrawViewport(texId);
 }
 
 void GUI::Render()

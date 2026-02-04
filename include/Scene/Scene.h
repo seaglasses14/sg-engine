@@ -7,10 +7,10 @@
 #include <object.h>
 #include <Shapes.h>
 
-struct FrameBufferIDs
+struct FrameBuffer
 {
 	unsigned int fbo = 0;
-	unsigned int texture = 0;
+	unsigned int tex = 0;
 	unsigned int rbo = 0;
 };
 
@@ -27,7 +27,7 @@ public:
 
 	void AddObject(const std::string& name);
 
-	FrameBufferIDs fbIDs;
+	FrameBuffer fb;
 
 	Shader baseVertex;
 	Material whiteMaterial;
@@ -35,5 +35,8 @@ public:
 
 private:
 	std::string GenerateUniqueLabel(const std::string& name);
+	void BindFrameBuffer();
+	void UnbindFrameBuffer();
+	void GenerateFrameBuffer();
 };
 

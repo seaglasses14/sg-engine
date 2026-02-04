@@ -13,6 +13,7 @@ public:
 	void StartDrawing();
 	void SetIOConfigFlag(ImGuiConfigFlags_ flag);
 	void Draw();
+	void DrawViewport(GLint texId);
 	void Render();
 	void Shutdown();
 

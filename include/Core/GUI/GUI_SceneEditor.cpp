@@ -12,6 +12,11 @@ void GUI_SceneEditor::Draw()
     GUIW_ObjectDetail(&b_open_ObjectDetail, selectedObject);
 }
 
+void GUI_SceneEditor::DrawViewport(GLint texId)
+{
+    GUIW_Scene(&b_open_Scene, texId);
+}
+
 GUI_SceneEditor::GUI_SceneEditor(Scene* pScene)
 {
     scene = pScene;
@@ -98,8 +103,11 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
 	}
 }
 
-void GUI_SceneEditor::GUIW_Scene(bool* b_open)
+void GUI_SceneEditor::GUIW_Scene(bool* b_open, GLint texId)
 {
-
+    ImGui::Begin("Viewport");
+    ImVec2 pos = ImGui::GetContentRegionAvail();
+    ImGui::Image(texId, pos);
+    ImGui::End();
 }
 

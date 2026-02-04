@@ -142,14 +142,21 @@ int main()
 
 		*/
 
-		gui->Draw();
+		
 
 		processInput(GLFWcontext->GetWindow());
 
-		
 
+		
 		scene->PreRender();
 		scene->FirstPass();
+		gui->Draw();
+		gui->DrawViewport(scene->fb.tex);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		gui->Render();
+		
+
+		
 		
 
 		//**************************** DRAWING *****************************************
@@ -180,14 +187,7 @@ int main()
 
 		sphere.Activate(view, projection);
 		sphere.Draw();
-		*/
-		//Second pass
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// ImGui Rendering
-		
-		gui->Render();
+		*/		
 
 		GLFWcontext->AtEndOfLoop();
 	}
