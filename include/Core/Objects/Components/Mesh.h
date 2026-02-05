@@ -16,7 +16,7 @@ struct Vertex
 struct Texture
 {
 	unsigned int id;
-	TextureType type;
+	std::string type;
 };
 
 enum TextureType

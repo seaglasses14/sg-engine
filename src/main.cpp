@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <string>
+#include "Core/Log.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -35,8 +37,6 @@ Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
 
 int main()
 {
-	
-	
 	GLFW_Context* GLFWcontext = new GLFW_Context();
 	Scene* scene = new Scene();
 	scene->mainCamera = &camera;
