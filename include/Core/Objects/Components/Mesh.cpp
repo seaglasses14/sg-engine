@@ -14,6 +14,8 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 
 void Mesh::Draw(Shader& shader)
 {
+	// TO DO: Remove support to multiple diffuse and specular samplers
+
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
 
@@ -37,6 +39,7 @@ void Mesh::Draw(Shader& shader)
 	// Draw
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
 }
 
 void Mesh::InitMesh()
