@@ -14,7 +14,7 @@ void GUI_SceneEditor::Draw()
 
 void GUI_SceneEditor::DrawViewport(GLint texId)
 {
-    GUIW_Scene(&b_open_Scene, texId);
+    GUIW_Scene(&b_open_Scene, &b_viewportHovered, texId);
 }
 
 GUI_SceneEditor::GUI_SceneEditor(Scene* pScene)
@@ -103,11 +103,12 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
 	}
 }
 
-void GUI_SceneEditor::GUIW_Scene(bool* b_open, GLint texId)
+void GUI_SceneEditor::GUIW_Scene(bool* b_open, bool* b_viewportHovered, GLint texId)
 {
     ImGui::Begin("Viewport");
     ImVec2 pos = ImGui::GetContentRegionAvail();
-    ImGui::Image(texId, pos);
+    ImGui::Image(texId, pos, ImVec2(0, 1), ImVec2(1, 0));
+    *b_viewportHovered = ImGui::IsItemHovered();
     ImGui::End();
 }
 

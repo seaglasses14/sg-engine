@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="include\Core\GUI\GUI_PropertyHelper.h" />
     <ClInclude Include="include\Core\GUI\GUI_SceneEditor.h" />
+    <ClInclude Include="include\Core\Input\InputManager.h" />
     <ClInclude Include="include\Core\Objects\Components\Component.h" />
     <ClInclude Include="include\Core\GUI\GUI.h" />
     <ClInclude Include="include\Core\Objects\Components\Mesh.h" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="include\Core\GUI\GUI_PropertyHelper.cpp" />
     <ClCompile Include="include\Core\GUI\GUI_SceneEditor.cpp" />
+    <ClCompile Include="include\Core\Input\InputManager.cpp" />
     <ClCompile Include="include\Core\Objects\Components\Component.cpp" />
     <ClCompile Include="external_src\imgui.cpp" />
     <ClCompile Include="external_src\imgui_demo.cpp" />

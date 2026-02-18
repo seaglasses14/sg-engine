@@ -108,12 +108,6 @@ int main()
 
 		gui->StartDrawing();
 
-		//Demo Window
-		if(showDemoWindow)
-			ImGui::ShowDemoWindow(&showDemoWindow);
-		static float f = 0.0f;
-		static int counter = 0;
-
 		/*
 		ImGui::Begin("First Window");
 		ImGui::Text("Mammt");
@@ -142,20 +136,25 @@ int main()
 
 		*/
 
-		
+
 
 		processInput(GLFWcontext->GetWindow());
 
 
-		
+		//Demo Window
+		if (showDemoWindow)
+			ImGui::ShowDemoWindow(&showDemoWindow);
+
+
 		scene->PreRender();
+
 		scene->FirstPass();
+
 		gui->Draw();
 		gui->DrawViewport(scene->fb.tex);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		gui->Render();
-		
-
 		
 		
 

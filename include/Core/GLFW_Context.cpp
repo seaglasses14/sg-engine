@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Core/Log.h"
+#include "Core/Input/InputManager.h"
 
 GLFW_Context::GLFW_Context()
 {
@@ -36,6 +37,8 @@ GLFW_Context::GLFW_Context()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetKeyCallback(window, key_callback);
+	
 
 	// Glad Loading
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -66,6 +69,7 @@ bool GLFW_Context::IsRunning()
 // Must be called at the end of the main loop
 void GLFW_Context::AtEndOfLoop()
 {
+	// Rimuovere uno dei due poll events dal main loop
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 	if (GLFW_CONTEXT_STATE > 0)
@@ -101,6 +105,12 @@ void GLFW_Context::scroll_callback(GLFWwindow* pWindow, double xoffset, double y
 	instance->instanced_scroll_callback(pWindow, xoffset, yoffset);
 }
 
+void GLFW_Context::key_callback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
+{
+	GLFW_Context* instance = static_cast<GLFW_Context*>(glfwGetWindowUserPointer(pWindow));
+	instance->instanced_key_callback(pWindow, key, scancode, action, mods);
+}
+
 void GLFW_Context::instanced_framebuffer_size_callback(GLFWwindow* pWindow, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -108,27 +118,41 @@ void GLFW_Context::instanced_framebuffer_size_callback(GLFWwindow* pWindow, int 
 
 void GLFW_Context::instanced_mouse_callback(GLFWwindow* pWindow, double xpos, double ypos)
 {
-	if (firstMouse)
+	InputState IS = InputManager::Get().GetInputState();
+
+	if (IS.firstMouse)
 	{
-		lastMouseX = xpos;
-		lastMouseY = ypos;
-		firstMouse = false;
+		IS.lastMouseX = xpos;
+		IS.lastMouseY = ypos;
+		IS.firstMouse = false;
 	}
-	float xoffset = xpos - lastMouseX;
-	float yoffset = lastMouseY - ypos; // reversed since y range from bottom to top
+	IS.deltaX = xpos - lastMouseX;
+	IS.deltaY = lastMouseY - ypos; // reversed since y range from bottom to top
 	lastMouseX = xpos;
 	lastMouseY = ypos;
 
+	/*
 	if(scene == nullptr)
 		Log::Warning("GLFW_Context::instanced_mouse_callback(): scene is nullptr");
 	else
 		scene->mainCamera->ProcessRotationInput(xoffset, yoffset);
+	*/
 }
 
 void GLFW_Context::instanced_scroll_callback(GLFWwindow* pWindow, double xoffset, double yoffset)
 {
+	InputManager::Get().GetInputState().scrollOffsetY = yoffset;
+	/*
 	if (scene == nullptr)
 		Log::Warning("GLFW_Context::instanced_scroll_callback(): scene is nullptr");
 	else
 		scene->mainCamera->ProcessScrollInput(yoffset);
+	*/
+}
+
+void GLFW_Context::instanced_key_callback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
+{
+	InputState IS = InputManager::Get().GetInputState();
+	if(action == GLFW_PRESS || action == GLFW_RELEASE)
+		IS.keys[key] = action;
 }
