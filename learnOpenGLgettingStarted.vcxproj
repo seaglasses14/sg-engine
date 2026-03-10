@@ -142,12 +142,13 @@
     <ClInclude Include="include\Core\Input\InputManager.h" />
     <ClInclude Include="include\Core\Objects\Components\Component.h" />
     <ClInclude Include="include\Core\GUI\GUI.h" />
-    <ClInclude Include="include\Core\Objects\Components\Mesh.h" />
+    <ClInclude Include="include\Data\Mesh.h" />
     <ClInclude Include="include\Core\Objects\Components\Property.h" />
     <ClInclude Include="include\Core\Objects\GObject.h" />
     <ClInclude Include="include\Core\GLFW_Context.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Core\Log.h" />
+    <ClInclude Include="include\Data\Model.h" />
     <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\object.h" />
     <ClInclude Include="include\shader.h" />
@@ -170,9 +171,10 @@
     <ClCompile Include="external_src\imgui_tables.cpp" />
     <ClCompile Include="external_src\imgui_widgets.cpp" />
     <ClCompile Include="include\Core\GUI\GUI.cpp" />
-    <ClCompile Include="include\Core\Objects\Components\Mesh.cpp" />
+    <ClCompile Include="include\Data\Mesh.cpp" />
     <ClCompile Include="include\Core\Objects\GObject.cpp" />
     <ClCompile Include="include\Core\GLFW_Context.cpp" />
+    <ClCompile Include="include\Data\Model.cpp" />
     <ClCompile Include="include\Scene\Scene.cpp" />
     <ClCompile Include="include\Core\Objects\Light.cpp" />
     <ClCompile Include="src\Material.cpp" />

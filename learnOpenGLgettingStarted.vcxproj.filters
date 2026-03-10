@@ -66,10 +66,13 @@
     <ClInclude Include="include\Core\GUI\GUI_PropertyHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Core\Objects\Components\Mesh.h">
+    <ClInclude Include="include\Data\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Input\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Data\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,10 +155,13 @@
     <ClCompile Include="include\Core\GUI\GUI_PropertyHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Core\Objects\Components\Mesh.cpp">
+    <ClCompile Include="include\Data\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\Core\Input\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Data\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

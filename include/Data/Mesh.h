@@ -25,7 +25,7 @@ enum TextureType
 	SPECULAR
 };
 
-class Mesh : public Component
+class Mesh
 {
 public:
 	std::vector<Vertex> vertices;
