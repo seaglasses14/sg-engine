@@ -18,7 +18,7 @@ struct ShaderParams
 class Shader
 {
 public:
-	Shader(const char* vertexPath, const char* fragmentPath, ShaderType pShderType);
+	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	
 	void use();
 	void set(const std::string& name, bool value) const;
@@ -40,6 +40,7 @@ private:
 	{
 		VERTEX,
 		FRAGMENT,
+		GEOMETRY,
 		PROGRAM
 	};
 

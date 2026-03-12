@@ -6,23 +6,30 @@
 #include <vector>
 #include <shader.h>
 
+constexpr auto TX_TYPE_DIFFUSE = "texture_diffuse";
+constexpr auto TX_TYPE_SPECULAR = "texture_specular";
+constexpr auto TX_TYPE_NORMAL = "texture_normal";
+constexpr auto TX_TYPE_HEIGHT = "texture_height";
+
+
 struct Vertex
 {
 	glm::vec3 Position;
 	glm::vec3 Normal;
 	glm::vec2 TexCoords;
+
+	// Future Support
+	glm::vec3 Tangent;
+	glm::vec3 Bitangent;
+	// int m_BoneIDs[MAX_BONE_INFLUENCE];
+	// float m_Weights[MAX_BONE_INFLUENCE];
 };
 
 struct Texture
 {
 	unsigned int id;
-	std::string type;
-};
-
-enum TextureType
-{
-	DIFFUSE,
-	SPECULAR
+	std::string type; // Use TX_TYPE_ const expressions
+	std::string path;
 };
 
 class Mesh
