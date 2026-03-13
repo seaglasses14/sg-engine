@@ -45,6 +45,8 @@ int main()
 	
 	GUI* gui = new GUI(GLFWcontext->GetWindow(), scene);
 
+	stbi_set_flip_vertically_on_load(true);
+
 	//**************************** DATA CREATION *****************************************
 
 	glm::vec3 lightPos(1.f);
@@ -55,8 +57,8 @@ int main()
 	lightModel = glm::scale(lightModel, glm::vec3(0.5f));
 
 	//Creating Shaders
-	Shader baseVertex("shaders/base.vert", "shaders/base.frag", ShaderType::BaseST);
-	Shader planetSP("shaders/textured.vert", "shaders/textured.frag", ShaderType::TextureST);
+	Shader baseVertex("shaders/base.vert", "shaders/base.frag");
+	Shader planetSP("shaders/textured.vert", "shaders/textured.frag");
 
 	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/matrix.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
 	std::vector<const char*> path2 = { "textures/orange.jpg", "textures/matrix.jpg" };

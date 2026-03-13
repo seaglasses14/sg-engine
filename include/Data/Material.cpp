@@ -2,8 +2,12 @@
 
 #include "Material.h"
 
-Material::Material(Shader* pShader, Texture* pTexture)
-    : shader(pShader), texture(pTexture), color(glm::vec3(0.f, 0.f, 0.f)) { }
+constexpr auto UNIFORM_MODEL = "model";
+constexpr auto UNIFORM_VIEW = "view";
+constexpr auto UNIFORM_PROJECTION = "projection";
+
+Material::Material(Shader* pShader)
+    : shader(pShader) { }
 
 void Material::AddUniform(const std::string& name, UniformValue value)
 {
@@ -20,6 +24,13 @@ bool Material::ChangeUniform(const std::string& name, UniformValue value)
     return false;
 }
 
+void Material::ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection)
+{
+    uniforms[UNIFORM_MODEL] = pModel;
+    uniforms[UNIFORM_VIEW] = pView;
+    uniforms[UNIFORM_PROJECTION] = pProjection;
+}
+
 void Material::ApplyUniforms()
 {
     for (auto& [name, value] : uniforms)
@@ -28,27 +39,9 @@ void Material::ApplyUniforms()
     }
 }
 
-void Material::SetShaderMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection)
-{
-    shader->set("model", pModel);
-    shader->set("view", pView);
-    shader->set("projection", pProjection);
-}
-
-ShaderType Material::GetShaderType()
-{
-    return shader->getShaderType();
-}
-
 void Material::ApplyShader()
 {
     shader->use();
-}
-
-void Material::ApplyTexture()
-{
-    if (!(texture == nullptr))
-        texture->ActivateAll();
 }
 
 void Material::Activate(bool useShader)
@@ -56,6 +49,4 @@ void Material::Activate(bool useShader)
     if (useShader)
         ApplyShader();
     ApplyUniforms();
-    if (texture != nullptr)
-        ApplyTexture();
 }

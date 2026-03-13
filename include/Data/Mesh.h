@@ -4,7 +4,7 @@
 #include "glm/glm.hpp"
 #include <string>
 #include <vector>
-#include <shader.h>
+#include "Data/Shader.h"
 
 constexpr auto TX_TYPE_DIFFUSE = "texture_diffuse";
 constexpr auto TX_TYPE_SPECULAR = "texture_specular";
@@ -27,7 +27,7 @@ struct Vertex
 
 struct Texture
 {
-	unsigned int id;
+	unsigned int id = 0;
 	std::string type; // Use TX_TYPE_ const expressions
 	std::string path;
 };

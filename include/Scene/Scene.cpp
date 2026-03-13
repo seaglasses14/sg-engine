@@ -6,7 +6,7 @@
 
 
 Scene::Scene()
-	: baseVertex("shaders/base.vert", "shaders/base.frag", ShaderType::BaseST), whiteMaterial(Material(&baseVertex, nullptr)), worldGrid(Shapes::genWorldGrid(&whiteMaterial, 50, 20.f))
+	: baseVertex("shaders/base.vert", "shaders/base.frag"), whiteMaterial(Material(&baseVertex, nullptr)), worldGrid(Shapes::genWorldGrid(&whiteMaterial, 50, 20.f))
 {
 	whiteMaterial.AddUniform("Color", glm::vec3(1.f, 1.f, 1.f));
 

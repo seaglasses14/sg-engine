@@ -4,7 +4,7 @@
 
 GObject::GObject(std::string pLabel)
 {
-	Transform* comp = new Transform();
-	components.push_back(comp);
+	transform = new Transform();
+	components.push_back(transform);
 	label = pLabel;
 }

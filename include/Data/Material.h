@@ -1,8 +1,7 @@
 #pragma once
 
-#include "shader.h"
+#include "Data/Shader.h"
 #include "texture.h"
-#include "glm/glm.hpp"
 
 #include <variant>
 #include <string>
@@ -21,19 +20,15 @@ using UniformValue = std::variant<
 class Material
 {
 public:
-	Material(Shader* pShader, Texture* pTexture);
+	Material(Shader* pShader);
 	void AddUniform(const std::string& name, UniformValue value);
 	bool ChangeUniform(const std::string& name, UniformValue value);
-	void SetShaderMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection);
-	void ApplyShader();
+	void ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection);
 	void Activate(bool useShader);
-	ShaderType GetShaderType();
 
 private:
 	Shader* shader;
-	Texture* texture;
-	glm::vec3 color;
 	std::unordered_map<std::string, UniformValue> uniforms;
+	void ApplyShader();
 	void ApplyUniforms();
-	void ApplyTexture();
 };

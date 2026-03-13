@@ -4,7 +4,8 @@
 #include "glad/glad.h"
 #include "Core/Log.h"
 
-Model::Model(char* path)
+Model::Model(char* path, bool gamma)
+	:gammaCorrection(gamma)
 {
 	loadModel(path);
 }
@@ -112,6 +113,8 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 		vertices.push_back(vertex);
 	}
+
+	// Indices
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -121,21 +124,21 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		}
 	}
 
-	// Indices
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-	{
-		Vertex vertex;
-
-		vertices.push_back(vertex);
-	}
-
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TX_TYPE_DIFFUSE);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
 		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TX_TYPE_SPECULAR);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+		std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, TX_TYPE_NORMAL);
+		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+
+		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, TX_TYPE_HEIGHT);
+		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	}
 
 	return Mesh(vertices, indices, textures);
@@ -185,15 +188,33 @@ unsigned int TextureFromFile(const char* path, const std::string& directory, boo
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		GLenum format;
+		GLenum format = GL_RED;
 		if (nrChannels == 1)
 			format = GL_RED;
 		else if (nrChannels == 3)
 			format = GL_RGB;
 		else if (nrChannels == 4)
 			format = GL_RGBA;
+		else
+		{
+			LOG_ERROR(std::string("Texture has unsupported number of channels at path: ") + path);
+		}	
 
-		glBindTexture(GL_TEXTURE_2D, , );
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
 	}
+	else
+	{
+		LOG_ERROR(std::string("Texture failed to load at path: ") + path);
+		stbi_image_free(data);
+	}
+	return textureID;
 }

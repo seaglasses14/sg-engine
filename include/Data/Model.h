@@ -18,12 +18,13 @@ unsigned int TextureFromFile(const char* path, const std::string& directory, boo
 class Model
 {
 public:
-	Model(char* path);
+	Model(char* path, bool gamma = false);
 	void Draw(Shader& shader);
 
 private:
 	std::vector<Mesh> meshes;
 	std::string directory;
+	bool gammaCorrection;
 
 	std::vector<Texture> textures_loaded;
 

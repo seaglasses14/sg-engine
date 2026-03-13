@@ -4,17 +4,6 @@
 #include <glm/glm.hpp>
 #include <string>
 
-enum ShaderType
-{
-	BaseST,
-	TextureST
-};
-
-struct ShaderParams
-{
-	bool a;
-};
-
 class Shader
 {
 public:
@@ -33,8 +22,7 @@ public:
 	void set(const std::string& name, const glm::mat2& mat) const;
 	void set(const std::string& name, const glm::mat3& mat) const;
 	void set(const std::string& name, const glm::mat4& mat) const;
-	ShaderType getShaderType();
-
+	
 private:
 	enum class ShaderErrorCodes
 	{
@@ -45,6 +33,5 @@ private:
 	};
 
 	unsigned int ID;
-	ShaderType shaderType;
 	void checkCompileErrors(unsigned int shader, ShaderErrorCodes code);
 };
