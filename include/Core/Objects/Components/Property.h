@@ -6,7 +6,8 @@ enum PropertyType
 {
 	Int,
 	Float,
-	Vec3f
+	Vec3f,
+	Asset
 };
 
 struct Property

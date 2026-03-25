@@ -13,4 +13,5 @@ public:
 	std::vector<Component*> components;
 	std::string label;
 	GObject(std::string pLabel);
+	void Destroy();
 };

@@ -8,3 +8,11 @@ GObject::GObject(std::string pLabel)
 	components.push_back(transform);
 	label = pLabel;
 }
+
+void GObject::Destroy()
+{
+	for (Component* component : components)
+	{
+
+	}
+}

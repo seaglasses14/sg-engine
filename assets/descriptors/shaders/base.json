@@ -1,0 +1,5 @@
+{
+  "id"
+  "vertex": "vertex/base.vert",
+  "fragment": "fragment/base.frag"
+}
