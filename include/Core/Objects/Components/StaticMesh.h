@@ -10,12 +10,13 @@
 class StaticMesh: public Component, public IRenderable
 {
 public:
-	StaticMesh();
+	StaticMesh(AssetHandle<Material> pMaterialHandle);
 
 	std::vector<Property> GetProperties() override;
 	void Draw() override;
 
 private:
 	Model* model;
-	Material* material;
+	AssetHandle<Material> materialHandle;
+	Material* cached_material = nullptr;
 };

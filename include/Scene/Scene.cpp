@@ -6,13 +6,11 @@
 
 
 Scene::Scene()
-	: baseVertex("shaders/base.vert", "shaders/base.frag"), whiteMaterial(Material(&baseVertex, nullptr)), worldGrid(Shapes::genWorldGrid(&whiteMaterial, 50, 20.f))
 {
-	whiteMaterial.AddUniform("Color", glm::vec3(1.f, 1.f, 1.f));
-
 	GenerateFrameBuffer();
 
 	objects = std::vector<GObject*>();
+	objects.push_back(&ObjectFactory::WorldGrid("WorldGrid", 50, 20.f));
 }
 
 void Scene::PreRender()

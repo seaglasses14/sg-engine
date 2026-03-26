@@ -156,8 +156,9 @@
     <ClInclude Include="include\Data\Material.h" />
     <ClInclude Include="include\object.h" />
     <ClInclude Include="include\Data\Shader.h" />
+    <ClInclude Include="include\Utility\DataTypes.h" />
     <ClInclude Include="include\Utility\JsonParser.h" />
-    <ClInclude Include="include\Utility\Shapes.h" />
+    <ClInclude Include="include\Utility\ObjectFactory.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\Scene\Scene.h" />
     <ClInclude Include="include\Core\Objects\Light.h" />
@@ -185,13 +186,14 @@
     <ClCompile Include="include\Scene\Scene.cpp" />
     <ClCompile Include="include\Core\Objects\Light.cpp" />
     <ClCompile Include="include\Data\Material.cpp" />
+    <ClCompile Include="include\Utility\JsonParser.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="external_src\glad.c" />
     <ClCompile Include="include\Core\Log.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\object.cpp" />
     <ClCompile Include="include\Data\Shader.cpp" />
-    <ClCompile Include="include\Utility\Shapes.cpp" />
+    <ClCompile Include="include\Utility\ObjectFactory.cpp" />
     <ClCompile Include="external_src\stb_image.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="include\Core\Objects\Components\Transform.cpp" />
@@ -212,6 +214,7 @@
     <Image Include="assets\raw\textures\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\descriptors\materials\DefaultMaterial.json" />
     <None Include="assets\descriptors\shaders\base.json" />
     <None Include="assets\raw\shaders\base.frag" />
     <None Include="assets\raw\shaders\base.vert" />

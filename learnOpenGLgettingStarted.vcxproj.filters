@@ -30,7 +30,7 @@
     <ClInclude Include="include\Core\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utility\Shapes.h">
+    <ClInclude Include="include\Utility\ObjectFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Data\Material.h">
@@ -87,6 +87,12 @@
     <ClInclude Include="include\Core\AssetPipeline\AssetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utility\JsonParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utility\DataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp">
@@ -113,7 +119,7 @@
     <ClCompile Include="include\Core\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Utility\Shapes.cpp">
+    <ClCompile Include="include\Utility\ObjectFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\Data\Material.cpp">
@@ -182,54 +188,59 @@
     <ClCompile Include="include\Core\AssetPipeline\AssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\Utility\JsonParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="textures\wall.jpg">
+    <Image Include="assets\raw\textures\8k_earth_clouds.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\awesomeface.png">
+    <Image Include="assets\raw\textures\8k_earth_daymap.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\container.jpg">
+    <Image Include="assets\raw\textures\8k_earth_nightmap.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\earth_2k.jpg">
+    <Image Include="assets\raw\textures\8k_earth_normal_map.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\orange.jpg">
+    <Image Include="assets\raw\textures\8k_earth_normal_map.tif">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_specular_map.tif">
+    <Image Include="assets\raw\textures\8k_earth_specular_map.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_clouds.jpg">
+    <Image Include="assets\raw\textures\8k_earth_specular_map.tif">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_daymap.jpg">
+    <Image Include="assets\raw\textures\earth_2k.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_nightmap.jpg">
+    <Image Include="assets\raw\textures\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_normal_map.tif">
+    <Image Include="assets\raw\textures\container.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_normal_map.png">
+    <Image Include="assets\raw\textures\matrix.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\8k_earth_specular_map.png">
+    <Image Include="assets\raw\textures\orange.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="textures\matrix.jpg">
+    <Image Include="assets\raw\textures\wall.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\textured.vert" />
-    <None Include="shaders\base.vert" />
-    <None Include="shaders\base.frag" />
-    <None Include="shaders\textured.frag" />
-    <None Include="shaders\gouraud.vert" />
-    <None Include="shaders\gouraud.frag" />
+    <None Include="assets\descriptors\shaders\base.json" />
+    <None Include="assets\raw\shaders\base.frag" />
+    <None Include="assets\raw\shaders\base.vert" />
+    <None Include="assets\raw\shaders\gouraud.frag" />
+    <None Include="assets\raw\shaders\gouraud.vert" />
+    <None Include="assets\raw\shaders\textured.frag" />
+    <None Include="assets\raw\shaders\textured.vert" />
+    <None Include="assets\descriptors\materials\DefaultMaterial.json" />
   </ItemGroup>
 </Project>

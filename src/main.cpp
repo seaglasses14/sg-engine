@@ -19,6 +19,7 @@
 #include "Shapes.h"
 #include <Core/GLFW_Context.h>
 #include "Core/GUI/GUI.h"
+#include "Core/AssetPipeline/AssetManager.h"
 
 void processInput(GLFWwindow* window);
 
@@ -49,6 +50,13 @@ int main()
 
 	//**************************** DATA CREATION *****************************************
 
+	// Initializes AssetManager
+	AssetManager::Get();
+	// This generates shaders and materials
+
+	
+
+	/* OLD
 	glm::vec3 lightPos(1.f);
 	glm::vec3 lightColor(1.f);
 
@@ -88,6 +96,7 @@ int main()
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(camera.Fov), static_cast<float>(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 1000.0f);
 
+	*/
 
 	bool showDemoWindow = true;
 	bool showWindow = false;

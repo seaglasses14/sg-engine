@@ -9,7 +9,7 @@ constexpr auto UNIFORM_PROJECTION = "projection";
 Material::Material(AssetHandle<Shader> pShaderHandle)
     : shaderHandle(pShaderHandle)
 {
-    cached_shader = &AssetManager::shaders[shaderHandle.id];
+    cached_shader = AssetManager::Get().GetShader(shaderHandle);
 }
 
 void Material::AddUniform(const std::string& name, UniformValue value)

@@ -1,8 +1,11 @@
 #include "StaticMesh.h"
 
-StaticMesh::StaticMesh()
+StaticMesh::StaticMesh(AssetHandle<Material> pMaterialHandle)
+	: materialHandle(pMaterialHandle)
 {
 	label = "Static Mesh";
+
+	cached_material = AssetManager::Get().GetMaterial(materialHandle);
 }
 
 std::vector<Property> StaticMesh::GetProperties()
@@ -10,7 +13,7 @@ std::vector<Property> StaticMesh::GetProperties()
 	return
 	{
 		{ PropertyType::Asset, model, "Model" },
-		{ PropertyType::Asset, material, "Material" }
+		{ PropertyType::Asset, cached_material, "Material" }
 	};
 }
 

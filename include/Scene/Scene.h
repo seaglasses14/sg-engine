@@ -5,7 +5,7 @@
 #include <shader.h>
 #include <Material.h>
 #include <object.h>
-#include <Shapes.h>
+#include "Utility/ObjectFactory.h"
 
 struct FrameBuffer
 {
@@ -28,10 +28,6 @@ public:
 	void AddObject(const std::string& name);
 
 	FrameBuffer fb;
-
-	Shader baseVertex;
-	Material whiteMaterial;
-	Object worldGrid;
 
 private:
 	std::string GenerateUniqueLabel(const std::string& name);

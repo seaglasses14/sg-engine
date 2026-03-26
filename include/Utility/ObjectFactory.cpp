@@ -1,9 +1,10 @@
-#pragma once
-
-#include "Shapes.h"
+#include "ObjectFactory.h"
 #include "Core/Log.h"
+#include "Core/Objects/GObject.h"
+#include "Core/Objects/Components/StaticMesh.h"
 #include <iostream>
 
+/*
 Object Shapes::genPlane(Material* pMaterial, float size)
 {
 	if (size <= 0)
@@ -80,18 +81,18 @@ Object Shapes::genCube(Material* pMaterial, float edge_length)
 	unsigned int VAO, VBO; // EBO;
 	std::vector<float> data;
 	float halfSize = edge_length / 2;
-	/*
-	data.insert(data.end(), {
-		-halfSize, -halfSize, -halfSize,
-		 halfSize, -halfSize, -halfSize,
-		 halfSize,  halfSize, -halfSize,
-		-halfSize,  halfSize, -halfSize,
-		-halfSize, -halfSize,  halfSize,
-		 halfSize, -halfSize,  halfSize,
-		 halfSize,  halfSize,  halfSize,
-		-halfSize,  halfSize,  halfSize
-	});
-	*/
+	
+	//data.insert(data.end(), {
+	//	-halfSize, -halfSize, -halfSize,
+	//	 halfSize, -halfSize, -halfSize,
+	//	 halfSize,  halfSize, -halfSize,
+	//	-halfSize,  halfSize, -halfSize,
+	//	-halfSize, -halfSize,  halfSize,
+	//	 halfSize, -halfSize,  halfSize,
+	//	 halfSize,  halfSize,  halfSize,
+	//	-halfSize,  halfSize,  halfSize
+	//});
+	
 	data.insert(data.end(), {
 		// positions // normals // texture coords
 		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
@@ -131,17 +132,17 @@ Object Shapes::genCube(Material* pMaterial, float edge_length)
 		-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
 	});
-	/*
-	std::vector<unsigned int> indices;
-	indices.insert(indices.end(), {
-		0, 1, 3, 3, 1, 2,
-		1, 5, 2, 2, 5, 6,
-		5, 4, 6, 6, 4, 7,
-		4, 0, 7, 7, 0, 3,
-		3, 2, 7, 7, 2, 6,
-		4, 5, 0, 0, 5, 1
-	});
-	*/
+	
+	//std::vector<unsigned int> indices;
+	//indices.insert(indices.end(), {
+	//	0, 1, 3, 3, 1, 2,
+	//	1, 5, 2, 2, 5, 6,
+	//	5, 4, 6, 6, 4, 7,
+	//	4, 0, 7, 7, 0, 3,
+	//	3, 2, 7, 7, 2, 6,
+	//	4, 5, 0, 0, 5, 1
+	//});
+	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	//glGenBuffers(1, &EBO);
@@ -258,4 +259,16 @@ Object Shapes::genUVSphere(Material* pMaterial, int stacks, int slices, float ra
 	glEnableVertexAttribArray(2);
 
 	return Object(VAO, VBO, EBO, pMaterial, true, true, indices.size());
+}
+*/
+
+GObject ObjectFactory::WorldGrid(const std::string& label, unsigned int size, float stride)
+{
+	GObject obj(label);
+
+	AssetHandle<Material> handle;
+	handle.id = "DefaultMaterial";
+	StaticMesh mesh(handle);
+	
+	return obj;
 }

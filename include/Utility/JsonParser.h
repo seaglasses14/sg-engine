@@ -2,53 +2,45 @@
 
 #include "json/json.hpp"
 #include <string>
-#include <iostream>
-#include <fstream>
+#include <vector>
 #include <filesystem>
-#include "Core/Log.h"
+#include "Data/Material.h"
 
 namespace fs = std::filesystem;
 
-static class JsonPaser
+static class JsonParser
 {
 public:
-	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path)
-	{
-		ShaderDescriptor descriptor;
-
-		std::ifstream file;
-		file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		try
-		{
-			file.open(path);
-
-			nlohmann::json json;
-			file >> json;
-
-			file.close();
-
-			descriptor.vertex = json.value("vertex", "");
-			descriptor.fragment = json.value("fragment", "");
-			descriptor.fragment = json.value("geometry", "");
-
-			if (descriptor.vertex == "" || descriptor.fragment == "")
-			{
-				LOG_ERROR("JsonPasers::Shader descriptor must have defined vertex and fragment paths");
-			}
-		}
-		catch (std::ifstream::failure e)
-		{
-			LOG_ERROR("JsonPasers::Error when reading shader descriptor file");
-		}
-		
-		return descriptor;
-	}
+	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path);
+	static MaterialDescriptor LoadMaterialDescriptor(const fs::path& path);
+	
+	static UniformValue ParseUniform(const nlohmann::json& u);
 };
 
+// Could change to struct
 class ShaderDescriptor
 {
 public:
+	bool isValid;
+
+	std::string assetID;
 	std::string vertex;
 	std::string fragment;
 	std::string geometry;
+};
+
+class MaterialDescriptor
+{
+public:
+	bool isValid;
+
+	std::string assetID;
+	std::string shaderHandle;
+	std::vector<UniformStruct> uniforms;
+};
+
+struct UniformStruct
+{
+	std::string name;
+	UniformValue value;
 };

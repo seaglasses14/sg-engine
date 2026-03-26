@@ -18,15 +18,26 @@ class AssetManager
 {
 public:
 	std::string shader_desc_directory = "assets/descriptors/shaders/";
+	std::string material_desc_directory = "assets/descriptors/materials/";
 	std::string shader_raw_directory = "assets/raw/shaders/";
 
-	AssetManager();
-	bool Init();
+	static AssetManager& Get();
 
 	Shader* GetShader(const AssetHandle<Shader>& handle);
+	Material* GetMaterial(const AssetHandle<Material>& handle);
+
+	AssetManager(const AssetManager&) = delete;
+	AssetManager& operator=(const AssetManager&) = delete;
 
 protected:
 	bool PrecompileShaders();
 	bool PrecompileShaders(std::string directory);
+	bool GenerateMaterials();
+	bool GenerateMaterials(std::string directory);
 	std::unordered_map<AssetID, Shader> shaders;
+	std::unordered_map<AssetID, Material> materials;
+
+private:
+	AssetManager();
+	void Init();
 };

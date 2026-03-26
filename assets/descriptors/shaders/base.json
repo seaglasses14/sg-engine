@@ -1,5 +1,5 @@
 {
-  "id"
+  "asset_handle": "BaseShader",
   "vertex": "vertex/base.vert",
   "fragment": "fragment/base.frag"
 }
