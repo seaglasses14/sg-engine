@@ -11,8 +11,7 @@ struct FrameBuffer
 {
 	unsigned int fbo = 0;
 	unsigned int tex = 0;
-	unsigned int rbo = 0;
-};
+	unsigned int rbo = 0;};
 
 class Scene
 {

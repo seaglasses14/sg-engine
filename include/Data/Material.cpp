@@ -43,7 +43,9 @@ void Material::ApplyUniforms()
 {
     for (auto& [name, value] : uniforms)
     {
-        std::visit([&](auto&& v) { cached_shader->set(name, v); }, value);
+        std::visit([&](auto&& v)
+            {cached_shader->set(name, v); 
+            }, value);
     }
 }
 

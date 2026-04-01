@@ -3,17 +3,24 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-#include "Mesh.h"
+#include "Data/Mesh.h"
+#include "Data/Material.h"
 
 // Assimp may be slow when using the debug version of the IDE
 // We can try using the release version if the loading times are slow
-// For a release version, Assimp requires another build
+// For a release version, Assimp requires  another build
 
 // TO DO:
 // - Add support to non texture material when importing
 
 
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
+
+struct ModelEntry
+{
+	Mesh mesh;
+	Material material;
+};
 
 class Model
 {
@@ -22,7 +29,7 @@ public:
 	void Draw(Shader& shader);
 
 private:
-	std::vector<Mesh> meshes;
+	std::vector<ModelEntry> entries;
 	std::string directory;
 	bool gammaCorrection;
 

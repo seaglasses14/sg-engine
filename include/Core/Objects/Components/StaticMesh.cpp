@@ -1,11 +1,20 @@
 #include "StaticMesh.h"
 
-StaticMesh::StaticMesh(AssetHandle<Material> pMaterialHandle)
-	: materialHandle(pMaterialHandle)
+StaticMesh::StaticMesh(AssetHandle<Model> pModelHandle)
+	: modelHandle(pModelHandle)
 {
 	label = "Static Mesh";
 
-	cached_material = AssetManager::Get().GetMaterial(materialHandle);
+	Init();
+}
+
+void StaticMesh::Init()
+{
+	cached_model = AssetManager::Get().GetModel(modelHandle);
+	
+	materialInstances.clear();
+
+	for()
 }
 
 std::vector<Property> StaticMesh::GetProperties()
