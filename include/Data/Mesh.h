@@ -11,7 +11,6 @@ constexpr auto TX_TYPE_SPECULAR = "texture_specular";
 constexpr auto TX_TYPE_NORMAL = "texture_normal";
 constexpr auto TX_TYPE_HEIGHT = "texture_height";
 
-
 struct Vertex
 {
 	glm::vec3 Position;
@@ -37,9 +36,12 @@ class Mesh
 public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-	void Draw(Shader& shader);
+	unsigned int materialSlot;
+
+	//std::vector<Texture> textures;
+
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, int materialSlot);
+	void Draw();
 
 private:
 	unsigned int VAO, VBO, EBO;

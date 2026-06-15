@@ -14,9 +14,7 @@
 
 #include "Scene/Scene.h"
 #include "object.h"
-#include "shader.h"
 #include "camera.h"
-#include "Shapes.h"
 #include <Core/GLFW_Context.h>
 #include "Core/GUI/GUI.h"
 #include "Core/AssetPipeline/AssetManager.h"

@@ -242,5 +242,6 @@
     <None Include="assets\raw\shaders\textured.frag" />
     <None Include="assets\raw\shaders\textured.vert" />
     <None Include="assets\descriptors\materials\DefaultMaterial.json" />
+    <None Include="assets\descriptors\basic_shapes\DefaultGrid.json" />
   </ItemGroup>
 </Project>

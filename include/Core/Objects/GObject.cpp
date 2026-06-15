@@ -13,6 +13,6 @@ void GObject::Destroy()
 {
 	for (Component* component : components)
 	{
-
+		component->Destroy();
 	}
 }

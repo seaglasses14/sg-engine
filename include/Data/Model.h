@@ -13,30 +13,34 @@
 // TO DO:
 // - Add support to non texture material when importing
 
-
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
 
+/*
 struct ModelEntry
 {
 	Mesh mesh;
-	Material material;
+	unsigned int materialSlot = 0;
 };
+*/
 
 class Model
 {
 public:
 	Model(char* path, bool gamma = false);
-	void Draw(Shader& shader);
+	void Draw();
+
+	std::unordered_map<unsigned int, AssetHandle<Material>> materials;
 
 private:
-	std::vector<ModelEntry> entries;
+	//std::vector<ModelEntry> entries;
+	std::vector<Mesh> meshes;
 	std::string directory;
 	bool gammaCorrection;
 
-	std::vector<Texture> textures_loaded;
+	//std::vector<Texture> textures_loaded;
 
 	void loadModel(std::string path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+	//std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 };

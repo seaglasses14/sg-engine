@@ -11,17 +11,21 @@
 class StaticMesh: public Component, public IRenderable
 {
 public:
+	StaticMesh();
 	StaticMesh(AssetHandle<Model> pModelHandle);
 
 	std::vector<Property> GetProperties() override;
+
+	bool SetModelHandle(AssetHandle<Model> pModelHandle);
+	bool SetMaterialAtSlot(AssetHandle<Material> pMaterialHandle, unsigned int slot = 0);
 	void Draw() override;
 
 private:
 	AssetHandle<Model> modelHandle;
 	Model* cached_model = nullptr;
 
-	std::optional<AssetHandle<Material>> overrideMaterial;
-	std::vector<Material> materialInstances;
+	//std::optional<AssetHandle<Material>> overrideMaterial;
+	//std::vector<Material> materialInstances;
 
 	void Init();
 };

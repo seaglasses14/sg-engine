@@ -24,6 +24,8 @@ void AssetManager::Init()
         LOG_ERROR("AssetManager::Errors when precompiling shaders");
     if (GenerateMaterials())
         LOG_ERROR("AssetManager::Errors when generating materials");
+    if (GenerateBaseModels())
+        LOG_ERROR("AssetManager::Errors when generating models");
 }
 
 Shader* AssetManager::GetShader(const AssetHandle<Shader>& handle)
@@ -40,6 +42,15 @@ Material* AssetManager::GetMaterial(const AssetHandle<Material>& handle)
     if (materials.find(handle.id) != materials.end())
     {
         return &materials.at(handle.id);
+    }
+    return nullptr;
+}
+
+Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
+{
+    if (models.find(handle.id) != models.end())
+    {
+        return &models.at(handle.id);
     }
     return nullptr;
 }
@@ -107,6 +118,46 @@ bool AssetManager::GenerateMaterials(std::string directory)
                         material.AddUniform(uniform.name, uniform.value);
                     }
                     materials.insert({ desc.assetID, material });
+                }
+            }
+        }
+    }
+    return true;
+}
+
+bool AssetManager::GenerateBaseModels()
+{
+    return PrecompileShaders(model_desc_directory);
+}
+
+bool AssetManager::GenerateBaseModels(std::string directory)
+{
+    for (const auto& entry : fs::directory_iterator(directory))
+    {
+        fs::path path = entry.path();
+        if (entry.is_directory())
+        {
+            GenerateBaseModels(path.string());
+        }
+        if (path.has_extension())
+        {
+            if (path.extension().string() == "json")
+            {
+                ModelDescriptor desc = JsonParser::LoadModelDescriptor(entry.path());
+
+                if (desc.isValid)
+                {
+                    AssetHandle<Shader> shader_handle;
+                    shader_handle.id = desc.shaderHandle;
+                    Material material(shader_handle);
+                    for (UniformStruct uniform : desc.uniforms)
+                    {
+                        material.AddUniform(uniform.name, uniform.value);
+                    }
+                    Model model()
+
+                    materials.insert({ desc.assetID, material });
+                    models.insert({ desc.assetID, model });
                 }
             }
         }

@@ -13,7 +13,8 @@ static class JsonParser
 public:
 	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path);
 	static MaterialDescriptor LoadMaterialDescriptor(const fs::path& path);
-	
+	static ModelDescriptor LoadModelDescriptor(const fs::path& path);
+
 	static UniformValue ParseUniform(const nlohmann::json& u);
 };
 
@@ -43,4 +44,20 @@ struct UniformStruct
 {
 	std::string name;
 	UniformValue value;
+};
+
+class ModelDescriptor
+{
+public:
+	bool isValid;
+
+	std::string assetID;
+	std::string mesh;
+	std::vector<ModelMaterialStruct> materials;
+};
+
+struct ModelMaterialStruct
+{
+	unsigned int slot;
+	std::string materialHandle;
 };

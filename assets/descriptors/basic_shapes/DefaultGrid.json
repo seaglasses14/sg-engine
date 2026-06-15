@@ -1,0 +1,10 @@
+{
+  "asset_id": "DefaultGrid",
+  "mesh": "Grid",
+  "materials": [
+    {
+      "slot": 0,
+      "material_handle": "DefaultShader"
+    }
+  ]
+}

@@ -214,6 +214,7 @@
     <Image Include="assets\raw\textures\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\descriptors\basic_shapes\DefaultGrid.json" />
     <None Include="assets\descriptors\materials\DefaultMaterial.json" />
     <None Include="assets\descriptors\shaders\base.json" />
     <None Include="assets\raw\shaders\base.frag" />

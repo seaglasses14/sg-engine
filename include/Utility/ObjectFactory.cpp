@@ -266,9 +266,14 @@ GObject ObjectFactory::WorldGrid(const std::string& label, unsigned int size, fl
 {
 	GObject obj(label);
 
-	AssetHandle<Material> handle;
-	handle.id = "DefaultMaterial";
-	StaticMesh mesh(handle);
-	
+	AssetHandle<Material> materialHandle;
+	AssetHandle<Model> modelHandle;
+	materialHandle.id = "DefaultMaterial";
+	modelHandle.id = "DefaultGrid";
+	StaticMesh* sMesh = new StaticMesh();
+	sMesh->SetModelHandle(modelHandle);
+	sMesh->SetMaterialAtSlot(materialHandle);
+	obj.components.push_back(sMesh);
+
 	return obj;
 }

@@ -9,11 +9,13 @@ Model::Model(char* path, bool gamma)
 {
 	loadModel(path);
 }
-void Model::Draw(Shader& shader)
+void Model::Draw()
 {
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
-		meshes[i].Draw(shader);
+		AssetHandle<Material>& material = materials[meshes[i].materialSlot];
+		AssetManager::Get().GetMaterial(material)->Activate();
+		meshes[i].Draw();
 	}
 }
 
@@ -42,7 +44,9 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+		Mesh newMesh = processMesh(mesh, scene);
+		meshes.push_back(newMesh);
+		materials.insert({ newMesh.materialSlot, AssetHandle<Material>{} });
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
@@ -123,8 +127,13 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 			indices.push_back(face.mIndices[j]);
 		}
 	}
+	
+	// MaterialSlot
+	int materialSlot = 0;
+	if (mesh->mMaterialIndex >= 0)
+		materialSlot = mesh->mMaterialIndex;
 
-	// Textures
+	/*
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -141,10 +150,10 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, TX_TYPE_HEIGHT);
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	}
-
-	return Mesh(vertices, indices, textures);
+	*/
+	return Mesh(vertices, indices, materialSlot);
 }
-
+/*
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
 	std::vector<Texture> textures;
@@ -175,7 +184,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
 
 	return textures;
 }
-
+*/
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {
 	std::string filename = std::string(path);

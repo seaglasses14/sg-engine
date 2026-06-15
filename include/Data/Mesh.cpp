@@ -2,17 +2,18 @@
 
 #include "glad/glad.h"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, int materialSlot)
 {
 	this->vertices = vertices;
 	this->indices = indices;
-	this->textures = textures;
+	this->materialSlot = materialSlot;
 
 	InitMesh();
 }
 
-void Mesh::Draw(Shader& shader)
+void Mesh::Draw()
 {
+	/*
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
 	// Future Support
@@ -39,7 +40,7 @@ void Mesh::Draw(Shader& shader)
 	}
 	// Reset Active Texture
 	glActiveTexture(GL_TEXTURE0);
-
+	*/
 	// Draw
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

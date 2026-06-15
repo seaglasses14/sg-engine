@@ -84,6 +84,51 @@ MaterialDescriptor JsonParser::LoadMaterialDescriptor(const fs::path& path)
 	return descriptor;
 }
 
+ModelDescriptor JsonParser::LoadModelDescriptor(const fs::path& path)
+{
+	ModelDescriptor descriptor;
+
+	std::ifstream file;
+	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	try
+	{
+		file.open(path);
+
+		nlohmann::json json;
+		file >> json;
+
+		file.close();
+
+		descriptor.isValid = true;
+		descriptor.assetID = json.value("assetID", "");
+		descriptor.mesh = json.value("mesh", "");
+
+		if (json.contains("materials"))
+		{
+			for (auto& m : json["materials"])
+			{
+				ModelMaterialStruct material;
+				material.materialHandle = m.at("material_handle").get<std::string>();
+				material.slot =  m.at("slot").get<unsigned int>();
+				descriptor.materials.push_back(material);
+			}
+		}
+
+		if (descriptor.assetID == "", descriptor.mesh == "")
+		{
+			LOG_ERROR("JsonPasers::Material descriptor must have defined asset id, shader_handle");
+			descriptor.isValid = false;
+		}
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG_ERROR("JsonPasers::Error when reading material descriptor file");
+		descriptor.isValid = false;
+	}
+
+	return descriptor;
+}
+
 UniformValue JsonParser::ParseUniform(const nlohmann::json& u)
 {
 	std::string type = u.at("type").get<std::string>();
