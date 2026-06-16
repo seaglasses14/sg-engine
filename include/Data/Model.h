@@ -5,6 +5,7 @@
 #include "assimp/postprocess.h"
 #include "Data/Mesh.h"
 #include "Data/Material.h"
+#include <unordered_map>
 
 // Assimp may be slow when using the debug version of the IDE
 // We can try using the release version if the loading times are slow
@@ -15,25 +16,18 @@
 
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
 
-/*
-struct ModelEntry
-{
-	Mesh mesh;
-	unsigned int materialSlot = 0;
-};
-*/
-
 class Model
 {
 public:
-	Model(char* path, bool gamma = false);
-	void Draw();
+	Model(const char* path, bool gamma = false);
+	void Draw(unsigned int slot = 0);
 
-	std::unordered_map<unsigned int, AssetHandle<Material>> materials;
+	std::vector<unsigned int> usedMaterialSlots;
 
 private:
 	//std::vector<ModelEntry> entries;
-	std::vector<Mesh> meshes;
+	std::unordered_map<unsigned int, std::vector<Mesh>> meshesMap;
+	//std::vector<Mesh> meshes;
 	std::string directory;
 	bool gammaCorrection;
 

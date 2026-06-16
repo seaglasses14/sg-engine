@@ -5,7 +5,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+# *.obj
 
 # Precompiled Headers
 *.gch
@@ -35,3 +35,6 @@
 learnOpe.bf316062/
 x64/
 **/.vs/
+
+# ide folders
+.idea/

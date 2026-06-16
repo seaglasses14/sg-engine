@@ -9,7 +9,7 @@ class Shader
 public:
 	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	
-	void use();
+	void use() const;
 	void set(const std::string& name, bool value) const;
 	void set(const std::string& name, int value) const;
 	void set(const std::string& name, float value) const;

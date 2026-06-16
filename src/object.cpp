@@ -18,8 +18,8 @@ void Object::Activate(glm::mat4& pView, glm::mat4& pProjection, bool useShader)
 {
 	if (!(material == nullptr))
 	{
+		material->ChangeUniformMVP(model, pView, pProjection);
 		material->Activate(useShader);
-		material->SetShaderMVP(model, pView, pProjection);
 	}
 
 	glBindVertexArray(VAO);
@@ -49,9 +49,4 @@ void Object::Clean()
 	glDeleteBuffers(1, &EBO);
 	//glDeleteProgram(shader.ID);
 	//glDeleteTextures(2, texture.IDs);
-}
-
-ShaderType Object::GetShaderType()
-{
-	return material->GetShaderType();
 }

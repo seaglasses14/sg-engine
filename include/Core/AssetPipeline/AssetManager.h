@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <unordered_map>
 
@@ -11,7 +12,7 @@ using AssetID = std::string;
 template<typename T>
 struct AssetHandle
 {
-	AssetID id = "";
+	AssetID id; //= ""
 };
 
 class AssetManager
@@ -19,10 +20,12 @@ class AssetManager
 public:
 	std::string shader_desc_directory = "assets/descriptors/shaders/";
 	std::string material_desc_directory = "assets/descriptors/materials/";
-	std::string model_desc_directory = "assets/descriptors/basic_shapes/";
+	std::string model_raw_directory = "assets/raw/models/";
 	std::string shader_raw_directory = "assets/raw/shaders/";
 
 	static AssetManager& Get();
+
+	void Init();
 
 	Shader* GetShader(const AssetHandle<Shader>& handle);
 	Material* GetMaterial(const AssetHandle<Material>& handle);
@@ -44,5 +47,4 @@ protected:
 
 private:
 	AssetManager();
-	void Init();
 };

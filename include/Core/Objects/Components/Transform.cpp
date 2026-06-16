@@ -10,43 +10,54 @@ Transform::Transform()
 
 	label = "Transform";
 
-	UpdateModel();
+	needsUpdate = true;
 }
 
 void Transform::SetLocation(glm::vec3& pLocation)
 {
 	location = pLocation;
-	UpdateModel();
+	needsUpdate = true;
 }
 
 void Transform::SetRotation(glm::vec3& pRotation)
 {
 	rotation = pRotation;
-	UpdateModel();
+	needsUpdate = true;
 }
 
 void Transform::SetScale(glm::vec3& pScale)
 {
 	scale = pScale;
-	UpdateModel();
+	needsUpdate = true;
+}
+
+glm::mat4& Transform::GetModelMatrix()
+{
+	if (needsUpdate)
+	{
+		UpdateModel();
+		needsUpdate = false;
+	}
+	return model;
 }
 
 std::vector<Property> Transform::GetProperties()
 {
 	return
 	{
-		{ PropertyType::Vec3f, &location, "Location" },
-		{ PropertyType::Vec3f, &rotation, "Rotation" },
-		{ PropertyType::Vec3f, &scale, "Scale" }
+		{ PropertyType::Vec3f, &location, "Location",  [this](){ needsUpdate = true; }},
+		{ PropertyType::Vec3f, &rotation, "Rotation", [this](){ needsUpdate = true; }},
+		{ PropertyType::Vec3f, &scale, "Scale", [this](){ needsUpdate = true; } }
 	};
 }
 
 void Transform::UpdateModel()
 {
 	glm::mat4 newModel = glm::mat4(1.f);
-	newModel = glm::scale(newModel, scale);
+	newModel = glm::translate(newModel, location);
 	newModel = glm::rotate(newModel, rotation.x, { 1.f, 0.f, 0.f });
 	newModel = glm::rotate(newModel, rotation.y, { 0.f, 1.f, 0.f });
 	newModel = glm::rotate(newModel, rotation.z, { 0.f, 0.f, 1.f });
-	model = glm::translate(newModel, location);
+	newModel = glm::scale(newModel, scale);
+	model = newModel;
 }

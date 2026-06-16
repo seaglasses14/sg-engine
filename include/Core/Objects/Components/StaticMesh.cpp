@@ -1,15 +1,16 @@
 #include "StaticMesh.h"
+#include "Core/Objects/Gobject.h"
+#include "Core/Objects/Components/Transform.h"
 
 StaticMesh::StaticMesh()
 {
-	label = "Static Mesh";
+	label = "StaticMesh";
 }
 
 StaticMesh::StaticMesh(AssetHandle<Model> pModelHandle)
 	: modelHandle(pModelHandle)
 {
-	label = "Static Mesh";
-
+	label = "StaticMesh";
 	Init();
 }
 
@@ -24,7 +25,7 @@ std::vector<Property> StaticMesh::GetProperties()
 {
 	return
 	{
-		{ PropertyType::Asset, cached_model, "Model" }
+		{ PropertyType::Asset, cached_model, "Model", [](){} }
 	};
 }
 
@@ -35,21 +36,32 @@ bool StaticMesh::SetModelHandle(AssetHandle<Model> pModelHandle)
 
 	if(cached_model == nullptr)
 		return false;
+
+	materials.clear();
+	for (unsigned int& value : cached_model->usedMaterialSlots)
+	{
+		materials.insert({ value, AssetHandle<Material>("") });
+	}
 	return true;
 }
 
 bool StaticMesh::SetMaterialAtSlot(AssetHandle<Material> pMaterialHandle, unsigned int slot)
 {
-	if (cached_model == nullptr)
+	if (!materials.contains(slot))
 		return false;
-	cached_model->materials[slot] = pMaterialHandle;
+	materials[slot] = pMaterialHandle;
 	return true;
 }
 
-void StaticMesh::Draw()
+void StaticMesh::Draw(RenderContext context)
 {
-	if(cached_model != nullptr)
-		cached_model->Draw();
-	//material->Activate();
-	//model->Draw(material->GetShader());
+	if (cached_model == nullptr)
+		return;
+	for (const auto& [key, value] : materials)
+	{
+		Material* mat = AssetManager::Get().GetMaterial(value);
+		mat->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection);
+		mat->Activate();
+		cached_model->Draw(key);
+	}
 }

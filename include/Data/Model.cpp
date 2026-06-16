@@ -4,18 +4,24 @@
 #include "glad/glad.h"
 #include "Core/Log.h"
 
-Model::Model(char* path, bool gamma)
+Model::Model(const char* path, bool gamma)
 	:gammaCorrection(gamma)
 {
 	loadModel(path);
-}
-void Model::Draw()
-{
-	for (unsigned int i = 0; i < meshes.size(); i++)
+
+	for (auto& [key, value] : meshesMap)
 	{
-		AssetHandle<Material>& material = materials[meshes[i].materialSlot];
-		AssetManager::Get().GetMaterial(material)->Activate();
-		meshes[i].Draw();
+		usedMaterialSlots.push_back(key);
+	}
+}
+void Model::Draw(unsigned int slot)
+{
+	if (!meshesMap.contains(slot))
+		return;
+	std::vector<Mesh>& meshes = meshesMap[slot];
+	for (auto& mesh : meshes)
+	{
+		mesh.Draw();
 	}
 }
 
@@ -45,8 +51,12 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		Mesh newMesh = processMesh(mesh, scene);
-		meshes.push_back(newMesh);
-		materials.insert({ newMesh.materialSlot, AssetHandle<Material>{} });
+
+		if (!meshesMap.contains(newMesh.materialSlot))
+		{
+			meshesMap[newMesh.materialSlot] = std::vector<Mesh>();
+		}
+		meshesMap[newMesh.materialSlot].push_back(newMesh);
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
@@ -128,8 +138,8 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		}
 	}
 	
+	unsigned int materialSlot = 0;
 	// MaterialSlot
-	int materialSlot = 0;
 	if (mesh->mMaterialIndex >= 0)
 		materialSlot = mesh->mMaterialIndex;
 

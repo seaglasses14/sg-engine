@@ -40,7 +40,7 @@ public:
 
 	//std::vector<Texture> textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, int materialSlot);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialSlot = 0);
 	void Draw();
 
 private:

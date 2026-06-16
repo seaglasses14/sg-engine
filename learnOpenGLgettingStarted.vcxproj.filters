@@ -235,13 +235,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\descriptors\shaders\base.json" />
-    <None Include="assets\raw\shaders\base.frag" />
-    <None Include="assets\raw\shaders\base.vert" />
+    <None Include="assets\raw\shaders\fragment\base.frag" />
+    <None Include="assets\raw\shaders\vertex\base.vert" />
     <None Include="assets\raw\shaders\gouraud.frag" />
     <None Include="assets\raw\shaders\gouraud.vert" />
     <None Include="assets\raw\shaders\textured.frag" />
     <None Include="assets\raw\shaders\textured.vert" />
     <None Include="assets\descriptors\materials\DefaultMaterial.json" />
     <None Include="assets\descriptors\basic_shapes\DefaultGrid.json" />
+    <None Include="assets\raw\models\DefaultCube.obj" />
   </ItemGroup>
 </Project>

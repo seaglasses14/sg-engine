@@ -2,7 +2,7 @@
 
 #include "glad/glad.h"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, int materialSlot)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialSlot)
 {
 	this->vertices = vertices;
 	this->indices = indices;

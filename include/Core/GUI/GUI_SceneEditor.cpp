@@ -1,7 +1,6 @@
 #include "Core/GUI/GUI_SceneEditor.h"
 #include "imgui.h"
 #include "Core/Objects/Components/Component.h"
-#include "glm/glm.hpp"
 #include "Core/Log.h"
 #include <string>
 #include "Core/GUI/GUI_PropertyHelper.h"
@@ -10,6 +9,7 @@ void GUI_SceneEditor::Draw()
 {
     GUIW_SceneViewer(&b_open_SceneViewer);
     GUIW_ObjectDetail(&b_open_ObjectDetail, selectedObject);
+    ImGui::Begin("Viewport");
 }
 
 void GUI_SceneEditor::DrawViewport(GLint texId)
@@ -105,9 +105,8 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
 
 void GUI_SceneEditor::GUIW_Scene(bool* b_open, bool* b_viewportHovered, GLint texId)
 {
-    ImGui::Begin("Viewport");
-    ImVec2 pos = ImGui::GetContentRegionAvail();
-    ImGui::Image(texId, pos, ImVec2(0, 1), ImVec2(1, 0));
+    //ImGui::Begin("Viewport");
+    ImGui::Image(texId, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
     *b_viewportHovered = ImGui::IsItemHovered();
     ImGui::End();
 }

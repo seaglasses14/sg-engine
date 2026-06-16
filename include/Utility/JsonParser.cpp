@@ -19,12 +19,12 @@ ShaderDescriptor JsonParser::LoadShaderDescriptor(const fs::path& path)
 		file.close();
 
 		descriptor.isValid = true;
-		descriptor.assetID = json.value("assetID", "");
+		descriptor.assetID = json.value("asset_id", "");
 		descriptor.vertex = json.value("vertex", "");
 		descriptor.fragment = json.value("fragment", "");
 		descriptor.geometry = json.value("geometry", "");
 
-		if (descriptor.assetID == "", descriptor.vertex == "" || descriptor.fragment == "")
+		if (descriptor.assetID == "" || descriptor.vertex == "" || descriptor.fragment == "")
 		{
 			LOG_ERROR("JsonPasers::Shader descriptor must have defined asset id, vertex and fragment paths");
 			descriptor.isValid = false;
@@ -55,7 +55,7 @@ MaterialDescriptor JsonParser::LoadMaterialDescriptor(const fs::path& path)
 		file.close();
 
 		descriptor.isValid = true;
-		descriptor.assetID = json.value("assetID", "");
+		descriptor.assetID = json.value("asset_id", "");
 		descriptor.shaderHandle = json.value("shader_handle", "");
 
 		if (json.contains("uniforms"))
@@ -69,7 +69,7 @@ MaterialDescriptor JsonParser::LoadMaterialDescriptor(const fs::path& path)
 			}
 		}
 
-		if (descriptor.assetID == "", descriptor.shaderHandle == "")
+		if (descriptor.assetID == ""|| descriptor.shaderHandle == "")
 		{
 			LOG_ERROR("JsonPasers::Material descriptor must have defined asset id, shader_handle");
 			descriptor.isValid = false;
@@ -100,7 +100,7 @@ ModelDescriptor JsonParser::LoadModelDescriptor(const fs::path& path)
 		file.close();
 
 		descriptor.isValid = true;
-		descriptor.assetID = json.value("assetID", "");
+		descriptor.assetID = json.value("asset_id", "");
 		descriptor.mesh = json.value("mesh", "");
 
 		if (json.contains("materials"))
@@ -114,7 +114,7 @@ ModelDescriptor JsonParser::LoadModelDescriptor(const fs::path& path)
 			}
 		}
 
-		if (descriptor.assetID == "", descriptor.mesh == "")
+		if (descriptor.assetID == "" || descriptor.mesh == "")
 		{
 			LOG_ERROR("JsonPasers::Material descriptor must have defined asset id, shader_handle");
 			descriptor.isValid = false;

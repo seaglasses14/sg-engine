@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Data/Shader.h"
+#include "Utility/DataTypes.h"
 #include "Core/AssetPipeline/AssetManager.h"
 
 #include <variant>

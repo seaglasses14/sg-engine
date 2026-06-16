@@ -4,25 +4,29 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+
 #include "Data/Material.h"
 
 namespace fs = std::filesystem;
 
-static class JsonParser
+struct UniformStruct
 {
-public:
-	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path);
-	static MaterialDescriptor LoadMaterialDescriptor(const fs::path& path);
-	static ModelDescriptor LoadModelDescriptor(const fs::path& path);
+	std::string name;
+	UniformValue value;
+};
 
-	static UniformValue ParseUniform(const nlohmann::json& u);
+struct ModelMaterialStruct
+{
+	unsigned int slot = 0;
+	std::string materialHandle;
 };
 
 // Could change to struct
+
 class ShaderDescriptor
 {
 public:
-	bool isValid;
+	bool isValid = true;
 
 	std::string assetID;
 	std::string vertex;
@@ -33,31 +37,29 @@ public:
 class MaterialDescriptor
 {
 public:
-	bool isValid;
+	bool isValid = true;
 
 	std::string assetID;
 	std::string shaderHandle;
 	std::vector<UniformStruct> uniforms;
 };
 
-struct UniformStruct
-{
-	std::string name;
-	UniformValue value;
-};
-
 class ModelDescriptor
 {
 public:
-	bool isValid;
+	bool isValid = true;
 
 	std::string assetID;
 	std::string mesh;
 	std::vector<ModelMaterialStruct> materials;
 };
 
-struct ModelMaterialStruct
+class JsonParser
 {
-	unsigned int slot;
-	std::string materialHandle;
+public:
+	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path);
+	static MaterialDescriptor LoadMaterialDescriptor(const fs::path& path);
+	static ModelDescriptor LoadModelDescriptor(const fs::path& path);
+
+	static UniformValue ParseUniform(const nlohmann::json& u);
 };

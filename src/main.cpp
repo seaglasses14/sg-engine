@@ -23,8 +23,8 @@ void processInput(GLFWwindow* window);
 
 //Globals
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 800;
+unsigned int SCR_WIDTH = 800;
+unsigned int SCR_HEIGHT = 800;
 const bool WIREFRAME_MODE = false;
 const bool DEPTH_TESTING = true;
 
@@ -49,7 +49,8 @@ int main()
 	//**************************** DATA CREATION *****************************************
 
 	// Initializes AssetManager
-	AssetManager::Get();
+	AssetManager::Get().Init();
+	scene->Init();
 	// This generates shaders and materials
 
 	
@@ -154,15 +155,13 @@ int main()
 		if (showDemoWindow)
 			ImGui::ShowDemoWindow(&showDemoWindow);
 
-
-		scene->PreRender();
-
-		scene->FirstPass();
-
 		gui->Draw();
+		scene->PreRender();
+		scene->FirstPass();
 		gui->DrawViewport(scene->fb.tex);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, 800, 800);
 		gui->Render();
 		
 		

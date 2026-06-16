@@ -3,6 +3,7 @@
 #include "Core/Objects/GObject.h"
 #include "Core/Objects/Components/StaticMesh.h"
 #include <iostream>
+#include "object.h"
 
 /*
 Object Shapes::genPlane(Material* pMaterial, float size)
@@ -160,8 +161,8 @@ Object Shapes::genCube(Material* pMaterial, float edge_length)
 
 	return Object(VAO, VBO, 0, pMaterial, true, false, data.size());
 }
-
-Object Shapes::genWorldGrid(Material* pMaterial, unsigned int size, float stride)
+*/
+Object* ObjectFactory::genWorldGrid(Material* pMaterial, unsigned int size, float stride)
 {
 	if (size <= 0 && stride <= 0)
 		LOG_ERROR("SHAPES_WORLDGRID: Invalid size or stride");
@@ -186,9 +187,9 @@ Object Shapes::genWorldGrid(Material* pMaterial, unsigned int size, float stride
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	return Object(VAO, VBO, 0, pMaterial, false, false, data.size());
+	return new Object(VAO, VBO, 0, pMaterial, false, false, data.size());
 }
-
+/*
 Object Shapes::genUVSphere(Material* pMaterial, int stacks, int slices, float radius)
 {
 	if (stacks <= 0 && slices <= 0)
@@ -262,18 +263,18 @@ Object Shapes::genUVSphere(Material* pMaterial, int stacks, int slices, float ra
 }
 */
 
-GObject ObjectFactory::WorldGrid(const std::string& label, unsigned int size, float stride)
+GObject* ObjectFactory::Cube(const std::string& label)
 {
-	GObject obj(label);
+	GObject* obj = new GObject(label);
 
 	AssetHandle<Material> materialHandle;
 	AssetHandle<Model> modelHandle;
 	materialHandle.id = "DefaultMaterial";
-	modelHandle.id = "DefaultGrid";
+	modelHandle.id = "assets/raw/models/DefaultCube.obj";
 	StaticMesh* sMesh = new StaticMesh();
 	sMesh->SetModelHandle(modelHandle);
 	sMesh->SetMaterialAtSlot(materialHandle);
-	obj.components.push_back(sMesh);
-
+	sMesh->owner = obj;
+	obj->components.push_back(sMesh);
 	return obj;
 }

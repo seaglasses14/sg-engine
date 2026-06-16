@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Utility/DataTypes.h"
+
 // Interface for Components
 class IRenderable
 {
 public:
-	virtual void Draw() = 0;
+	virtual void Draw(RenderContext context) = 0;
 };

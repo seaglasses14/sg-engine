@@ -20,10 +20,14 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
+	std::string shaderDirectory = "assets/raw/shaders/";
+
 	try
 	{
-		vShaderFile.open(vertexPath);
-		fShaderFile.open(fragmentPath);
+		std::string vertexFullPath = shaderDirectory + vertexPath;
+		std::string fragmentFullPath = shaderDirectory + fragmentPath;
+		vShaderFile.open(vertexFullPath);
+		fShaderFile.open(fragmentFullPath);
 		std::stringstream vShaderStream, fShaderStream;
 		vShaderStream << vShaderFile.rdbuf();
 		fShaderStream << fShaderFile.rdbuf();
@@ -34,7 +38,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
 
 		if (geometryPath != nullptr)
 		{
-			gShaderFile.open(geometryPath);
+			std::string geometryFullPath = shaderDirectory + geometryPath;
+			gShaderFile.open(geometryFullPath);
 			std::stringstream gShaderStream;
 			gShaderStream << gShaderFile.rdbuf();
 			gShaderFile.close();
@@ -84,7 +89,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
 	if (geometryPath != nullptr)
 		glDeleteShader(geometry);
 }
-void Shader::use()
+
+void Shader::use() const
 {
 	glUseProgram(ID);
 }

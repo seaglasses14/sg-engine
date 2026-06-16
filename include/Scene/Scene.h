@@ -2,8 +2,8 @@
 
 #include "Camera.h"
 #include "Core/Objects/GObject.h"
-#include <shader.h>
-#include <Material.h>
+//#include <shader.h>
+//#include <Material.h>
 #include <object.h>
 #include "Utility/ObjectFactory.h"
 
@@ -11,7 +11,11 @@ struct FrameBuffer
 {
 	unsigned int fbo = 0;
 	unsigned int tex = 0;
-	unsigned int rbo = 0;};
+	unsigned int rbo = 0;
+	
+	int width = 800;
+	int height = 600;
+};
 
 class Scene
 {
@@ -20,9 +24,13 @@ public:
 	std::vector<GObject*> objects;
 	Scene();
 
+	Object* worldGrid;
+
 	void PreRender();
 	void FirstPass();
 	void SecondPass();
+
+	void Init();
 
 	void AddObject(const std::string& name);
 
@@ -30,8 +38,9 @@ public:
 
 private:
 	std::string GenerateUniqueLabel(const std::string& name);
-	void BindFrameBuffer();
+	void BindFrameBuffer() const;
 	void UnbindFrameBuffer();
 	void GenerateFrameBuffer();
+	void ResizeFrameBuffer();
 };
 

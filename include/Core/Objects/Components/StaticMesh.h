@@ -18,11 +18,12 @@ public:
 
 	bool SetModelHandle(AssetHandle<Model> pModelHandle);
 	bool SetMaterialAtSlot(AssetHandle<Material> pMaterialHandle, unsigned int slot = 0);
-	void Draw() override;
+	void Draw(RenderContext context) override;
 
 private:
 	AssetHandle<Model> modelHandle;
 	Model* cached_model = nullptr;
+	std::unordered_map<unsigned int, AssetHandle<Material>> materials;
 
 	//std::optional<AssetHandle<Material>> overrideMaterial;
 	//std::vector<Material> materialInstances;

@@ -3,6 +3,8 @@
 #include <filesystem>
 #include "Utility/JsonParser.h"
 #include "Data/Shader.h"
+//#include "Data/Material.h"
+#include "Data/Model.h"
 #include "Core/Log.h"
 
 namespace fs = std::filesystem;
@@ -15,16 +17,15 @@ AssetManager& AssetManager::Get()
 
 AssetManager::AssetManager()
 {
-    Init();
 }
 
 void AssetManager::Init()
 {
-    if (PrecompileShaders())
+    if (!PrecompileShaders())
         LOG_ERROR("AssetManager::Errors when precompiling shaders");
-    if (GenerateMaterials())
+    if (!GenerateMaterials())
         LOG_ERROR("AssetManager::Errors when generating materials");
-    if (GenerateBaseModels())
+    if (!GenerateBaseModels())
         LOG_ERROR("AssetManager::Errors when generating models");
 }
 
@@ -48,6 +49,13 @@ Material* AssetManager::GetMaterial(const AssetHandle<Material>& handle)
 
 Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
 {
+    LOG_INFO(handle.id);
+    for (auto& [key, value] : models)
+    {
+        LOG_INFO(key);
+        if (key == handle.id)
+            LOG_INFO("YAY");
+    }
     if (models.find(handle.id) != models.end())
     {
         return &models.at(handle.id);
@@ -71,16 +79,16 @@ bool AssetManager::PrecompileShaders(std::string directory)
         }
         if (path.has_extension())
         {
-            if (path.extension().string() == "json")
+            if (path.extension().string() == ".json")
             {
                 ShaderDescriptor desc = JsonParser::LoadShaderDescriptor(entry.path());
                 
                 if (desc.isValid)
                 {
                     if (desc.geometry == "")
-                        desc.geometry = nullptr;
-                    Shader shader(desc.vertex.c_str(), desc.fragment.c_str(), desc.geometry.c_str());
-                    shaders.insert({ desc.assetID, shader});
+                        shaders.insert({ desc.assetID, Shader(desc.vertex.c_str(), desc.fragment.c_str()) });
+                    else
+                        shaders.insert({ desc.assetID, Shader(desc.vertex.c_str(), desc.fragment.c_str(), desc.geometry.c_str()) });
                 }
             }
         }
@@ -104,7 +112,7 @@ bool AssetManager::GenerateMaterials(std::string directory)
         }
         if (path.has_extension())
         {
-            if (path.extension().string() == "json")
+            if (path.extension().string() == ".json")
             {
                 MaterialDescriptor desc = JsonParser::LoadMaterialDescriptor(entry.path());
 
@@ -127,7 +135,7 @@ bool AssetManager::GenerateMaterials(std::string directory)
 
 bool AssetManager::GenerateBaseModels()
 {
-    return PrecompileShaders(model_desc_directory);
+    return GenerateBaseModels(model_raw_directory);
 }
 
 bool AssetManager::GenerateBaseModels(std::string directory)
@@ -141,24 +149,11 @@ bool AssetManager::GenerateBaseModels(std::string directory)
         }
         if (path.has_extension())
         {
-            if (path.extension().string() == "json")
+            if (path.extension().string() == ".obj")
             {
-                ModelDescriptor desc = JsonParser::LoadModelDescriptor(entry.path());
+                Model model = Model(entry.path().string().c_str());
 
-                if (desc.isValid)
-                {
-                    AssetHandle<Shader> shader_handle;
-                    shader_handle.id = desc.shaderHandle;
-                    Material material(shader_handle);
-                    for (UniformStruct uniform : desc.uniforms)
-                    {
-                        material.AddUniform(uniform.name, uniform.value);
-                    }
-                    Model model()
-
-                    materials.insert({ desc.assetID, material });
-                    models.insert({ desc.assetID, model });
-                }
+                models.insert({ entry.path().string(), model });
             }
         }
     }

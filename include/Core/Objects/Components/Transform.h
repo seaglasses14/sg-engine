@@ -16,9 +16,13 @@ public:
 	void SetRotation(glm::vec3& pRotation);
 	void SetScale(glm::vec3& pScale);
 
+	glm::mat4& GetModelMatrix();
+
 	std::vector<Property> GetProperties() override;
 
 private:
+	bool needsUpdate = false;
+	
 	glm::mat4 model;
 	void UpdateModel();
 };

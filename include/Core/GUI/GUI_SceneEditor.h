@@ -2,6 +2,7 @@
 
 #include "Scene/Scene.h"
 #include "Core/Objects/GObject.h"
+#include "glm/glm.hpp"
 
 class GUI_SceneEditor
 {
@@ -10,6 +11,7 @@ public:
 	bool b_open_ObjectDetail = true;
 	bool b_open_Scene = true;
 	bool b_viewportHovered = false;
+	
 
 	void Draw();
 	void DrawViewport(GLint texId);

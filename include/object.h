@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Material.h"
-#include "texture.h"
+
+#include "Data/Material.h"
 #include <glm/glm.hpp>
 
 class Object
@@ -12,7 +12,6 @@ public:
     void SetModel(glm::mat4& pModel);
     void Draw();
     void Clean();
-    ShaderType GetShaderType();
 private:
     bool triangleMode;
     glm::mat4 model;
