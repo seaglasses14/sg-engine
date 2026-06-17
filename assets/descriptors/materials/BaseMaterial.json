@@ -1,0 +1,11 @@
+{
+  "asset_id" :  "BaseMaterial",
+  "shader_handle": "BaseShader",
+  "uniforms": [
+    {
+      "type": "vec3",
+      "name": "Color",
+      "value": [ 1.0, 1.0, 1.0 ]
+    }
+  ]
+}

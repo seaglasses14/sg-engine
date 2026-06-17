@@ -49,13 +49,6 @@ Material* AssetManager::GetMaterial(const AssetHandle<Material>& handle)
 
 Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
 {
-    LOG_INFO(handle.id);
-    for (auto& [key, value] : models)
-    {
-        LOG_INFO(key);
-        if (key == handle.id)
-            LOG_INFO("YAY");
-    }
     if (models.find(handle.id) != models.end())
     {
         return &models.at(handle.id);

@@ -18,7 +18,7 @@ void Object::Activate(glm::mat4& pView, glm::mat4& pProjection, bool useShader)
 {
 	if (!(material == nullptr))
 	{
-		material->ChangeUniformMVP(model, pView, pProjection);
+		material->ChangeUniformMVP(model, pView, pProjection, model);
 		material->Activate(useShader);
 	}
 

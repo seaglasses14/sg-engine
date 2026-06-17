@@ -41,6 +41,16 @@ glm::mat4& Transform::GetModelMatrix()
 	return model;
 }
 
+glm::mat4 &Transform::GetNormalMatrix()
+{
+    if (needsUpdate)
+	{
+		UpdateModel();
+		needsUpdate = false;
+	}
+	return normalMat;
+}
+
 std::vector<Property> Transform::GetProperties()
 {
 	return
@@ -60,4 +70,5 @@ void Transform::UpdateModel()
 	newModel = glm::rotate(newModel, rotation.z, { 0.f, 0.f, 1.f });
 	newModel = glm::scale(newModel, scale);
 	model = newModel;
+	normalMat = glm::transpose(glm::inverse(model));
 }

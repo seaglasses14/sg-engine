@@ -24,7 +24,7 @@ public:
 	Material(AssetHandle<Shader> pShaderHandle);
 	void AddUniform(const std::string& name, UniformValue value);
 	bool ChangeUniform(const std::string& name, UniformValue value);
-	void ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection);
+	void ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection, glm::mat4& pNormalMat);
 	Shader& GetShader();
 	void Activate(bool useShader = true);
 

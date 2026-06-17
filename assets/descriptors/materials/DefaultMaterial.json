@@ -1,11 +1,21 @@
 {
   "asset_id" :  "DefaultMaterial",
-  "shader_handle": "BaseShader",
+  "shader_handle": "LitShader",
   "uniforms": [
     {
+      "type": "float",
+      "name": "material.shininess",
+      "value": 32.0
+    },
+    {
       "type": "vec3",
-      "name": "Color",
-      "value": [ 1.0, 1.0, 1.0 ]
+      "name": "dirLight.direction",
+      "value": [0.8, -0.5, -1.0]
+    },
+    {
+      "type": "vec3",
+      "name": "dirLight.color",
+      "value": [0.0, 1.0, 0.0]
     }
   ]
 }

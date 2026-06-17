@@ -5,6 +5,7 @@
 constexpr auto UNIFORM_MODEL = "model";
 constexpr auto UNIFORM_VIEW = "view";
 constexpr auto UNIFORM_PROJECTION = "projection";
+constexpr auto UNIFORM_NORMAL_MODEL = "normalMat";
 
 Material::Material(AssetHandle<Shader> pShaderHandle)
     : shaderHandle(pShaderHandle)
@@ -27,11 +28,12 @@ bool Material::ChangeUniform(const std::string& name, UniformValue value)
     return false;
 }
 
-void Material::ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection)
+void Material::ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& pProjection, glm::mat4& pNormalMat)
 {
     uniforms[UNIFORM_MODEL] = pModel;
     uniforms[UNIFORM_VIEW] = pView;
     uniforms[UNIFORM_PROJECTION] = pProjection;
+    uniforms[UNIFORM_NORMAL_MODEL] = pNormalMat;
 }
 
 Shader& Material::GetShader()

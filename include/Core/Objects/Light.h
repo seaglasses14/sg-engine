@@ -15,7 +15,6 @@ class Light : GObject
 public:
 	LightType type;
 
-
 private:
 
 };

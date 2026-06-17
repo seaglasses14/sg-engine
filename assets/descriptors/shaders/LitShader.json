@@ -1,0 +1,5 @@
+{
+  "asset_id": "LitShader",
+  "vertex": "vertex/LitShader.vert",
+  "fragment": "fragment/LitShader.frag"
+}

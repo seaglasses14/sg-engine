@@ -60,7 +60,7 @@ void StaticMesh::Draw(RenderContext context)
 	for (const auto& [key, value] : materials)
 	{
 		Material* mat = AssetManager::Get().GetMaterial(value);
-		mat->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection);
+		mat->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection, owner->transform->GetNormalMatrix());
 		mat->Activate();
 		cached_model->Draw(key);
 	}

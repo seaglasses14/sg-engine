@@ -29,8 +29,8 @@ void Scene::FirstPass()
 {
 	BindFrameBuffer();
 	ImVec2 windowSize = ImGui::GetContentRegionAvail();
-	LOG_INFO(std::to_string(windowSize.x));
-	LOG_INFO(std::to_string(windowSize.y));
+	//LOG_INFO(std::to_string(windowSize.x));
+	//LOG_INFO(std::to_string(windowSize.y));
 	glViewport(0, 0, static_cast<int>(windowSize.x), static_cast<int>(windowSize.y));
 	
 	glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -41,7 +41,7 @@ void Scene::FirstPass()
 
 	glm::mat4 view = mainCamera->GetViewMatrix();
 
-	RenderContext context({ view, projection });
+	RenderContext context({ projection, view, glm::vec3(1.0f, 1.0f, 0.0f) });
 
 	for (GObject* obj : objects)
 	{
@@ -64,7 +64,7 @@ void Scene::SecondPass()
 
 void Scene::Init()
 {
-	Material* mat = AssetManager::Get().GetMaterial(AssetHandle<Material>({ "DefaultMaterial" }));
+	Material* mat = AssetManager::Get().GetMaterial(AssetHandle<Material>({ "BaseMaterial" }));
 	worldGrid = ObjectFactory::genWorldGrid(mat, 100, 10);
 }
 
@@ -158,8 +158,8 @@ void Scene::ResizeFrameBuffer()
 	
 	fb.width = width;
 	fb.height = height;
-	LOG_INFO(std::to_string(fb.width));
-	LOG_INFO(std::to_string(fb.height));
+	//LOG_INFO(std::to_string(fb.width));
+	//LOG_INFO(std::to_string(fb.height));
 	
 	glBindTexture(GL_TEXTURE_2D, fb.tex);
 

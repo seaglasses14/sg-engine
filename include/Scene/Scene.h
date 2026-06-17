@@ -6,6 +6,7 @@
 //#include <Material.h>
 #include <object.h>
 #include "Utility/ObjectFactory.h"
+#include "Core/Objects/Light.h"
 
 struct FrameBuffer
 {
@@ -22,6 +23,7 @@ class Scene
 public:
 	Camera* mainCamera = nullptr;
 	std::vector<GObject*> objects;
+	std::vector<Light*> lights;
 	Scene();
 
 	Object* worldGrid;
@@ -43,4 +45,3 @@ private:
 	void GenerateFrameBuffer();
 	void ResizeFrameBuffer();
 };
-

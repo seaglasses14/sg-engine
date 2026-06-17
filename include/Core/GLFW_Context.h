@@ -9,7 +9,7 @@ class GLFW_Context
 {
 	const unsigned int SCR_WIDTH = 800;
 	const unsigned int SCR_HEIGHT = 800;
-	const bool WIREFRAME_MODE = true;
+	const bool WIREFRAME_MODE = false;
 	const bool DEPTH_TESTING = true;
 	float lastMouseX = SCR_WIDTH / 2.0f;
 	float lastMouseY = SCR_HEIGHT / 2.0f;

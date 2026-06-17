@@ -53,8 +53,6 @@ int main()
 	scene->Init();
 	// This generates shaders and materials
 
-	
-
 	/* OLD
 	glm::vec3 lightPos(1.f);
 	glm::vec3 lightColor(1.f);

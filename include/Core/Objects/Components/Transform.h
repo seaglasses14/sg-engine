@@ -17,6 +17,7 @@ public:
 	void SetScale(glm::vec3& pScale);
 
 	glm::mat4& GetModelMatrix();
+	glm::mat4& GetNormalMatrix();
 
 	std::vector<Property> GetProperties() override;
 
@@ -24,6 +25,7 @@ private:
 	bool needsUpdate = false;
 	
 	glm::mat4 model;
+	glm::mat4 normalMat;
 	void UpdateModel();
 };
 

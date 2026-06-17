@@ -3,6 +3,12 @@
 
 struct RenderContext
 {
-	glm::mat4 view;
+	// Window data
 	glm::mat4 projection;
+
+	// Camera data
+	glm::mat4 view;
+
+	// Scene lights
+	glm::vec3 directionalLight;
 };
