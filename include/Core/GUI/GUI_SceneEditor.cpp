@@ -30,7 +30,48 @@ void GUI_SceneEditor::GUIW_SceneViewer(bool* b_open)
 
         if (ImGui::Button("Add Object"))
         {
-            scene->AddObject("Object");
+            ImGui::OpenPopup("Select Object");
+        }
+        //ImGui::SetItemTooltip("Add new object to scene");
+        if (ImGui::BeginPopup("Select Object"))
+        {
+            int selectedNewObject = -1;
+            const char* names[] = { "Empty", "Cube", "DirectLight" };
+            
+            if(ImGui::MenuItem("Empty"))
+            {
+                selectedNewObject = 0;
+            }
+            if(ImGui::MenuItem("Cube"))
+            {
+                selectedNewObject = 1;
+            }
+            if (ImGui::BeginMenu("Lights"))
+            {
+                if(ImGui::MenuItem("DirectLight"))
+                {
+                    selectedNewObject = 2;
+                }
+                ImGui::EndMenu();
+            }
+            /*
+            for (int i = 0; i < IM_COUNTOF(names); i++)
+                if (ImGui::Selectable(names[i]))
+                    selectedNewObject = i;
+            */
+            switch (selectedNewObject)
+            {
+                case 0:
+                    break;
+                case 1:
+                    scene->AddObject("Object");
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+            ImGui::EndPopup();
         }
 
         if (ImGui::BeginListBox("##Scene", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
