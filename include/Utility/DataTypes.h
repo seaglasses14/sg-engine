@@ -10,5 +10,6 @@ struct RenderContext
 	glm::mat4 view;
 
 	// Scene lights
-	glm::vec3 directionalLight;
+	glm::vec3 directLight_direction;
+	glm::vec3 directLight_color;
 };

@@ -6,7 +6,9 @@
 //#include <Material.h>
 #include <object.h>
 #include "Utility/ObjectFactory.h"
-#include "Core/Objects/Light.h"
+//#include "Core/Objects/Components/DirectLight.h"
+
+class CDirectLight;
 
 struct FrameBuffer
 {
@@ -23,7 +25,8 @@ class Scene
 public:
 	Camera* mainCamera = nullptr;
 	std::vector<GObject*> objects;
-	std::vector<Light*> lights;
+	//std::vector<Light*> lights;
+	CDirectLight* directLight = nullptr;
 	Scene();
 
 	Object* worldGrid;
@@ -34,12 +37,16 @@ public:
 
 	void Init();
 
-	void AddObject(const std::string& name);
+	GObject* CreateEmpty(const std::string& name);
+	GObject* CreateCube(const std::string& name);
+	GObject* CreateDirectLight(const std::string& name);
+	std::string SetObjectLabel(GObject* obj, const std::string& name);
 
 	FrameBuffer fb;
 
 private:
-	std::string GenerateUniqueLabel(const std::string& name);
+	GObject* AddObject(GObject* obj);
+	std::string GenerateUniqueLabel(const std::string& name, GObject* currentObj = nullptr);
 	void BindFrameBuffer() const;
 	void UnbindFrameBuffer();
 	void GenerateFrameBuffer();

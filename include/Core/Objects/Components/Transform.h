@@ -12,9 +12,9 @@ public:
 
 	Transform();
 
-	void SetLocation(glm::vec3& pLocation);
-	void SetRotation(glm::vec3& pRotation);
-	void SetScale(glm::vec3& pScale);
+	void SetLocation(const glm::vec3& pLocation);
+	void SetRotation(const glm::vec3& pRotation);
+	void SetScale(const glm::vec3& pScale);
 
 	glm::mat4& GetModelMatrix();
 	glm::mat4& GetNormalMatrix();

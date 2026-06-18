@@ -13,19 +13,19 @@ Transform::Transform()
 	needsUpdate = true;
 }
 
-void Transform::SetLocation(glm::vec3& pLocation)
+void Transform::SetLocation(const glm::vec3& pLocation)
 {
 	location = pLocation;
 	needsUpdate = true;
 }
 
-void Transform::SetRotation(glm::vec3& pRotation)
+void Transform::SetRotation(const glm::vec3& pRotation)
 {
 	rotation = pRotation;
 	needsUpdate = true;
 }
 
-void Transform::SetScale(glm::vec3& pScale)
+void Transform::SetScale(const glm::vec3& pScale)
 {
 	scale = pScale;
 	needsUpdate = true;

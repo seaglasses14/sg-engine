@@ -4,6 +4,7 @@
 #include "Core/Log.h"
 #include <string>
 #include "Core/GUI/GUI_PropertyHelper.h"
+#include "GUI_SceneEditor.h"
 
 void GUI_SceneEditor::Draw()
 {
@@ -54,22 +55,27 @@ void GUI_SceneEditor::GUIW_SceneViewer(bool* b_open)
                 }
                 ImGui::EndMenu();
             }
-            /*
-            for (int i = 0; i < IM_COUNTOF(names); i++)
-                if (ImGui::Selectable(names[i]))
-                    selectedNewObject = i;
-            */
+
+            GObject* newObj = nullptr;
             switch (selectedNewObject)
             {
                 case 0:
+                    newObj = scene->CreateEmpty("Empty");
                     break;
                 case 1:
-                    scene->AddObject("Object");
+                    newObj = scene->CreateCube("Cube");
                     break;
                 case 2:
+                    newObj = scene->CreateDirectLight("DirectLight");
                     break;
                 default:
                     break;
+            }
+            if(newObj)
+            {
+                selectedObject = newObj;
+                editingObject = newObj;
+                strncpy(renameBuffer, newObj->label.c_str(), sizeof(renameBuffer));
             }
             ImGui::EndPopup();
         }
@@ -78,15 +84,49 @@ void GUI_SceneEditor::GUIW_SceneViewer(bool* b_open)
         {
             for (GObject* obj : scene->objects)
             {
-                const bool is_selected = (selectedObject == obj);
-                if (ImGui::Selectable(obj->label.c_str(), is_selected))
-                    selectedObject = obj;
+                if(editingObject == obj)
+                {
+                    ImGui::SetKeyboardFocusHere();
+                    ImGui::PushID(obj);
+                    ImGui::SetNextItemWidth(-FLT_MIN);
 
-                if (object_highlight && ImGui::IsItemHovered())
-                    highlightedObject = obj;
+                    if(ImGui::InputText("##Rename", renameBuffer, sizeof(renameBuffer), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        if(renameBuffer[0] != '\0')
+                            scene->SetObjectLabel(obj, renameBuffer);
+                        editingObject = nullptr;
+                    }
+                    if(ImGui::IsItemDeactivated() && !ImGui::IsItemActive())
+                    {
+                        if(renameBuffer[0] != '\0')
+                            scene->SetObjectLabel(obj, renameBuffer);
+                        editingObject = nullptr;
+                    }
 
-                if (is_selected)
-                    ImGui::SetItemDefaultFocus();
+                    ImGui::PopID();
+                }
+                else
+                {
+                    const bool is_selected = (selectedObject == obj);
+
+                    if (ImGui::Selectable(obj->label.c_str(), is_selected))
+                        selectedObject = obj;
+
+                    if (object_highlight && ImGui::IsItemHovered())
+                        highlightedObject = obj;
+
+                    if (is_selected)
+                        ImGui::SetItemDefaultFocus();
+                    
+                    if(ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                    {
+                        editingObject = obj;
+
+                        strncpy(renameBuffer, obj->label.c_str(), sizeof(renameBuffer));
+
+                        renameBuffer[sizeof(renameBuffer) - 1] = '\0';
+                    }
+                }
             }
             ImGui::EndListBox();
         }
@@ -151,4 +191,3 @@ void GUI_SceneEditor::GUIW_Scene(bool* b_open, bool* b_viewportHovered, GLint te
     *b_viewportHovered = ImGui::IsItemHovered();
     ImGui::End();
 }
-

@@ -20,7 +20,10 @@ public:
 private:
 	Scene* scene;
 	GObject* selectedObject = nullptr;
+	GObject* editingObject = nullptr;
 	GObject* highlightedObject = nullptr;
+	char renameBuffer[256];
+
 	bool object_highlight = false;
 	void GUIW_SceneViewer(bool* b_open);
 	void GUIW_ObjectDetail(bool* b_open, GObject* selectedObject);

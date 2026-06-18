@@ -10,12 +10,12 @@
     {
       "type": "vec3",
       "name": "dirLight.direction",
-      "value": [0.8, -0.5, -1.0]
+      "value": [0.0, 0.0, 0.0]
     },
     {
       "type": "vec3",
       "name": "dirLight.color",
-      "value": [0.0, 1.0, 0.0]
+      "value": [0.0, 0.0, 0.0]
     }
   ]
 }

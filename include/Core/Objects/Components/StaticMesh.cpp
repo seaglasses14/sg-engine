@@ -25,7 +25,8 @@ std::vector<Property> StaticMesh::GetProperties()
 {
 	return
 	{
-		{ PropertyType::Asset, cached_model, "Model", [](){} }
+		{ PropertyType::AssetHandle_Model, &modelHandle, "Model", [](){} },
+		{ PropertyType::Bool, &isVisible, "IsVisible", [](){} }
 	};
 }
 
@@ -60,8 +61,15 @@ void StaticMesh::Draw(RenderContext context)
 	for (const auto& [key, value] : materials)
 	{
 		Material* mat = AssetManager::Get().GetMaterial(value);
+		mat->ChangeUniform("dirLight.direction", context.directLight_direction);
+		mat->ChangeUniform("dirLight.color", context.directLight_color);
 		mat->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection, owner->transform->GetNormalMatrix());
 		mat->Activate();
 		cached_model->Draw(key);
 	}
+}
+
+bool StaticMesh::IsVisible()
+{
+	return isVisible;
 }

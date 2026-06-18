@@ -5,10 +5,13 @@
 
 enum PropertyType
 {
+	Bool,
 	Int,
 	Float,
 	Vec3f,
-	Asset
+	Color,
+	AssetHandle_Model,
+	AssetHandle_Material
 };
 
 struct Property

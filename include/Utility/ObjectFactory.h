@@ -4,6 +4,7 @@
 class Object;
 class GObject;
 class Material;
+class Scene;
 
 class ObjectFactory
 {
@@ -12,6 +13,8 @@ public:
 	//static Object genPlane(Material* pMaterial, float size = 100);
 	//static Object genSimpleCube(Material* pMaterial, float edge_length = 1);
 	//static Object genCube(Material* pMaterial, float edge_length = 1);
-	static GObject* Cube(const std::string& label);
+	static GObject* Empty(const std::string& label, Scene* scene);
+	static GObject* Cube(const std::string& label, Scene* scene);
+	static GObject* DirectLight(const std::string& label, Scene* scene);
 	//static Object genUVSphere(Material* pMaterial, int stacks = 20, int slices = 20, float radius = 1);
 };

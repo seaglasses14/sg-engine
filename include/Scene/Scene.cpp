@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include "Utility/ObjectFactory.h"
 #include "Core/Objects/Components/Component.h"
+#include "Core/Objects/Components/CDirectLight.h"
 #include "Core/Interfaces/Renderable.h"
 #include "Data/Material.h"
 
@@ -13,9 +14,6 @@ Scene::Scene()
 	GenerateFrameBuffer();
 
 	objects = std::vector<GObject*>();
-	objects.push_back(new GObject("Empty"));
-	//objects.push_back(ObjectFactory::Cube("Cube"));
-
 }
 
 void Scene::PreRender()
@@ -41,7 +39,12 @@ void Scene::FirstPass()
 
 	glm::mat4 view = mainCamera->GetViewMatrix();
 
-	RenderContext context({ projection, view, glm::vec3(1.0f, 1.0f, 0.0f) });
+	RenderContext context({ projection, view, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) });
+	if(directLight)
+	{
+		context.directLight_direction = directLight->direction;
+		context.directLight_color = directLight->color;
+	}
 
 	for (GObject* obj : objects)
 	{
@@ -49,7 +52,8 @@ void Scene::FirstPass()
 		{
 			if (auto* renderable = dynamic_cast<IRenderable*>(comp))
 			{
-				renderable->Draw(context);
+				if(renderable->IsVisible())
+					renderable->Draw(context);
 			}
 		}
 	}
@@ -68,14 +72,45 @@ void Scene::Init()
 	worldGrid = ObjectFactory::genWorldGrid(mat, 100, 10);
 }
 
-void Scene::AddObject(const std::string& name)
+GObject* Scene::AddObject(GObject* obj)
 {
-	std::string label = GenerateUniqueLabel(name);
-
-	objects.push_back(ObjectFactory::Cube(label));
+	//std::string label = GenerateUniqueLabel(name);
+	//GObject* newObject = ObjectFactory::Cube(label);
+	objects.push_back(obj);
+	return obj;
 }
 
-std::string Scene::GenerateUniqueLabel(const std::string& name)
+GObject* Scene::CreateEmpty(const std::string& name)
+{
+	GObject* obj = ObjectFactory::Empty(GenerateUniqueLabel(name), this);
+	return AddObject(obj);
+}
+
+GObject* Scene::CreateCube(const std::string& name)
+{
+	GObject* obj = ObjectFactory::Cube(GenerateUniqueLabel(name), this);
+	return AddObject(obj);
+}
+
+GObject* Scene::CreateDirectLight(const std::string& name)
+{
+	GObject* obj = ObjectFactory::DirectLight(GenerateUniqueLabel(name), this);
+	//if(CDirectLight* light = obj->GetComponent<CDirectLight>())
+	//{
+	//	LOG_INFO("GetComponents Works");
+	//	light->SetEnabled();
+	//}
+	return AddObject(obj);
+}
+
+std::string Scene::SetObjectLabel(GObject* obj, const std::string &name)
+{
+	std::string label = GenerateUniqueLabel(name, obj);
+	obj->label = label;
+    return label;
+}
+
+std::string Scene::GenerateUniqueLabel(const std::string& name, GObject* currentObj)
 {
 	unsigned int count = 0;
 	std::string label;
@@ -89,7 +124,7 @@ std::string Scene::GenerateUniqueLabel(const std::string& name)
 			label = name;
 		for (GObject* obj : objects)
 		{
-			if (obj->label == label)
+			if (obj != currentObj && obj->label == label)
 			{
 				exists = true;
 				count++;

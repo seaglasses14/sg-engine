@@ -2,8 +2,11 @@
 #include "Core/Log.h"
 #include "Core/Objects/GObject.h"
 #include "Core/Objects/Components/StaticMesh.h"
+#include "Core/Objects/Components/CDirectLight.h"
+#include "Core/Objects/Components/Transform.h"
 #include <iostream>
 #include "object.h"
+#include "glm/glm.hpp"
 
 /*
 Object Shapes::genPlane(Material* pMaterial, float size)
@@ -263,18 +266,39 @@ Object Shapes::genUVSphere(Material* pMaterial, int stacks, int slices, float ra
 }
 */
 
-GObject* ObjectFactory::Cube(const std::string& label)
+GObject* ObjectFactory::Empty(const std::string& label, Scene* scene)
 {
-	GObject* obj = new GObject(label);
+	return new GObject(label, scene);
+}
 
-	AssetHandle<Material> materialHandle;
-	AssetHandle<Model> modelHandle;
-	materialHandle.id = "DefaultMaterial";
-	modelHandle.id = "assets/raw/models/DefaultCube.obj";
+GObject* ObjectFactory::Cube(const std::string& label, Scene* scene)
+{
+	GObject* obj = new GObject(label, scene);
 	StaticMesh* sMesh = new StaticMesh();
-	sMesh->SetModelHandle(modelHandle);
-	sMesh->SetMaterialAtSlot(materialHandle);
+
+	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/DefaultCube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
 	sMesh->owner = obj;
 	obj->components.push_back(sMesh);
 	return obj;
+}
+
+GObject* ObjectFactory::DirectLight(const std::string &label, Scene* scene)
+{
+	GObject* obj = new GObject(label, scene);
+	obj->transform->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+
+	StaticMesh* sMesh = new StaticMesh();
+	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/DefaultCube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"BaseMaterial"}));
+	sMesh->owner = obj;
+
+	CDirectLight* light = new CDirectLight();
+	light->owner = obj;
+	light->SetEnabled();
+
+	obj->components.push_back(sMesh);
+	obj->components.push_back(light);
+
+    return obj;
 }

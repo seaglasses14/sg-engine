@@ -19,6 +19,9 @@ public:
 	bool SetModelHandle(AssetHandle<Model> pModelHandle);
 	bool SetMaterialAtSlot(AssetHandle<Material> pMaterialHandle, unsigned int slot = 0);
 	void Draw(RenderContext context) override;
+	bool IsVisible() override;
+
+	bool isVisible = true;
 
 private:
 	AssetHandle<Model> modelHandle;
