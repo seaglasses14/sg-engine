@@ -58,6 +58,17 @@ MaterialDescriptor JsonParser::LoadMaterialDescriptor(const fs::path& path)
 		descriptor.assetID = json.value("asset_id", "");
 		descriptor.shaderHandle = json.value("shader_handle", "");
 
+		if(json.contains("texture_handles"))
+		{
+			for(auto& t: json["texture_handles"])
+			{
+				TextureStruct tex;
+				tex.type = t.at("type").get<std::string>();
+				tex.textureHandle = t.at("handle").get<std::string>();
+				descriptor.textures.push_back(tex);
+			}
+		}
+
 		if (json.contains("uniforms"))
 		{
 			for (auto& u : json["uniforms"])

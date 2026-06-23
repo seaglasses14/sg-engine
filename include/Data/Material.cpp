@@ -18,6 +18,14 @@ void Material::AddUniform(const std::string& name, UniformValue value)
     uniforms[name] = value;
 }
 
+void Material::AddTexture(const std::string &type, AssetHandle<Texture> handle)
+{
+    AssetData<Texture> data;
+    data.handle = handle;
+    data.cached_texture = AssetManager::Get().GetTexture(handle);
+    textures[type] = data;
+}
+
 bool Material::ChangeUniform(const std::string& name, UniformValue value)
 {
     if (uniforms.contains(name))
@@ -34,6 +42,14 @@ void Material::ChangeUniformMVP(glm::mat4& pModel, glm::mat4& pView, glm::mat4& 
     uniforms[UNIFORM_VIEW] = pView;
     uniforms[UNIFORM_PROJECTION] = pProjection;
     uniforms[UNIFORM_NORMAL_MODEL] = pNormalMat;
+}
+
+void Material::InitTexSlots()
+{
+    for (auto& [name, value] : textures)
+    {
+        cached_shader->set(name, GetTextureUnit(name.c_str()));
+    }
 }
 
 Shader& Material::GetShader()
@@ -56,9 +72,19 @@ void Material::ApplyShader()
     cached_shader->use();
 }
 
+void Material::ApplyTextures()
+{
+    for (auto& [type, value] : textures)
+    {
+        glActiveTexture(GL_TEXTURE0 + GetTextureUnit(type.c_str()));
+        glBindTexture(GL_TEXTURE_2D, value.cached_texture->id);
+    }
+}
+
 void Material::Activate(bool useShader)
 {
     if (useShader)
         ApplyShader();
+    ApplyTextures();
     ApplyUniforms();
 }

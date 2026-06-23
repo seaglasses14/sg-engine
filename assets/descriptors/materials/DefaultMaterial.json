@@ -1,6 +1,12 @@
 {
   "asset_id" :  "DefaultMaterial",
   "shader_handle": "LitShader",
+  "texture_handles": [
+    {
+      "type": "material.diffuse",
+      "handle": "assets/raw/textures/container.jpg"
+    }
+  ],
   "uniforms": [
     {
       "type": "float",

@@ -15,6 +15,12 @@ struct UniformStruct
 	UniformValue value;
 };
 
+struct TextureStruct
+{
+	std::string type;
+	std::string textureHandle;
+};
+
 struct ModelMaterialStruct
 {
 	unsigned int slot = 0;
@@ -41,6 +47,7 @@ public:
 
 	std::string assetID;
 	std::string shaderHandle;
+	std::vector<TextureStruct> textures;
 	std::vector<UniformStruct> uniforms;
 };
 
