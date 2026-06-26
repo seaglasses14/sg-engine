@@ -35,8 +35,15 @@
 .idea/
 .vs/
 
+# solution files
+*.slnx
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
 # build folders
 learnOpe.bf316062/
 x64/
 **/.vs/
 build/
+out/build
