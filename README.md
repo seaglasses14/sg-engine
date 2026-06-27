@@ -4,15 +4,6 @@ A personal graphics engine developed as a learning project.
 
 Built with OpenGL 3.3 and featuring a graphical editor powered by Dear ImGui.
 
-## Features (WIP)
-
-- Object-based scene management
-- Shader abstraction
-- Texture loading
-- Model loading
-- Asset Pipeline
-- Lighting system
-
 ## Goals
 
 The purpose of this project is to gain hands-on experience with graphics programming, rendering techniques, engine architecture, and modern C++ development. It is not intended to compete with existing game engines, but to serve as a playground for implementing graphics concepts from scratch.
