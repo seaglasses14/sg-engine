@@ -22,7 +22,7 @@ The purpose of this project is to gain hands-on experience with graphics program
 
 ### Requirements
 
-- CMake 3.2
+- CMake 3.2+
 - C++20 compiler
 - OpenGL 3.3
   
@@ -40,7 +40,7 @@ The purpose of this project is to gain hands-on experience with graphics program
     - include
       - assimp
       - GLFW
-    - lib/
+    - lib
       - assimp
       - GLFW
    ```
