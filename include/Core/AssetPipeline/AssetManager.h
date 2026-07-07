@@ -2,19 +2,13 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include "Utility/DataTypes.h"
 
 class Shader;
 class Texture;
 class Material;
 class Model;
-
-using AssetID = std::string;
-
-template<typename T>
-struct AssetHandle
-{
-	AssetID id; //= ""
-};
 
 class AssetManager
 {
@@ -34,6 +28,11 @@ public:
 	Material* GetMaterial(const AssetHandle<Material>& handle);
 	Model* GetModel(const AssetHandle<Model>& handle);
 
+	std::vector<AssetID>& GetShaderAssetIDs();
+	std::vector<AssetID>& GetTextureAssetIDs();
+	std::vector<AssetID>& GetMaterialAssetIDs();
+	std::vector<AssetID>& GetModelAssetIDs();
+
 	AssetManager(const AssetManager&) = delete;
 	AssetManager& operator=(const AssetManager&) = delete;
 
@@ -46,10 +45,18 @@ protected:
 	bool GenerateMaterials(std::string directory);
 	bool GenerateBaseModels();
 	bool GenerateBaseModels(std::string directory);
+	
 	std::unordered_map<AssetID, Shader> shaders;
+	std::vector<AssetID> shader_ids;
+
 	std::unordered_map<AssetID, Texture> textures;
+	std::vector<AssetID> texture_ids;
+
 	std::unordered_map<AssetID, Material> materials;
+	std::vector<AssetID> material_ids;
+
 	std::unordered_map<AssetID, Model> models;
+	std::vector<AssetID> model_ids;
 
 private:
 	AssetManager();

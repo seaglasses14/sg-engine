@@ -22,7 +22,7 @@ void Material::AddTexture(const std::string &type, AssetHandle<Texture> handle)
 {
     AssetData<Texture> data;
     data.handle = handle;
-    data.cached_texture = AssetManager::Get().GetTexture(handle);
+    data.cached_data = AssetManager::Get().GetTexture(handle);
     textures[type] = data;
 }
 
@@ -77,7 +77,7 @@ void Material::ApplyTextures()
     for (auto& [type, value] : textures)
     {
         glActiveTexture(GL_TEXTURE0 + GetTextureUnit(type.c_str()));
-        glBindTexture(GL_TEXTURE_2D, value.cached_texture->id);
+        glBindTexture(GL_TEXTURE_2D, value.cached_data->id);
     }
 }
 

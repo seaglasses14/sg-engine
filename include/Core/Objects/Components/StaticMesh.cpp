@@ -8,15 +8,15 @@ StaticMesh::StaticMesh()
 }
 
 StaticMesh::StaticMesh(AssetHandle<Model> pModelHandle)
-	: modelHandle(pModelHandle)
 {
 	label = "StaticMesh";
+	model.handle = pModelHandle;
 	Init();
 }
 
 void StaticMesh::Init()
 {
-	cached_model = AssetManager::Get().GetModel(modelHandle);
+	model.cached_data = AssetManager::Get().GetModel(model.handle);
 	
 	//materialInstances.clear();
 }
@@ -25,23 +25,25 @@ std::vector<Property> StaticMesh::GetProperties()
 {
 	return
 	{
-		{ PropertyType::AssetHandle_Model, &modelHandle, "Model", [](){} },
+		{ PropertyType::Asset_Model, &model, "Model", [](){} },
+		{ PropertyType::Asset_Material, &materials, "Materials", [](){} },
 		{ PropertyType::Bool, &isVisible, "IsVisible", [](){} }
 	};
 }
 
 bool StaticMesh::SetModelHandle(AssetHandle<Model> pModelHandle)
 {
-	modelHandle = pModelHandle;
-	cached_model = AssetManager::Get().GetModel(modelHandle);
+	model.handle = pModelHandle;
+	model.cached_data = AssetManager::Get().GetModel(model.handle);
 
-	if(cached_model == nullptr)
+	if(model.cached_data == nullptr)
 		return false;
 
 	materials.clear();
-	for (unsigned int& value : cached_model->usedMaterialSlots)
+	for (unsigned int& value : model.cached_data->usedMaterialSlots)
 	{
-		materials.insert({ value, AssetHandle<Material>("") });
+		AssetHandle<Material> materialHandle("");
+		materials.insert({ value, AssetData<Material>{ materialHandle, nullptr } });
 	}
 	return true;
 }
@@ -50,22 +52,24 @@ bool StaticMesh::SetMaterialAtSlot(AssetHandle<Material> pMaterialHandle, unsign
 {
 	if (!materials.contains(slot))
 		return false;
-	materials[slot] = pMaterialHandle;
+	materials[slot].handle = pMaterialHandle;
+	materials[slot].cached_data = AssetManager::Get().GetMaterial(pMaterialHandle);
 	return true;
 }
 
 void StaticMesh::Draw(RenderContext context)
 {
-	if (cached_model == nullptr)
+	if (model.cached_data == nullptr)
 		return;
 	for (const auto& [key, value] : materials)
 	{
-		Material* mat = AssetManager::Get().GetMaterial(value);
-		mat->ChangeUniform("dirLight.direction", context.directLight_direction);
-		mat->ChangeUniform("dirLight.color", context.directLight_color);
-		mat->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection, owner->transform->GetNormalMatrix());
-		mat->Activate();
-		cached_model->Draw(key);
+		if(value.cached_data == nullptr)
+			continue;
+		value.cached_data->ChangeUniform("dirLight.direction", context.directLight_direction);
+		value.cached_data->ChangeUniform("dirLight.color", context.directLight_color);
+		value.cached_data->ChangeUniformMVP(owner->transform->GetModelMatrix(), context.view, context.projection, owner->transform->GetNormalMatrix());
+		value.cached_data->Activate();
+		model.cached_data->Draw(key);
 	}
 }
 

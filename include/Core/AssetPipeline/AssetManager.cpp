@@ -68,6 +68,26 @@ Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
     return nullptr;
 }
 
+std::vector<AssetID> &AssetManager::GetShaderAssetIDs()
+{
+    return shader_ids;
+}
+
+std::vector<AssetID> &AssetManager::GetTextureAssetIDs()
+{
+    return texture_ids;
+}
+
+std::vector<AssetID> &AssetManager::GetMaterialAssetIDs()
+{
+    return material_ids;
+}
+
+std::vector<AssetID> &AssetManager::GetModelAssetIDs()
+{
+    return model_ids;
+}
+
 bool AssetManager::PrecompileShaders()
 {
     return PrecompileShaders(shader_desc_directory);
@@ -94,6 +114,7 @@ bool AssetManager::PrecompileShaders(std::string directory)
                         shaders.insert({ desc.assetID, Shader(desc.vertex.c_str(), desc.fragment.c_str()) });
                     else
                         shaders.insert({ desc.assetID, Shader(desc.vertex.c_str(), desc.fragment.c_str(), desc.geometry.c_str()) });
+                    shader_ids.push_back(desc.assetID);
                 }
             }
         }
@@ -155,6 +176,7 @@ bool AssetManager::GenerateTextures(std::string directory)
                 }
                 stbi_image_free(data);
                 textures.insert({ entry.path().string() , tex });
+                texture_ids.push_back(entry.path().string());
             }
         }
     }
@@ -195,6 +217,7 @@ bool AssetManager::GenerateMaterials(std::string directory)
                         material.AddUniform(uniform.name, uniform.value);
                     }
                     materials.insert({ desc.assetID, material });
+                    material_ids.push_back(desc.assetID);
                 }
             }
         }
@@ -223,6 +246,7 @@ bool AssetManager::GenerateBaseModels(std::string directory)
                 Model model = Model(entry.path().string().c_str());
 
                 models.insert({ entry.path().string(), model });
+                model_ids.push_back(entry.path().string());
             }
         }
     }

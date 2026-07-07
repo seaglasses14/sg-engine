@@ -170,6 +170,7 @@ void GUI_SceneEditor::GUIW_ObjectDetail(bool* b_open, GObject* selectedObject)
 
                 if (ImGui::CollapsingHeader(comp->label.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
                 {
+                    static bool first = true;
                     for (Property pr : propertyData)
                     {
                         GUI_PropertyHelper::DrawWidget(pr);

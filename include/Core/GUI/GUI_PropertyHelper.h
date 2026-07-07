@@ -10,5 +10,10 @@ private:
 	static void WidgetBool(Property& pr);
 	static void WidgetVec3f(Property& pr);
 	static void WidgetColor(Property& pr);
-	static void WidgetAssetHandleModel(Property& pr);
+	static void WidgetAssetModel(Property& pr);
+	static void WidgetAssetMaterial(Property& pr);
+
+	// Needs PushID/PopID
+	// Needs cached data refresh
+	//static void WidgetAssetHandle();
 };

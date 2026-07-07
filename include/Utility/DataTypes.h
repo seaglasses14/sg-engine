@@ -1,6 +1,21 @@
 #pragma once
 #include <glm/glm.hpp>
 
+using AssetID = std::string;
+
+template<typename T>
+struct AssetHandle
+{
+	AssetID id; //= ""
+};
+
+template<typename T>
+struct AssetData
+{
+	AssetHandle<T> handle;
+	T* cached_data = nullptr;
+};
+
 struct RenderContext
 {
 	// Window data

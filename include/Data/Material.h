@@ -48,13 +48,6 @@ struct Texture
 	std::string path;
 };
 
-template<typename T>
-struct AssetData
-{
-	AssetHandle<T> handle;
-	T* cached_texture;
-};
-
 class Material
 {	
 public:

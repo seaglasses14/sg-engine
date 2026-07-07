@@ -10,8 +10,8 @@ enum PropertyType
 	Float,
 	Vec3f,
 	Color,
-	AssetHandle_Model,
-	AssetHandle_Material
+	Asset_Model,
+	Asset_Material
 };
 
 struct Property
