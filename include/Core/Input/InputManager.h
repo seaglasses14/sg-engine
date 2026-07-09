@@ -3,6 +3,13 @@
 #include <GLFW/glfw3.h>
 #include <cstdint>
 
+enum InputMode
+{
+	Editor,
+	SceneViewer,
+	Game
+};
+
 struct InputState
 {
 	// Mouse Input
@@ -30,12 +37,14 @@ public:
 	static InputManager& Get();
 	InputState& GetInputState();
 
-	bool IsKeyDown();
+	bool IsKeyDown(int glfw_key);
+	bool IsKeyUp(int glfw_key);
 
 	float GetMouseDeltaX();
 	float GetMouseDeltaY();
 	
-	bool cameraMode = false;
+	InputMode mode = InputMode::Editor;
+
 	bool viewportHovered = false;
 
 private:

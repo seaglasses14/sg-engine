@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI::GUI(GLFWwindow* window, Scene* pScene)
+GUI::GUI(GLFWwindow* pWindow, Scene* pScene)
 {
 	// Init
 	IMGUI_CHECKVERSION();
@@ -18,11 +18,12 @@ GUI::GUI(GLFWwindow* window, Scene* pScene)
 	//style.FontScaleDpi = main_scale;
 
 	// Backend
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(pWindow, true);
 	ImGui_ImplOpenGL3_Init();
 
 	scene = pScene;
-	sceneEditor = new GUI_SceneEditor(scene);
+	window = pWindow;
+	sceneEditor = new GUI_SceneEditor(window, scene);
 }
 
 void GUI::StartDrawing()
@@ -51,6 +52,7 @@ void GUI::DrawViewport(GLint texId)
 
 void GUI::Render()
 {
+	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

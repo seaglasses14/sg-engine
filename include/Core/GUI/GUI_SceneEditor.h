@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Core/Objects/GObject.h"
 #include "glm/glm.hpp"
+#include "GLFW/glfw3.h"
 
 class GUI_SceneEditor
 {
@@ -15,9 +16,10 @@ public:
 
 	void Draw();
 	void DrawViewport(GLint texId);
-	GUI_SceneEditor(Scene* pScene);
+	GUI_SceneEditor(GLFWwindow* pWindow, Scene* pScene);
 
 private:
+	GLFWwindow* window;
 	Scene* scene;
 	GObject* selectedObject = nullptr;
 	GObject* editingObject = nullptr;

@@ -92,6 +92,12 @@ GObject* Scene::CreateCube(const std::string& name)
 	return AddObject(obj);
 }
 
+GObject *Scene::CreatePlane(const std::string &name)
+{
+	GObject* obj = ObjectFactory::Plane(GenerateUniqueLabel(name), this);
+    return AddObject(obj);
+}
+
 GObject* Scene::CreateDirectLight(const std::string& name)
 {
 	GObject* obj = ObjectFactory::DirectLight(GenerateUniqueLabel(name), this);

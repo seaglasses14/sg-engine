@@ -1,10 +1,9 @@
-#include "Core/GUI/GUI_PropertyHelper.h"
-#include "imgui.h"
 #include "GUI_PropertyHelper.h"
 #include <unordered_map>
-#include <string>
+
 #include "Data/Material.h"
 #include "Core/AssetPipeline/AssetManager.h"
+#include "Core/Log.h"
 
 void GUI_PropertyHelper::DrawWidget(Property& pr)
 {
@@ -63,33 +62,17 @@ void GUI_PropertyHelper::WidgetAssetModel(Property& pr)
 	AssetData<Model>* model = static_cast<AssetData<Model>*>(pr.data);
 	ImGui::SameLine();
 	ImGui::PushID(pr.data);
-	if (ImGui::BeginCombo("##ModelHandleCombo", model->handle.id.c_str(), ImGuiComboFlags_HeightRegular))
-	{
-		static ImGuiTextFilter filter;
-		static std::string selected_model_id = model->handle.id;
-
-		if (ImGui::IsWindowAppearing())
+	
+	WidgetAssetHandle(
+		"##ModelHandleCombo",
+		*model,
+		AssetManager::Get().GetModelAssetIDs(),
+		[](const AssetHandle<Model>& h)
 		{
-			ImGui::SetKeyboardFocusHere();
-			filter.Clear();
+			return AssetManager::Get().GetModel(h);
 		}
+	);
 
-		ImGui::SetNextItemShortcut(ImGuiMod_Ctrl | ImGuiKey_F);
-		filter.Draw("##Filter", -FLT_MIN);
-		std::vector<AssetID>& ids = AssetManager::Get().GetModelAssetIDs();
-		for (std::string& id : ids)
-		{
-			const bool is_selected = selected_model_id == id;
-			if (filter.PassFilter(id.c_str()))
-				if (ImGui::Selectable(id.c_str(), is_selected))
-				{
-					model->handle.id = id;
-					model->cached_data = AssetManager::Get().GetModel(model->handle);
-					selected_model_id = id;
-				}
-		}
-		ImGui::EndCombo();
-	}
 	ImGui::PopID();
 	ImGui::Spacing();
 }
@@ -105,33 +88,17 @@ void GUI_PropertyHelper::WidgetAssetMaterial(Property &pr)
 		ImGui::Text(slotLabel.c_str());
 		ImGui::SameLine();
 		ImGui::PushID(key);
-		if (ImGui::BeginCombo("##MaterialHandleCombo", value.handle.id.c_str(), ImGuiComboFlags_HeightRegular))
-		{
-			static ImGuiTextFilter filter;
-			static std::string selected_material_id = value.handle.id;
 
-			if (ImGui::IsWindowAppearing())
+		WidgetAssetHandle(
+			"##MaterialHandleCombo", 
+			value, 
+			AssetManager::Get().GetMaterialAssetIDs(), 
+			[](const AssetHandle<Material>& h)
 			{
-				ImGui::SetKeyboardFocusHere();
-				filter.Clear();
-			}
+				return AssetManager::Get().GetMaterial(h);
+			});
+		//LOG_INFO("Changed material handle");
 
-			ImGui::SetNextItemShortcut(ImGuiMod_Ctrl | ImGuiKey_F);
-			filter.Draw("##Filter", -FLT_MIN);
-			std::vector<AssetID>& ids = AssetManager::Get().GetMaterialAssetIDs();
-			for (std::string& id : ids)
-			{
-				const bool is_selected = selected_material_id == id;
-				if (filter.PassFilter(id.c_str()))
-					if (ImGui::Selectable(id.c_str(), is_selected))
-					{
-						value.handle.id = id;
-						value.cached_data = AssetManager::Get().GetMaterial(value.handle);
-						selected_material_id = id;
-					}
-			}
-			ImGui::EndCombo();
-		}
 		ImGui::PopID();
 		ImGui::Spacing();
 	}

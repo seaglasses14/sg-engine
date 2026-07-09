@@ -5,6 +5,7 @@
 #include <string>
 #include "Core/GUI/GUI_PropertyHelper.h"
 #include "GUI_SceneEditor.h"
+#include "Core/Input/InputManager.h"
 
 void GUI_SceneEditor::Draw()
 {
@@ -18,8 +19,9 @@ void GUI_SceneEditor::DrawViewport(GLint texId)
     GUIW_Scene(&b_open_Scene, &b_viewportHovered, texId);
 }
 
-GUI_SceneEditor::GUI_SceneEditor(Scene* pScene)
+GUI_SceneEditor::GUI_SceneEditor(GLFWwindow* pWindow, Scene* pScene)
 {
+    window = pWindow;
     scene = pScene;
 }
 
@@ -190,5 +192,20 @@ void GUI_SceneEditor::GUIW_Scene(bool* b_open, bool* b_viewportHovered, GLint te
     //ImGui::Begin("Viewport");
     ImGui::Image(texId, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
     *b_viewportHovered = ImGui::IsItemHovered();
+    auto& IM = InputManager::Get();
+    if(*b_viewportHovered)
+    {
+        // Swap with an event fired on button pressed that checks for the stored viewportHovered variable
+        if(IM.IsKeyDown(GLFW_KEY_G) && IM.mode == InputMode::Editor)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            IM.mode = InputMode::SceneViewer;
+        }    
+    }
+    if(IM.mode == InputMode::SceneViewer && IM.IsKeyUp(GLFW_KEY_G))
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        IM.mode = InputMode::Editor;
+    }
     ImGui::End();
 }

@@ -9,7 +9,7 @@
 class GUI
 {
 public:
-	GUI(GLFWwindow* window, Scene* pScene);
+	GUI(GLFWwindow* pWindow, Scene* pScene);
 	void StartDrawing();
 	void SetIOConfigFlag(ImGuiConfigFlags_ flag);
 	void Draw();
@@ -18,6 +18,7 @@ public:
 	void Shutdown();
 
 private:
+	GLFWwindow* window;
 	Scene* scene;
 	GUI_SceneEditor* sceneEditor;
 };

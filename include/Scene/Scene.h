@@ -25,7 +25,6 @@ class Scene
 public:
 	Camera* mainCamera = nullptr;
 	std::vector<GObject*> objects;
-	//std::vector<Light*> lights;
 	CDirectLight* directLight = nullptr;
 	Scene();
 
@@ -39,6 +38,7 @@ public:
 
 	GObject* CreateEmpty(const std::string& name);
 	GObject* CreateCube(const std::string& name);
+	GObject* CreatePlane(const std::string& name);
 	GObject* CreateDirectLight(const std::string& name);
 	std::string SetObjectLabel(GObject* obj, const std::string& name);
 

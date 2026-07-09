@@ -48,7 +48,6 @@ GLFW_Context::GLFW_Context()
 		GLFW_CONTEXT_STATE = 1;
 	}
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	//wireframe mode
 	if (WIREFRAME_MODE)
@@ -58,6 +57,7 @@ GLFW_Context::GLFW_Context()
 	//This enables Vsync
 	glfwSwapInterval(1);
 
+	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
@@ -118,7 +118,7 @@ void GLFW_Context::instanced_framebuffer_size_callback(GLFWwindow* pWindow, int 
 
 void GLFW_Context::instanced_mouse_callback(GLFWwindow* pWindow, double xpos, double ypos)
 {
-	InputState IS = InputManager::Get().GetInputState();
+	InputState& IS = InputManager::Get().GetInputState();
 
 	if (IS.firstMouse)
 	{
@@ -126,10 +126,10 @@ void GLFW_Context::instanced_mouse_callback(GLFWwindow* pWindow, double xpos, do
 		IS.lastMouseY = ypos;
 		IS.firstMouse = false;
 	}
-	IS.deltaX = xpos - lastMouseX;
-	IS.deltaY = lastMouseY - ypos; // reversed since y range from bottom to top
-	lastMouseX = xpos;
-	lastMouseY = ypos;
+	IS.deltaX = xpos - IS.lastMouseX;
+	IS.deltaY = IS.lastMouseY - ypos; // reversed since y range from bottom to top
+	IS.lastMouseX = xpos;
+	IS.lastMouseY = ypos;
 
 	/*
 	if(scene == nullptr)
@@ -152,7 +152,7 @@ void GLFW_Context::instanced_scroll_callback(GLFWwindow* pWindow, double xoffset
 
 void GLFW_Context::instanced_key_callback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
 {
-	InputState IS = InputManager::Get().GetInputState();
+	InputState& IS = InputManager::Get().GetInputState();
 	if(action == GLFW_PRESS || action == GLFW_RELEASE)
 		IS.keys[key] = action;
 }

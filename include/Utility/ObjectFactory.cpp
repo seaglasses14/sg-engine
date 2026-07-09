@@ -276,7 +276,19 @@ GObject* ObjectFactory::Cube(const std::string& label, Scene* scene)
 	GObject* obj = new GObject(label, scene);
 	StaticMesh* sMesh = new StaticMesh();
 
-	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/DefaultCube.obj"}));
+	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Cube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
+	sMesh->owner = obj;
+	obj->components.push_back(sMesh);
+	return obj;
+}
+
+GObject *ObjectFactory::Plane(const std::string &label, Scene *scene)
+{
+	GObject* obj = new GObject(label, scene);
+	StaticMesh* sMesh = new StaticMesh();
+
+	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Plane.obj"}));
 	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
 	sMesh->owner = obj;
 	obj->components.push_back(sMesh);

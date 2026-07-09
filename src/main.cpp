@@ -13,6 +13,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "Scene/Scene.h"
+#include "Core/Input/InputManager.h"
 #include "object.h"
 #include "camera.h"
 #include <Core/GLFW_Context.h>
@@ -209,18 +210,23 @@ int main()
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	auto& IM = InputManager::Get();
+	if(IM.mode != SceneViewer)
+		return;
+		
+	if (IM.IsKeyDown(GLFW_KEY_ESCAPE))
 		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_W))
 		camera.ProcessDirectionInput(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_S))
 		camera.ProcessDirectionInput(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_A))
 		camera.ProcessDirectionInput(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_D))
 		camera.ProcessDirectionInput(RIGHT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_Q))
 		camera.ProcessDirectionInput(DOWNWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	if (IM.IsKeyDown(GLFW_KEY_E))
 		camera.ProcessDirectionInput(UPWARD, deltaTime);
+	camera.ProcessRotationInput(IM.GetMouseDeltaX(), IM.GetMouseDeltaY());
 }
