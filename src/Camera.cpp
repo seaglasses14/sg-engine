@@ -68,6 +68,8 @@ void Camera::ProcessDirectionInput(Camera_Movement direction, float deltaTime)
 		if (direction == DOWNWARD)
 			LOG_INFO("Downward");
 	}
+	LOG_INFO(std::to_string(deltaTime) + " DeltaTime");
+	LOG_INFO(std::to_string(Position.x) + " " + std::to_string(Position.y) + " " + std::to_string(Position.z));
 }
 
 void Camera::ProcessRotationInput(float xoffset, float yoffset, bool constrainPitch)

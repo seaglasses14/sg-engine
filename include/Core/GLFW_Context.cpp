@@ -152,7 +152,12 @@ void GLFW_Context::instanced_scroll_callback(GLFWwindow* pWindow, double xoffset
 
 void GLFW_Context::instanced_key_callback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
 {
+	auto& IM = InputManager::Get();
+	IM.OnKeyCallback(key, action);
+	/*
 	InputState& IS = InputManager::Get().GetInputState();
+	
 	if(action == GLFW_PRESS || action == GLFW_RELEASE)
 		IS.keys[key] = action;
+	*/
 }

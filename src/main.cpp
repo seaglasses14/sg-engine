@@ -29,14 +29,15 @@ unsigned int SCR_HEIGHT = 800;
 const bool WIREFRAME_MODE = false;
 const bool DEPTH_TESTING = true;
 
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
-
 //Camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
 
 int main()
 {
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
+
+
 	GLFW_Context* GLFWcontext = new GLFW_Context();
 	Scene* scene = new Scene();
 	scene->mainCamera = &camera;
@@ -51,8 +52,22 @@ int main()
 
 	// Initializes AssetManager
 	AssetManager::Get().Init();
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_W, new InputAction{ std::string("Forward"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_S, new InputAction{ std::string("Backward"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_A, new InputAction{ std::string("Left"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_D, new InputAction{ std::string("Right"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_Q, new InputAction{ std::string("Downward"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_E, new InputAction{ std::string("Upward"), BoolT, std::unordered_set<int>() } );
 	scene->Init();
 	// This generates shaders and materials
+
+
+	InputManager::Get().BindListener("Forward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(FORWARD, deltaTime); });
+	InputManager::Get().BindListener("Backward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(BACKWARD, deltaTime); });
+	InputManager::Get().BindListener("Left", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(LEFT, deltaTime); });
+	InputManager::Get().BindListener("Right", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(RIGHT, deltaTime); });
+	InputManager::Get().BindListener("Downward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(DOWNWARD, deltaTime); });
+	InputManager::Get().BindListener("Upward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(UPWARD, deltaTime); });
 
 	/* OLD
 	glm::vec3 lightPos(1.f);
@@ -102,12 +117,13 @@ int main()
 
 	while (GLFWcontext->IsRunning())
 	{
-		glfwPollEvents();
-
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		InputManager::Get().RefreshPerFrameValue();
+		glfwPollEvents();
+		InputManager::Get().ProcessEvents();
 
 		if (glfwGetWindowAttrib(GLFWcontext->GetWindow(), GLFW_ICONIFIED))
 		{
@@ -147,7 +163,7 @@ int main()
 
 
 
-		processInput(GLFWcontext->GetWindow());
+		// processInput(GLFWcontext->GetWindow());
 
 
 		//Demo Window
@@ -213,7 +229,8 @@ void processInput(GLFWwindow* window)
 	auto& IM = InputManager::Get();
 	if(IM.mode != SceneViewer)
 		return;
-		
+	
+	/*
 	if (IM.IsKeyDown(GLFW_KEY_ESCAPE))
 		glfwSetWindowShouldClose(window, true);
 	if (IM.IsKeyDown(GLFW_KEY_W))
@@ -229,4 +246,5 @@ void processInput(GLFWwindow* window)
 	if (IM.IsKeyDown(GLFW_KEY_E))
 		camera.ProcessDirectionInput(UPWARD, deltaTime);
 	camera.ProcessRotationInput(IM.GetMouseDeltaX(), IM.GetMouseDeltaY());
+	*/	
 }
