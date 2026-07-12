@@ -141,7 +141,8 @@ void GLFW_Context::instanced_mouse_callback(GLFWwindow* pWindow, double xpos, do
 
 void GLFW_Context::instanced_scroll_callback(GLFWwindow* pWindow, double xoffset, double yoffset)
 {
-	InputManager::Get().GetInputState().scrollOffsetY = yoffset;
+	auto& IM = InputManager::Get();
+	IM.OnScrollCallback(yoffset);
 	/*
 	if (scene == nullptr)
 		Log::Warning("GLFW_Context::instanced_scroll_callback(): scene is nullptr");

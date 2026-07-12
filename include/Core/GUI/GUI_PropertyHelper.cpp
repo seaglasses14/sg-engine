@@ -12,6 +12,9 @@ void GUI_PropertyHelper::DrawWidget(Property& pr)
 	case Bool:
 		WidgetBool(pr);
 		break;
+	case Float:
+		WidgetFloat(pr);
+		break;
 	case Vec3f:
 		WidgetVec3f(pr);
 		break;
@@ -33,6 +36,16 @@ void GUI_PropertyHelper::WidgetBool(Property &pr)
 {
 	ImGui::Spacing();
 	if(ImGui::Checkbox(pr.label.c_str(), static_cast<bool*>(pr.data)))
+	{
+		pr.onChanged();
+	}
+	ImGui::Spacing();
+}
+
+void GUI_PropertyHelper::WidgetFloat(Property &pr)
+{
+	ImGui::Spacing();
+	if(ImGui::DragFloat(pr.label.c_str(), static_cast<float*>(pr.data), 0.001f, 0.f, 0.f, "%.3f"))
 	{
 		pr.onChanged();
 	}

@@ -4,6 +4,7 @@
 #include "Core/Objects/Components/StaticMesh.h"
 #include "Core/Objects/Components/CDirectLight.h"
 #include "Core/Objects/Components/Transform.h"
+#include "Core/Objects/CustomComponents/RotatingMovement.h"
 #include <iostream>
 #include "object.h"
 #include "glm/glm.hpp"
@@ -292,6 +293,22 @@ GObject *ObjectFactory::Plane(const std::string &label, Scene *scene)
 	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
 	sMesh->owner = obj;
 	obj->components.push_back(sMesh);
+	return obj;
+}
+
+GObject *ObjectFactory::Rotating(const std::string &label, Scene *scene)
+{
+	GObject* obj = new GObject(label, scene);
+	StaticMesh* sMesh = new StaticMesh();
+	RotatingMovement* rot = new RotatingMovement();
+	
+	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Cube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
+	sMesh->owner = obj;
+	rot->owner = obj;
+	obj->components.push_back(sMesh);
+	obj->components.push_back(rot);
+
 	return obj;
 }
 

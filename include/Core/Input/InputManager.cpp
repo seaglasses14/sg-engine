@@ -51,12 +51,23 @@ void InputManager::OnKeyCallback(int key, int action)
 	}
 }
 
-void InputManager::OnMouseCallback()
+void InputManager::OnMouseCallback(double xpos, double ypos)
 {
+	if(state.firstMouse)
+	{
+		state.lastMouseX = xpos;
+		state.lastMouseY = ypos;
+		state.firstMouse = false;
+	}
+	state.deltaX = xpos - state.lastMouseX;
+	state.deltaY = state.lastMouseY - ypos;
+	state.lastMouseX = xpos;
+	state.lastMouseY = ypos;
 }
 
-void InputManager::OnScrollCallback()
+void InputManager::OnScrollCallback(double yoffset)
 {
+	state.scrollOffsetY = yoffset;
 }
 
 bool InputManager::IsKeyDown(int glfw_key)

@@ -52,15 +52,18 @@ int main()
 
 	// Initializes AssetManager
 	AssetManager::Get().Init();
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_W, new InputAction{ std::string("Forward"), BoolT, std::unordered_set<int>() } );
+	InputAction* ia = new InputAction{ std::string("Forward"), BoolT, std::unordered_set<int>() };
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_W, ia);
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_UP, ia);
 	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_S, new InputAction{ std::string("Backward"), BoolT, std::unordered_set<int>() } );
 	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_A, new InputAction{ std::string("Left"), BoolT, std::unordered_set<int>() } );
 	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_D, new InputAction{ std::string("Right"), BoolT, std::unordered_set<int>() } );
 	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_Q, new InputAction{ std::string("Downward"), BoolT, std::unordered_set<int>() } );
 	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_E, new InputAction{ std::string("Upward"), BoolT, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_E, new InputAction{ std::string("Look"), Float2D, std::unordered_set<int>() } );
 	scene->Init();
-	// This generates shaders and materials
 
+	// This generates shaders and materials
 
 	InputManager::Get().BindListener("Forward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(FORWARD, deltaTime); });
 	InputManager::Get().BindListener("Backward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(BACKWARD, deltaTime); });
@@ -115,6 +118,9 @@ int main()
 	bool showWindow = false;
 	//**************************** RENDER *****************************************
 
+	scene->CreateRotating("RotatingCube");
+	scene->Begin();
+
 	while (GLFWcontext->IsRunning())
 	{
 		float currentFrame = static_cast<float>(glfwGetTime());
@@ -124,6 +130,8 @@ int main()
 		InputManager::Get().RefreshPerFrameValue();
 		glfwPollEvents();
 		InputManager::Get().ProcessEvents();
+
+		scene->Update(deltaTime);
 
 		if (glfwGetWindowAttrib(GLFWcontext->GetWindow(), GLFW_ICONIFIED))
 		{

@@ -8,12 +8,41 @@
 #include "Core/Objects/Components/CDirectLight.h"
 #include "Core/Interfaces/Renderable.h"
 #include "Data/Material.h"
+#include "Core/Objects/Components/CScriptable.h"
 
 Scene::Scene()
 {
 	GenerateFrameBuffer();
 
 	objects = std::vector<GObject*>();
+}
+
+void Scene::Begin()
+{
+	for (GObject* obj : objects)
+	{
+		for (auto& comp : obj->components)
+		{
+			if (auto* scriptable = dynamic_cast<CScriptable*>(comp))
+			{
+				scriptable->Begin();
+			}
+		}
+	}
+}
+
+void Scene::Update(float deltaTime)
+{
+	for (GObject* obj : objects)
+	{
+		for (auto& comp : obj->components)
+		{
+			if (auto* scriptable = dynamic_cast<CScriptable*>(comp))
+			{
+				scriptable->Update(deltaTime);
+			}
+		}
+	}
 }
 
 void Scene::PreRender()
@@ -95,6 +124,12 @@ GObject* Scene::CreateCube(const std::string& name)
 GObject *Scene::CreatePlane(const std::string &name)
 {
 	GObject* obj = ObjectFactory::Plane(GenerateUniqueLabel(name), this);
+    return AddObject(obj);
+}
+
+GObject *Scene::CreateRotating(const std::string &name)
+{
+	GObject* obj = ObjectFactory::Rotating(GenerateUniqueLabel(name), this);
     return AddObject(obj);
 }
 

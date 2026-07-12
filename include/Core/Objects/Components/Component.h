@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "Core/Objects/GObject.h"
 #include <vector>
 #include <string>
 #include "Core/Objects/Components/Property.h"

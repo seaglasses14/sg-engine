@@ -16,6 +16,7 @@ public:
 	static GObject* Empty(const std::string& label, Scene* scene);
 	static GObject* Cube(const std::string& label, Scene* scene);
 	static GObject* Plane(const std::string& label, Scene* scene);
+	static GObject* Rotating(const std::string& label, Scene* scene);
 	static GObject* DirectLight(const std::string& label, Scene* scene);
 	//static Object genUVSphere(Material* pMaterial, int stacks = 20, int slices = 20, float radius = 1);
 };

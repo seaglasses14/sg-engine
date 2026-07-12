@@ -63,8 +63,8 @@ public:
 
 	// Adding events in queue
 	void OnKeyCallback(int key, int action);
-	void OnMouseCallback();
-	void OnScrollCallback();
+	void OnMouseCallback(double xpos, double ypos);
+	void OnScrollCallback(double yoffset);
 
 
 	bool IsKeyDown(int glfw_key);
