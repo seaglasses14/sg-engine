@@ -7,6 +7,11 @@ template<typename T>
 struct AssetHandle
 {
 	AssetID id; //= ""
+
+	bool operator==(const AssetHandle<T>& other)
+	{
+		return id == other.id;
+	}
 };
 
 template<typename T>

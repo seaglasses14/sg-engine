@@ -1,14 +1,15 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
 #include <string>
 #include <unordered_set>
 #include <variant>
 #include <glm/glm.hpp>
 
-enum ActionValueType
+enum class ActionValueType
 {
-    BoolT,
-    FloatT,
+    Bool,
+    Float,
     Float2D
 };
 /*

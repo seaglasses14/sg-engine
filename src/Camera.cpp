@@ -74,6 +74,8 @@ void Camera::ProcessDirectionInput(Camera_Movement direction, float deltaTime)
 
 void Camera::ProcessRotationInput(float xoffset, float yoffset, bool constrainPitch)
 {
+	LOG_INFO(std::to_string(xoffset) + " - " + std::to_string(yoffset));
+
 	xoffset *= Sensitivity;
 	yoffset *= Sensitivity;
 

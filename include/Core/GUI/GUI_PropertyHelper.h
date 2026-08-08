@@ -27,7 +27,7 @@ private:
 
 		if (ImGui::BeginCombo(comboId, asset.handle.id.c_str(), ImGuiComboFlags_HeightRegular))
 		{
-			ImGuiTextFilter filter;
+			static ImGuiTextFilter filter;
 
 			if (ImGui::IsWindowAppearing())
 			{

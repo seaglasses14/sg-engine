@@ -52,18 +52,18 @@ int main()
 
 	// Initializes AssetManager
 	AssetManager::Get().Init();
-	InputAction* ia = new InputAction{ std::string("Forward"), BoolT, std::unordered_set<int>() };
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_W, ia);
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_UP, ia);
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_S, new InputAction{ std::string("Backward"), BoolT, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_A, new InputAction{ std::string("Left"), BoolT, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_D, new InputAction{ std::string("Right"), BoolT, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_Q, new InputAction{ std::string("Downward"), BoolT, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_E, new InputAction{ std::string("Upward"), BoolT, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(GLFW_KEY_E, new InputAction{ std::string("Look"), Float2D, std::unordered_set<int>() } );
+	
+	InputAction* ia = new InputAction{ std::string("Forward"), ActionValueType::Bool, std::unordered_set<int>() };
+	InputManager::Get().inputMapping.AddActionToInput(Key_W, ia);
+	InputManager::Get().inputMapping.AddActionToInput(Key_Up, ia);
+	InputManager::Get().inputMapping.AddActionToInput(Key_S, new InputAction{ std::string("Backward"), ActionValueType::Bool, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_A, new InputAction{ std::string("Left"), ActionValueType::Bool, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_D, new InputAction{ std::string("Right"), ActionValueType::Bool, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_Q, new InputAction{ std::string("Downward"), ActionValueType::Bool, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_E, new InputAction{ std::string("Upward"), ActionValueType::Bool, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Mouse_Delta, new InputAction{ std::string("Look"), ActionValueType::Float2D, std::unordered_set<int>() } );
+	
 	scene->Init();
-
-	// This generates shaders and materials
 
 	InputManager::Get().BindListener("Forward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(FORWARD, deltaTime); });
 	InputManager::Get().BindListener("Backward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(BACKWARD, deltaTime); });
@@ -71,48 +71,10 @@ int main()
 	InputManager::Get().BindListener("Right", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(RIGHT, deltaTime); });
 	InputManager::Get().BindListener("Downward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(DOWNWARD, deltaTime); });
 	InputManager::Get().BindListener("Upward", Pressed, [scene, &deltaTime](const ActionValue &){ scene->mainCamera->ProcessDirectionInput(UPWARD, deltaTime); });
-
-	/* OLD
-	glm::vec3 lightPos(1.f);
-	glm::vec3 lightColor(1.f);
-
-	glm::mat4 lightModel(1.0f), sphereModel(1.f);
-
-	lightModel = glm::scale(lightModel, glm::vec3(0.5f));
-
-	//Creating Shaders
-	Shader baseVertex("shaders/base.vert", "shaders/base.frag");
-	Shader planetSP("shaders/textured.vert", "shaders/textured.frag");
-
-	std::vector<const char*> path = { "textures/8k_earth_daymap.jpg", "textures/matrix.jpg" ,"textures/8k_earth_clouds.jpg", "textures/8k_earth_specular_map.png" };
-	std::vector<const char*> path2 = { "textures/orange.jpg", "textures/matrix.jpg" };
-	
-	//Creating Textures
-	Texture earth(path);
-
-	//Creating Materials
-	Material whiteMaterial(&baseVertex, nullptr), planetMaterial(&planetSP, &earth);
-	whiteMaterial.AddUniform("Color", lightColor);
-
-	planetMaterial.AddUniform("light.color", lightColor);
-	planetMaterial.AddUniform("material.diffuse1", 0);
-	planetMaterial.AddUniform("material.diffuse2", 1);
-	planetMaterial.AddUniform("material.diffuse3", 2);
-	planetMaterial.AddUniform("material.ambient", glm::vec3(0.f, 0.2f, 0.2f));
-	planetMaterial.AddUniform("material.specular", 3);
-	planetMaterial.AddUniform("material.shininess", 0.25f * 128.f);
-
-	//Object
-	Object worldGrid = Shapes::genWorldGrid(&whiteMaterial, 50, 20.f);
-	Object lightSource = Shapes::genSimpleCube(&whiteMaterial);
-	Object sphere = Shapes::genUVSphere(&planetMaterial, 40, 40, 1.0f);
-
-	sphere.SetModel(sphereModel);
-
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(camera.Fov), static_cast<float>(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 1000.0f);
-
-	*/
+	InputManager::Get().BindListener("Look", Pressed, [scene, &deltaTime](const ActionValue & value){
+		const glm::vec2& delta = std::get<glm::vec2>(value);
+		scene->mainCamera->ProcessRotationInput(delta.x, delta.y);
+	});
 
 	bool showDemoWindow = true;
 	bool showWindow = false;
@@ -127,9 +89,11 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		InputManager::Get().RefreshPerFrameValue();
 		glfwPollEvents();
 		InputManager::Get().ProcessEvents();
+		//processInput(GLFWcontext->GetWindow());
+
+		InputManager::Get().RefreshPerFrameValue();
 
 		scene->Update(deltaTime);
 
@@ -235,8 +199,8 @@ int main()
 void processInput(GLFWwindow* window)
 {
 	auto& IM = InputManager::Get();
-	if(IM.mode != SceneViewer)
-		return;
+	//if(IM.mode != SceneViewer)
+	//	return;
 	
 	/*
 	if (IM.IsKeyDown(GLFW_KEY_ESCAPE))
@@ -253,6 +217,6 @@ void processInput(GLFWwindow* window)
 		camera.ProcessDirectionInput(DOWNWARD, deltaTime);
 	if (IM.IsKeyDown(GLFW_KEY_E))
 		camera.ProcessDirectionInput(UPWARD, deltaTime);
-	camera.ProcessRotationInput(IM.GetMouseDeltaX(), IM.GetMouseDeltaY());
-	*/	
+	*/
+	camera.ProcessRotationInput(IM.GetMouseDeltaX(), IM.GetMouseDeltaY());	
 }

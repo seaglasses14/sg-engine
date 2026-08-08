@@ -1,9 +1,10 @@
 #include "GLFW_Context.h"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 #include "Core/Log.h"
 #include "Core/Input/InputManager.h"
+
 
 GLFW_Context::GLFW_Context()
 {
@@ -36,6 +37,7 @@ GLFW_Context::GLFW_Context()
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetMouseButtonCallback(window, mouse_key_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetKeyCallback(window, key_callback);
 	
@@ -99,6 +101,12 @@ void GLFW_Context::mouse_callback(GLFWwindow* pWindow, double xpos, double ypos)
 	instance->instanced_mouse_callback(pWindow, xpos, ypos);
 }
 
+void GLFW_Context::mouse_key_callback(GLFWwindow *pWindow, int button, int action, int mods)
+{
+	GLFW_Context* instance = static_cast<GLFW_Context*>(glfwGetWindowUserPointer(pWindow));
+	instance->instanced_mouse_key_callback(pWindow, button, action, mods);
+}
+
 void GLFW_Context::scroll_callback(GLFWwindow* pWindow, double xoffset, double yoffset)
 {
 	GLFW_Context* instance = static_cast<GLFW_Context*>(glfwGetWindowUserPointer(pWindow));
@@ -118,25 +126,14 @@ void GLFW_Context::instanced_framebuffer_size_callback(GLFWwindow* pWindow, int 
 
 void GLFW_Context::instanced_mouse_callback(GLFWwindow* pWindow, double xpos, double ypos)
 {
-	InputState& IS = InputManager::Get().GetInputState();
+	auto& IM = InputManager::Get();
+	IM.OnMouseCallback(xpos, ypos);
+}
 
-	if (IS.firstMouse)
-	{
-		IS.lastMouseX = xpos;
-		IS.lastMouseY = ypos;
-		IS.firstMouse = false;
-	}
-	IS.deltaX = xpos - IS.lastMouseX;
-	IS.deltaY = IS.lastMouseY - ypos; // reversed since y range from bottom to top
-	IS.lastMouseX = xpos;
-	IS.lastMouseY = ypos;
-
-	/*
-	if(scene == nullptr)
-		Log::Warning("GLFW_Context::instanced_mouse_callback(): scene is nullptr");
-	else
-		scene->mainCamera->ProcessRotationInput(xoffset, yoffset);
-	*/
+void GLFW_Context::instanced_mouse_key_callback(GLFWwindow *pWindow, int button, int action, int mods)
+{
+	auto& IM = InputManager::Get();
+	IM.OnMouseKeyCallback(button, action);
 }
 
 void GLFW_Context::instanced_scroll_callback(GLFWwindow* pWindow, double xoffset, double yoffset)

@@ -29,6 +29,8 @@ struct InputState
 	double lastMouseY = 0;
 	double deltaX = 0;
 	double deltaY = 0;
+	double deltaX_prev = 0;
+	double deltaY_prev = 0;
 	bool firstMouse = true;
 
 	// Mouse Scroll
@@ -36,8 +38,11 @@ struct InputState
 
 	// Key Presses
 
-	bool keys[GLFW_KEY_LAST] = {};
-	bool keys_prev[GLFW_KEY_LAST] = {};
+	bool keys[GLFW_KEY_LAST + 1] = { };
+	bool keys_prev[GLFW_KEY_LAST + 1] = {};
+
+	bool mouse_keys[GLFW_MOUSE_BUTTON_LAST + 1] = {};
+	bool mouse_keys_prev[GLFW_MOUSE_BUTTON_LAST + 1] = {};
 };
 
 struct InputEvent
@@ -63,20 +68,37 @@ public:
 
 	// Adding events in queue
 	void OnKeyCallback(int key, int action);
+	void OnMouseKeyCallback(int key, int action);
 	void OnMouseCallback(double xpos, double ypos);
 	void OnScrollCallback(double yoffset);
-
 
 	bool IsKeyDown(int glfw_key);
 	bool IsKeyUp(int glfw_key);
 
+	bool IsMouseKeyDown(int glfw_key);
+	bool IsMouseKeyUp(int glfw_key);
+
 	float GetMouseDeltaX();
 	float GetMouseDeltaY();
 
+	glm::vec2 GetMousePosition();
+
 	InputMapping inputMapping;
+	std::vector<InputAction> inputActions;
+
+	bool BindListener(std::string actionId, InputTrigger trigger, std::function<void(const ActionValue&)> listenerFunction );
+
+	void ProcessEvents();
+
+	InputMode mode = InputMode::Editor;
+	bool viewportHovered = false;
+
+private:
+	InputState state;
+
 	std::unordered_map<InputAction*, InputEvent> activeActions;
 	std::queue<InputEvent> eventQueue;
-
+	
 	std::unordered_map<
 		std::string,
 		std::unordered_map<
@@ -86,14 +108,5 @@ public:
 		>
 	> listeners;
 
-	bool BindListener(std::string actionId, InputTrigger trigger, std::function<void(const ActionValue&)> listenerFunction );
-
-	void ProcessEvents();
-
-	InputMode mode = InputMode::Editor;
-
-	bool viewportHovered = false;
-
-private:
-	InputState state;
+	void OnGenericKeyCallback(bool* key_states, int device_offset ,int key, int action);
 };

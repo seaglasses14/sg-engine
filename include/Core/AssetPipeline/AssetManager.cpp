@@ -34,7 +34,7 @@ void AssetManager::Init()
 
 Shader* AssetManager::GetShader(const AssetHandle<Shader>& handle)
 {
-    if (shaders.find(handle.id) != shaders.end())
+    if (shaders.contains(handle.id))
     {
         return &shaders.at(handle.id);
     }
@@ -43,7 +43,7 @@ Shader* AssetManager::GetShader(const AssetHandle<Shader>& handle)
 
 Texture* AssetManager::GetTexture(const AssetHandle<Texture>& handle)
 {
-    if (textures.find(handle.id) != textures.end())
+    if (textures.contains(handle.id))
     {
         return &textures.at(handle.id);
     }
@@ -52,7 +52,7 @@ Texture* AssetManager::GetTexture(const AssetHandle<Texture>& handle)
 
 Material* AssetManager::GetMaterial(const AssetHandle<Material>& handle)
 {
-    if (materials.find(handle.id) != materials.end())
+    if (materials.contains(handle.id))
     {
         return &materials.at(handle.id);
     }
@@ -61,7 +61,7 @@ Material* AssetManager::GetMaterial(const AssetHandle<Material>& handle)
 
 Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
 {
-    if (models.find(handle.id) != models.end())
+    if (models.contains(handle.id))
     {
         return &models.at(handle.id);
     }

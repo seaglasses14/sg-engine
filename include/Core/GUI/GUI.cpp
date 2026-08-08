@@ -52,7 +52,7 @@ void GUI::DrawViewport(GLint texId)
 
 void GUI::Render()
 {
-	
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
