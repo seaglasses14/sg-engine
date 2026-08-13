@@ -84,7 +84,7 @@ public:
 	glm::vec2 GetMousePosition();
 
 	InputMapping inputMapping;
-	std::vector<InputAction> inputActions;
+	std::vector<InputAction*> inputActions;
 
 	bool BindListener(std::string actionId, InputTrigger trigger, std::function<void(const ActionValue&)> listenerFunction );
 

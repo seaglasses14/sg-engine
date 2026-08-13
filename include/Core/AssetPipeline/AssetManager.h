@@ -9,12 +9,14 @@ class Shader;
 class Texture;
 class Material;
 class Model;
+class InputAction;
 
 class AssetManager
 {
 public:
 	std::string shader_desc_directory = "assets/descriptors/shaders/";
 	std::string material_desc_directory = "assets/descriptors/materials/";
+	std::string action_desc_directory = "assets/descriptors/inputActions/";
 	std::string model_raw_directory = "assets/raw/models/";
 	std::string texture_raw_directory = "assets/raw/textures/";
 	std::string shader_raw_directory = "assets/raw/shaders/";
@@ -27,11 +29,13 @@ public:
 	Texture* GetTexture(const AssetHandle<Texture>& handle);
 	Material* GetMaterial(const AssetHandle<Material>& handle);
 	Model* GetModel(const AssetHandle<Model>& handle);
+	InputAction* GetInputAction(const AssetHandle<InputAction>& handle);
 
 	std::vector<AssetID>& GetShaderAssetIDs();
 	std::vector<AssetID>& GetTextureAssetIDs();
 	std::vector<AssetID>& GetMaterialAssetIDs();
 	std::vector<AssetID>& GetModelAssetIDs();
+	std::vector<AssetID>& GetInputActionIDs();
 
 	AssetManager(const AssetManager&) = delete;
 	AssetManager& operator=(const AssetManager&) = delete;
@@ -45,6 +49,8 @@ protected:
 	bool GenerateMaterials(std::string directory);
 	bool GenerateBaseModels();
 	bool GenerateBaseModels(std::string directory);
+	bool GenerateInputActions();
+	bool GenerateInputActions(std::string directory);
 	
 	std::unordered_map<AssetID, Shader> shaders;
 	std::vector<AssetID> shader_ids;
@@ -57,6 +63,9 @@ protected:
 
 	std::unordered_map<AssetID, Model> models;
 	std::vector<AssetID> model_ids;
+
+	std::unordered_map<AssetID, InputAction> actions;
+	std::vector<AssetID> action_ids;
 
 private:
 	AssetManager();

@@ -38,12 +38,15 @@ void GUI_SceneEditor::GUIW_MenuBar()
         if (ImGui::BeginMenu("Tools"))
         {
             if (ImGui::MenuItem("Input Bindings")) { b_open_InputBindings = true; }
+            /*
             if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {} // Disabled item
             ImGui::Separator();
             if (ImGui::MenuItem("Cut", "Ctrl+X")) {}
             if (ImGui::MenuItem("Copy", "Ctrl+C")) {}
             if (ImGui::MenuItem("Paste", "Ctrl+V")) {}
+            */
             ImGui::EndMenu();
+
         }
         ImGui::EndMainMenuBar();
     }
@@ -257,8 +260,15 @@ void GUI_SceneEditor::GUIW_InputBindings(bool *b_open)
                     ImGui::BeginGroup();
                     ImGui::EndGroup();
                     */
-                ImGui::EndTabItem();
+                    ImGui::EndTabItem();
                 }
+                
+                if(ImGui::BeginTabItem("Input Actions"))
+                {
+                    
+                    ImGui::EndTabBar();
+                }
+
                 ImGui::EndTabBar();
             }
         }

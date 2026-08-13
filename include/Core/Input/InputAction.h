@@ -34,4 +34,11 @@ struct InputAction
 	std::string id;
     ActionValueType type;
     std::unordered_set<int> activeBindings;
+
+    InputAction(const std::string& id, ActionValueType type)
+    {
+        this->id = id;
+        this->type = type;
+        activeBindings = std::unordered_set<int>();
+    }
 };

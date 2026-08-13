@@ -6,6 +6,7 @@
 #include <filesystem>
 
 #include "Data/Material.h"
+#include "Core/Input/InputAction.h"
 
 namespace fs = std::filesystem;
 
@@ -61,12 +62,23 @@ public:
 	std::vector<ModelMaterialStruct> materials;
 };
 
+class InputActionDescriptor
+{
+public:
+	bool isValid = true;
+
+	std::string assetID;
+	std::string actionID;
+	ActionValueType type;
+};
+
 class JsonParser
 {
 public:
 	static ShaderDescriptor LoadShaderDescriptor(const fs::path& path);
 	static MaterialDescriptor LoadMaterialDescriptor(const fs::path& path);
 	static ModelDescriptor LoadModelDescriptor(const fs::path& path);
+	static InputActionDescriptor LoadInputActionDescriptor(const fs::path& path);
 
 	static UniformValue ParseUniform(const nlohmann::json& u);
 };

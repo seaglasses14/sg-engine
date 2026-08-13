@@ -4,6 +4,13 @@
 #include <fstream>
 #include "Core/Log.h"
 
+NLOHMANN_JSON_SERIALIZE_ENUM(ActionValueType,
+{
+    { ActionValueType::Bool, "bool" },
+    { ActionValueType::Float, "float" },
+    { ActionValueType::Float2D, "float2d" }
+})
+
 ShaderDescriptor JsonParser::LoadShaderDescriptor(const fs::path& path)
 {
 	ShaderDescriptor descriptor;
@@ -134,6 +141,41 @@ ModelDescriptor JsonParser::LoadModelDescriptor(const fs::path& path)
 	catch (std::ifstream::failure e)
 	{
 		LOG_ERROR("JsonPasers::Error when reading material descriptor file");
+		descriptor.isValid = false;
+	}
+
+	return descriptor;
+}
+
+InputActionDescriptor JsonParser::LoadInputActionDescriptor(const fs::path &path)
+{
+    InputActionDescriptor descriptor;
+
+	std::ifstream file;
+	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	try
+	{
+		file.open(path);
+
+		nlohmann::json json;
+		file >> json;
+
+		file.close();
+
+		descriptor.isValid = true;
+		descriptor.assetID = json.value("asset_id", "");
+		descriptor.actionID = json.value("action_id", "");
+		descriptor.type = json.at("action_value_type").get<ActionValueType>();
+
+		if (descriptor.assetID == "" || descriptor.actionID == "")
+		{
+			LOG_ERROR("JsonPasers::InputAction descriptor must have defined asset id and type");
+			descriptor.isValid = false;
+		}
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG_ERROR("JsonPasers::Error when reading input action descriptor file");
 		descriptor.isValid = false;
 	}
 

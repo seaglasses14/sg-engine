@@ -7,6 +7,20 @@ template<typename T>
 struct AssetHandle
 {
 	AssetID id; //= ""
+	std::string displayName;
+
+	AssetHandle(){}
+
+	AssetHandle(const AssetID& id)
+	{
+		this.id = id;
+		displayName = id;
+	}
+	AssetHandle(const AssetID& id, const std::string& displayName)
+	{
+		this.id = id;
+		this->displayName = displayName;
+	}
 
 	bool operator==(const AssetHandle<T>& other)
 	{

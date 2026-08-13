@@ -53,15 +53,19 @@ int main()
 	// Initializes AssetManager
 	AssetManager::Get().Init();
 	
-	InputAction* ia = new InputAction{ std::string("Forward"), ActionValueType::Bool, std::unordered_set<int>() };
+	InputAction* ia = new InputAction{ std::string("Forward"), ActionValueType::Bool };
+	
+	auto& IM = InputManager::Get();
+	IM.inputActions.push_back(ia);
+
 	InputManager::Get().inputMapping.AddActionToInput(Key_W, ia);
 	InputManager::Get().inputMapping.AddActionToInput(Key_Up, ia);
-	InputManager::Get().inputMapping.AddActionToInput(Key_S, new InputAction{ std::string("Backward"), ActionValueType::Bool, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(Key_A, new InputAction{ std::string("Left"), ActionValueType::Bool, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(Key_D, new InputAction{ std::string("Right"), ActionValueType::Bool, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(Key_Q, new InputAction{ std::string("Downward"), ActionValueType::Bool, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(Key_E, new InputAction{ std::string("Upward"), ActionValueType::Bool, std::unordered_set<int>() } );
-	InputManager::Get().inputMapping.AddActionToInput(Mouse_Delta, new InputAction{ std::string("Look"), ActionValueType::Float2D, std::unordered_set<int>() } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_S, new InputAction{ std::string("Backward"), ActionValueType::Bool } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_A, new InputAction{ std::string("Left"), ActionValueType::Bool } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_D, new InputAction{ std::string("Right"), ActionValueType::Bool } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_Q, new InputAction{ std::string("Downward"), ActionValueType::Bool } );
+	InputManager::Get().inputMapping.AddActionToInput(Key_E, new InputAction{ std::string("Upward"), ActionValueType::Bool } );
+	InputManager::Get().inputMapping.AddActionToInput(Mouse_Delta, new InputAction{ std::string("Look"), ActionValueType::Float2D } );
 	
 	scene->Init();
 

@@ -68,6 +68,15 @@ Model* AssetManager::GetModel(const AssetHandle<Model>& handle)
     return nullptr;
 }
 
+InputAction *AssetManager::GetInputAction(const AssetHandle<InputAction> &handle)
+{
+    if(actions.contains(handle.id))
+    {
+        return &actions.at(handle.id);
+    }
+    return nullptr;
+}
+
 std::vector<AssetID> &AssetManager::GetShaderAssetIDs()
 {
     return shader_ids;
@@ -86,6 +95,11 @@ std::vector<AssetID> &AssetManager::GetMaterialAssetIDs()
 std::vector<AssetID> &AssetManager::GetModelAssetIDs()
 {
     return model_ids;
+}
+
+std::vector<AssetID> &AssetManager::GetInputActionIDs()
+{
+    return action_ids;
 }
 
 bool AssetManager::PrecompileShaders()
@@ -247,6 +261,38 @@ bool AssetManager::GenerateBaseModels(std::string directory)
 
                 models.insert({ entry.path().string(), model });
                 model_ids.push_back(entry.path().string());
+            }
+        }
+    }
+    return true;
+}
+
+bool AssetManager::GenerateInputActions()
+{
+    return GenerateInputActions(action_desc_directory);
+}
+
+bool AssetManager::GenerateInputActions(std::string directory)
+{
+    for (const auto& entry : fs::directory_iterator(directory))
+    {
+        fs::path path = entry.path();
+        if (entry.is_directory())
+        {
+            GenerateInputActions(path.string());
+        }
+        if (path.has_extension())
+        {
+            if (path.extension().string() == ".json")
+            {
+                InputActionDescriptor desc = JsonParser::LoadInputActionDescriptor(entry.path());
+
+                if (desc.isValid)
+                {
+                    InputAction inputAction(desc.actionID, desc.type);
+                    actions.insert({ desc.assetID, inputAction });
+                    action_ids.push_back(desc.assetID);
+                }
             }
         }
     }
