@@ -22,6 +22,7 @@ const float SENSITIVITY =   0.1f;
 const float FOV			=  45.0f;
 const float FOV_MIN		=   1.0f;
 const float FOV_MAX		=  45.0f;
+const float ORTHO_SIZE	=  10.0f;
 const bool FPS_MODE		=   false;
 
 class Camera
@@ -38,10 +39,16 @@ public:
 	float Speed;
 	float Sensitivity;
 	float Fov;
+	float OrthoSize;
+
+	float nearPlane = 0.1f;
+	float farPlane = 1000.0f;
+	bool isOrthographic = true;
 
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
+	glm::mat4 GetProjectionMatrix(float windowSizeX, float windowSizeY);
 	void ProcessDirectionInput(Camera_Movement direction, float deltaTime);
 	void ProcessRotationInput(float xoffset, float yoffset, bool constrainPitch = true);
 	void ProcessScrollInput(float yoffset);

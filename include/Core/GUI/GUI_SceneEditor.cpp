@@ -279,6 +279,13 @@ void GUI_SceneEditor::GUIW_InputBindings(bool *b_open)
 void GUI_SceneEditor::GUIW_Scene(bool* b_open, bool* b_viewportHovered, GLint texId)
 {
     //ImGui::Begin("Viewport");
+
+    std::string perspectiveButtonLabel = scene->mainCamera->isOrthographic ? "2D" : "3D";
+    if(ImGui::Button(perspectiveButtonLabel.c_str()))
+    {
+        scene->mainCamera->isOrthographic = !scene->mainCamera->isOrthographic;
+    }
+    ImGui::Separator();
     ImGui::Image(texId, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
     *b_viewportHovered = ImGui::IsItemHovered();
     auto& IM = InputManager::Get();

@@ -13,12 +13,12 @@ struct AssetHandle
 
 	AssetHandle(const AssetID& id)
 	{
-		this.id = id;
+		this->id = id;
 		displayName = id;
 	}
 	AssetHandle(const AssetID& id, const std::string& displayName)
 	{
-		this.id = id;
+		this->id = id;
 		this->displayName = displayName;
 	}
 

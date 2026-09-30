@@ -5,7 +5,8 @@
 Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch)
 	: Speed(SPEED),
 	  Sensitivity(SENSITIVITY),
-	  Fov(FOV)
+	  Fov(FOV),
+	  OrthoSize(ORTHO_SIZE)
 {
 	Position = position;
 	WorldUp = worldUp;
@@ -17,7 +18,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch)
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
 	: Speed(SPEED),
 	  Sensitivity(SENSITIVITY),
-	  Fov(FOV)
+	  Fov(FOV),
+	  OrthoSize(ORTHO_SIZE)
 {
 	Position = glm::vec3(posX, posY, posZ);
 	WorldUp = glm::vec3(upX, upY, upZ);
@@ -28,8 +30,19 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	//return glm::lookAt(Position, Position + Front, Up);
 	return LookAt(Position, Position + Front, Up);
+}
+
+glm::mat4 Camera::GetProjectionMatrix(float windowSizeX, float windowSizeY)
+{
+	float aspectRatio = windowSizeX/windowSizeY;
+	if(isOrthographic)
+	{
+		float halfHeight = OrthoSize;
+        float halfWidth  = halfHeight * aspectRatio;
+		return glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, nearPlane, farPlane);
+	}
+    return glm::perspective(glm::radians(Fov), aspectRatio, nearPlane, farPlane);
 }
 
 void Camera::ProcessDirectionInput(Camera_Movement direction, float deltaTime)

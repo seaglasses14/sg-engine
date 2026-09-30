@@ -62,10 +62,8 @@ void Scene::FirstPass()
 	
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glm::mat4 projection;
 	
-	projection = glm::perspective(glm::radians(mainCamera->Fov), windowSize.x/windowSize.y, 0.1f, 1000.0f);
-
+	glm::mat4 projection = mainCamera->GetProjectionMatrix(windowSize.x, windowSize.y);
 	glm::mat4 view = mainCamera->GetViewMatrix();
 
 	RenderContext context({ projection, view, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) });
