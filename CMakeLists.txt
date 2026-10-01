@@ -1,24 +1,20 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(learnOpenGLgettingStarted)
+project(SG-Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(DEV_LIBS_ROOT "" CACHE PATH "Folder for external libraries")
+#set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 
-if(NOT DEV_LIBS_ROOT)
-    message(FATAL_ERROR "Error: Set variable with external libraries folder")
-endif()
-
-set(GLFW_DIR   "${DEV_LIBS_ROOT}/GLFW")
-set(ASSIMP_DIR "${DEV_LIBS_ROOT}/Assimp")
-
-message(STATUS "DEV_LIBS_ROOT = ${DEV_LIBS_ROOT}")
-message(STATUS "GLFW_DIR = ${GLFW_DIR}")
-message(STATUS "ASSIMP_DIR = ${ASSIMP_DIR}")
+add_subdirectory(external/assimp)
+add_subdirectory(external/GLFW)
 
 file(GLOB_RECURSE PROJECT_SOURCES
     
@@ -37,43 +33,43 @@ file(GLOB_RECURSE PROJECT_SOURCES
     include/*.cpp
 )
 
-add_executable(learnOpenGLgettingStarted
+add_executable(SG-Engine
     ${PROJECT_SOURCES}
 )
 
-target_include_directories(learnOpenGLgettingStarted PRIVATE
-    ${DEV_LIBS_ROOT}/include
+target_include_directories(SG-Engine PRIVATE
     include
     external
     external/imgui-docking
     external/imgui-docking/backends
 )
 
-target_link_directories(learnOpenGLgettingStarted PRIVATE
-    ${DEV_LIBS_ROOT}/lib/GLFW
-    ${DEV_LIBS_ROOT}/lib/assimp
-)
-
-target_link_libraries(learnOpenGLgettingStarted PRIVATE
-    glfw3.lib
-    assimp-vc145-mtd.lib
+target_link_libraries(SG-Engine PRIVATE
+    assimp
+    glfw
     opengl32.lib
 )
 
-add_custom_command(TARGET learnOpenGLgettingStarted POST_BUILD
+add_custom_command(TARGET SG-Engine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${DEV_LIBS_ROOT}/bin/assimp/assimp-vc145-mtd.dll
-    $<TARGET_FILE_DIR:learnOpenGLgettingStarted>
+        $<TARGET_FILE:assimp>
+        $<TARGET_FILE_DIR:SG-Engine>
 )
 
-add_custom_command(TARGET learnOpenGLgettingStarted POST_BUILD
+add_custom_command(TARGET SG-Engine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:glfw>
+        $<TARGET_FILE_DIR:SG-Engine>
+)
+
+add_custom_command(TARGET SG-Engine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_SOURCE_DIR}/imgui.ini
-    $<TARGET_FILE_DIR:learnOpenGLgettingStarted>
+    $<TARGET_FILE_DIR:SG-Engine>
 )
 
-add_custom_command(TARGET learnOpenGLgettingStarted POST_BUILD
+add_custom_command(TARGET SG-Engine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/assets
-    $<TARGET_FILE_DIR:learnOpenGLgettingStarted>/assets
+    $<TARGET_FILE_DIR:SG-Engine>/assets
 )
