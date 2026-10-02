@@ -95,7 +95,7 @@ void Scene::SecondPass()
 
 void Scene::Init()
 {
-	Material* mat = AssetManager::Get().GetMaterial(AssetHandle<Material>({ "BaseMaterial" }));
+	Material* mat = AssetManager::Get().GetMaterial(AssetHandle<Material>(AssetID{ "BaseMaterial" }));
 	worldGrid = ObjectFactory::genWorldGrid(mat, 100, 10);
 }
 

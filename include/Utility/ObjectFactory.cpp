@@ -277,8 +277,8 @@ GObject* ObjectFactory::Cube(const std::string& label, Scene* scene)
 	GObject* obj = new GObject(label, scene);
 	StaticMesh* sMesh = new StaticMesh();
 
-	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Cube.obj"}));
-	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
+	sMesh->SetModelHandle(AssetHandle<Model>(AssetID{"assets/raw/models/Cube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>(AssetID{"DefaultMaterial"}));
 	sMesh->owner = obj;
 	obj->components.push_back(sMesh);
 	return obj;
@@ -289,8 +289,8 @@ GObject *ObjectFactory::Plane(const std::string &label, Scene *scene)
 	GObject* obj = new GObject(label, scene);
 	StaticMesh* sMesh = new StaticMesh();
 
-	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Plane.obj"}));
-	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
+	sMesh->SetModelHandle(AssetHandle<Model>(AssetID{"assets/raw/models/Plane.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>(AssetID{"DefaultMaterial"}));
 	sMesh->owner = obj;
 	obj->components.push_back(sMesh);
 	return obj;
@@ -302,8 +302,8 @@ GObject *ObjectFactory::Rotating(const std::string &label, Scene *scene)
 	StaticMesh* sMesh = new StaticMesh();
 	RotatingMovement* rot = new RotatingMovement();
 	
-	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/Cube.obj"}));
-	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"DefaultMaterial"}));
+	sMesh->SetModelHandle(AssetHandle<Model>(AssetID{"assets/raw/models/Cube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>(AssetID{"DefaultMaterial"}));
 	sMesh->owner = obj;
 	rot->owner = obj;
 	obj->components.push_back(sMesh);
@@ -318,8 +318,8 @@ GObject* ObjectFactory::DirectLight(const std::string &label, Scene* scene)
 	obj->transform->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 
 	StaticMesh* sMesh = new StaticMesh();
-	sMesh->SetModelHandle(AssetHandle<Model>({"assets/raw/models/DefaultCube.obj"}));
-	sMesh->SetMaterialAtSlot(AssetHandle<Material>({"BaseMaterial"}));
+	sMesh->SetModelHandle(AssetHandle<Model>(AssetID{"assets/raw/models/DefaultCube.obj"}));
+	sMesh->SetMaterialAtSlot(AssetHandle<Material>(AssetID{"BaseMaterial"}));
 	sMesh->owner = obj;
 
 	CDirectLight* light = new CDirectLight();

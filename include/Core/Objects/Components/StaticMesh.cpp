@@ -1,5 +1,5 @@
 #include "StaticMesh.h"
-#include "Core/Objects/Gobject.h"
+#include "Core/Objects/GObject.h"
 #include "Core/Objects/Components/Transform.h"
 
 StaticMesh::StaticMesh()

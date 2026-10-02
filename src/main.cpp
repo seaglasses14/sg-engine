@@ -15,7 +15,7 @@
 #include "Scene/Scene.h"
 #include "Core/Input/InputManager.h"
 #include "object.h"
-#include "camera.h"
+#include "Camera.h"
 #include <Core/GLFW_Context.h>
 #include "Core/GUI/GUI.h"
 #include "Core/AssetPipeline/AssetManager.h"

@@ -13,7 +13,26 @@ set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 
+set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL
+    "Treat Assimp warnings as errors"
+    FORCE
+)
+
 add_subdirectory(external/assimp)
+
+# Disabling Assimp and Zlib warnings
+if(TARGET assimp)
+    target_compile_options(assimp PRIVATE
+        -Wno-unsafe-buffer-usage
+    )
+endif()
+
+if(TARGET zlibstatic)
+    target_compile_options(zlibstatic PRIVATE
+        -Wno-unsafe-buffer-usage
+    )
+endif()
+
 add_subdirectory(external/GLFW)
 
 file(GLOB_RECURSE PROJECT_SOURCES

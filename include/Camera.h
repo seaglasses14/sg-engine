@@ -43,7 +43,7 @@ public:
 
 	float nearPlane = 0.1f;
 	float farPlane = 1000.0f;
-	bool isOrthographic = true;
+	bool isOrthographic = false;
 
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw = YAW, float pitch = PITCH);

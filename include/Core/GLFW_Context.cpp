@@ -77,7 +77,7 @@ void GLFW_Context::AtEndOfLoop()
 	if (GLFW_CONTEXT_STATE > 0)
 	{
 		glfwSetWindowShouldClose(window, true);
-		Log::Error("Program will terminate ||| CONTEXT_STATE = " + GLFW_CONTEXT_STATE);
+		Log::Error("Program will terminate ||| CONTEXT_STATE = " + std::to_string(GLFW_CONTEXT_STATE));
 	}
 }
 GLFWwindow* GLFW_Context::GetWindow()

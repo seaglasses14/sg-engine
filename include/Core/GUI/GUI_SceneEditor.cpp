@@ -316,8 +316,7 @@ void GUI_SceneEditor::StartRenamingObject(GObject* obj)
 {
     isStartingRenaming = true;
     editingObject = obj;
-    strncpy(renameBuffer, obj->label.c_str(), sizeof(renameBuffer));
-    renameBuffer[sizeof(renameBuffer) - 1] = '\0';
+    snprintf(renameBuffer, sizeof(renameBuffer), "%s", obj->label.c_str());
 }
 
 void GUI_SceneEditor::StopRenamingObject(GObject* obj)
@@ -325,7 +324,7 @@ void GUI_SceneEditor::StopRenamingObject(GObject* obj)
     if(renameBuffer[0] != '\0')
         scene->SetObjectLabel(obj, renameBuffer);
     editingObject = nullptr;
-    isStartingRenaming;
+    //isStartingRenaming = false;
 }
 
 bool GUI_SceneEditor::InputCodeComboBox(InputInfo& selected_combo_inputInfo)

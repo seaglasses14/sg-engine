@@ -71,7 +71,7 @@ void GUI_PropertyHelper::WidgetColor(Property &pr)
 void GUI_PropertyHelper::WidgetAssetModel(Property& pr)
 {
 	ImGui::Spacing();
-	ImGui::Text(pr.label.c_str());
+	ImGui::Text("%s", pr.label.c_str());
 	AssetData<Model>* model = static_cast<AssetData<Model>*>(pr.data);
 	ImGui::SameLine();
 	ImGui::PushID(pr.data);
@@ -98,7 +98,7 @@ void GUI_PropertyHelper::WidgetAssetMaterial(Property &pr)
 	for(auto& [key, value] : *materials)
 	{
 		std::string slotLabel = "Slot: " + std::to_string(key);
-		ImGui::Text(slotLabel.c_str());
+		ImGui::Text("%s", slotLabel.c_str());
 		ImGui::SameLine();
 		ImGui::PushID(key);
 

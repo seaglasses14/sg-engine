@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Material.h"
 
 constexpr auto UNIFORM_MODEL = "model";
