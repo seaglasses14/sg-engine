@@ -20,14 +20,20 @@ The purpose of this project is to gain hands-on experience with graphics program
 
 ## How to build
 
+The project has been tested with Clang/Clang++ using CMake and Ninja.
+
 ### Requirements
 
-- CMake 3.2+
-- C++20 compiler
+- [CMake](https://cmake.org/) 3.2+
+- [Ninja](https://ninja-build.org/) 
+- [Clang/Clang++](https://github.com/llvm/llvm-project)
 - OpenGL 3.3
   
-### Build
+### Configure & Build
 
-1. Install [CMake](https://cmake.org/).
-2. Clone repository and initialize submodules.
-3. Configure and build.
+Inside root folder:
+```bash
+cmake -S . -B build -G Ninja DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+
+cmake --build build
+```
