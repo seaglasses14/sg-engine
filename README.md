@@ -34,6 +34,7 @@ The project has been tested with Clang/Clang++ using CMake and Ninja.
 Inside root folder:
 ```bash
 cmake -S . -B build -G Ninja DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-
+```
+```bash
 cmake --build build
 ```
